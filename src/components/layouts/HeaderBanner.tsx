@@ -1,5 +1,5 @@
 import { BrowserRouter, Link } from 'react-router-dom';
-import "../../style/layouts/HeaderBanner.css"
+import "../../style/layouts/headerBanner.css"
 
 interface BannerSettings {
     bannerBg : string;

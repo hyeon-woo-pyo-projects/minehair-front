@@ -1,0 +1,15 @@
+header {
+    
+}
+
+header #headerLine {
+    border-bottom: 1px solid #eee;
+    padding: 30px 0;
+}
+
+header nav {
+    padding: 12px 0;
+    display: flex;
+    justify-content: center;
+    gap: 0 50px;
+}

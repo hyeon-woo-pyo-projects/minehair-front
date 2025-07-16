@@ -102,3 +102,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.inner {
+  width: 1280px;
+  margin: auto;
+}
