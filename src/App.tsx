@@ -1,12 +1,14 @@
 import React from 'react';
 import './App.css';
 
-import FixedHeader from './components/layouts/FixedHeader';
+import HeaderBanner from './components/layouts/HeaderBanner';
+import Header from './components/layouts/Header';
 
 function App() {
   return (
     <div className="App">
-      <FixedHeader/>
+      <HeaderBanner/>
+      <Header/>
     </div>
   );
 }

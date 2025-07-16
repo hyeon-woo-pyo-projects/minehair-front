@@ -1,5 +1,5 @@
 import { BrowserRouter, Link } from 'react-router-dom';
-import "../../style/layouts/fixedHeader.css"
+import "../../style/layouts/HeaderBanner.css"
 
 interface BannerSettings {
     bannerBg : string;
@@ -10,13 +10,13 @@ interface BannerSettings {
     link: string;
 }
 
-function FixedHeader() {
+function HeaderBanner() {
     return (
         <BrowserRouter>
             {/* 맨 상단 배너 */}
-            <Link to="#" id="fixedHeader">이벤트 배너</Link>
+            <Link to="#" id="headerBanner">이벤트 배너</Link>
         </BrowserRouter>
     )
 }
 
-export default FixedHeader;
+export default HeaderBanner;

@@ -1,4 +1,4 @@
-#fixedHeader {
+#headerBanner {
     padding: 12px 0;
     text-align: center;
     background-color: #eee;
@@ -9,6 +9,6 @@
     transition: all 0.25s;
 }
 
-#fixedHeader:hover {
+#headerBanner:hover {
     opacity: 0.8;
 }
