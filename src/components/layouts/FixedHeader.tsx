@@ -1,3 +1,4 @@
+import { BrowserRouter, Link } from 'react-router-dom';
 import "../../style/layouts/fixedHeader.css"
 
 interface BannerSettings {
@@ -11,8 +12,10 @@ interface BannerSettings {
 
 function FixedHeader() {
     return (
-        // 맨 상단 배너
-        <a href="#" id="fixedHeader">이벤트 배너</a>
+        <BrowserRouter>
+            {/* 맨 상단 배너 */}
+            <Link to="#" id="fixedHeader">이벤트 배너</Link>
+        </BrowserRouter>
     )
 }
 
