@@ -1,0 +1,14 @@
+#fixedHeader {
+    padding: 12px 0;
+    text-align: center;
+    background-color: #eee;
+    width: 100%;
+    display: block;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.25s;
+}
+
+#fixedHeader:hover {
+    opacity: 0.8;
+}
