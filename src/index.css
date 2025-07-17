@@ -24,6 +24,11 @@ li {
 input:focus {
   outline: none;
 }
+button {
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
 
 @font-face {
   font-family: 'Pretendard';

@@ -12,6 +12,11 @@ function Header () {
                 </div>
 
                 <nav className='inner'>
+                    <button type='button' id='menuBtn'>
+                        <i></i>
+                        <i></i>
+                        <i></i>
+                    </button>
                     <Link to="">1</Link>
                     <Link to="">12</Link>
                     <Link to="">13</Link>
