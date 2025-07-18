@@ -2,3 +2,64 @@
     height: 800px;
     background-color: #eee;
 }
+
+#fixedBanner {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+}
+
+#fixedBanner .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+}
+
+#fixedBanner .inner h5 {
+    color: #fff;
+    font-weight: 500;
+    font-size: 24px;
+}
+
+#fixedBanner .inner form {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#fixedBanner .inner form div {
+    display: flex;
+    gap: 6px;
+}
+
+#fixedBanner .inner form div input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+#fixedBanner .inner form div label {
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#fixedBanner #sendCall {
+    position: relative;
+    transition: all 0.25s;
+    color: #fff;
+    background-color: #7b7aff;
+    display: block;
+    height: 50px;
+    width: 200px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+#fixedBanner #sendCall:hover {
+    background-color: #8c8bef;
+}
