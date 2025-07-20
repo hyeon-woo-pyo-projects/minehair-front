@@ -11,6 +11,7 @@
 :root {
   --color-black : #333;
   --color-white : #fff;
+  --color-hover : #eee;
   --brand-color: #7b7aff;
   --brand-color-hover: #8c8bef;
   --default-background: #111;

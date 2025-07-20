@@ -4,6 +4,8 @@
     cursor: pointer;
 }
 
+.mainSlider .swiper-pagination { bottom: 100px; }
+
 .mainSlider .swiper-pagination .swiper-pagination-bullet {
     border-radius: 10px;
     position: relative;
@@ -13,12 +15,40 @@
     opacity: 1;
     width: 12px;
     height: 12px;
+    background-color: var(--color-white);
 }
 
-.mainSlider .swiper-pagination .swiper-pagination-bullet-active {
-    width: 80px;
-    background-color: var(--brand-color);
+.mainSlider .swiper-pagination .swiper-pagination-bullet:hover { background-color: var(--color-hover); }
+.mainSlider .swiper-pagination .swiper-pagination-bullet-active { width: 80px; background-color: var(--brand-color); }
+.mainSlider .swiper-pagination .swiper-pagination-bullet-active:hover { background-color: var(--brand-color);}
+
+.my-navigation-buttons {
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    gap: 50px;
+    position: relative;
+    bottom: 70px;
+    z-index: 1;
 }
+
+.my-navigation-buttons button {
+    position: relative;
+    transition: all 0.25s;
+    width: 64px;
+    height: 64px;
+    box-shadow: 0 8px 10px 5px rgba(0, 0, 0, .05);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-white);
+}
+
+.my-navigation-buttons button:hover { background-color: var(--color-hover); }
+.my-navigation-buttons button.my-button-pause { width: 130px; height: 130px; }
+.my-navigation-buttons button.my-button-pause.paused { background-color: red !important; }
 
 #fixedBanner {
     position: sticky;
