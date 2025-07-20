@@ -77,7 +77,7 @@
     gap: 12px;
 }
 
-#fixedBanner .inner form div {
+#fixedBanner .inner form > div {
     display: flex;
     gap: 6px;
 }

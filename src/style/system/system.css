@@ -1,0 +1,32 @@
+.balloon {
+    position: absolute;
+    top: -45px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #fff;
+    font-weight: 500;
+    padding: 6px 20px;
+    border-radius: 5px;
+    animation: balloon 0.25s linear alternate infinite;
+    word-break: keep-all;
+}
+.balloon::after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    bottom: -5px;
+    transform: rotate(45deg);
+}
+
+.balloon.notice { background-color: var(--color-red); }
+.balloon.notice::after { background-color: var(--color-red); }
+@keyframes balloon {
+    0% { top: -45px;}
+    100% { top: -47px;}
+}
+
+.balloon svg { flex: none; }

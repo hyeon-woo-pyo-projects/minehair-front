@@ -11,6 +11,7 @@
 :root {
   --color-black : #333;
   --color-white : #fff;
+  --color-red : #ee5050;
   --color-hover : #eee;
   --brand-color: #7b7aff;
   --brand-color-hover: #8c8bef;
@@ -30,11 +31,12 @@ input[type="text"] {
   padding: 0 20px;
   font-size: 16px;
   height: 42px;
+  min-width: 200px;
 }
 
 select {
   height: 42px;
-  min-width: 100px;
+  min-width: 200px;
   border: 0;
   padding: 0 20px;
   outline: none;

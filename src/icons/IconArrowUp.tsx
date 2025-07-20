@@ -1,12 +1,12 @@
 import React from 'react';
 
-interface IconArrowRightProps {
+interface IconArrowUpProps {
     color?: string;
     height?: number;
     width?: number;
 }
 
-const IconArrowRight: React.FC<IconArrowRightProps> = ({ color = '#000', height = '20', width = '20' }) => (
+const IconArrowUp: React.FC<IconArrowUpProps> = ({ color = '#000', height = '20', width = '20' }) => (
     <svg
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"
@@ -18,4 +18,4 @@ const IconArrowRight: React.FC<IconArrowRightProps> = ({ color = '#000', height 
 
 );
 
-export default IconArrowRight;
+export default IconArrowUp;
