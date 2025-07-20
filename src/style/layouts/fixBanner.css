@@ -1,0 +1,2 @@
+#fixedBanner { position: sticky; transition: all 0.25s; opacity: 0; }
+#fixedBanner.show { opacity: 1; }

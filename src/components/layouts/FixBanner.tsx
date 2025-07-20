@@ -1,7 +1,25 @@
+import { useEffect, useState } from "react";
+import '../../style/layouts/fixBanner.css'
 
 function FixBanner () {
+    // 하단 간편상담신청 show/hide
+    const [showFixBanner, setShowFixBanner] = useState(false);
+    
+
+    useEffect(()=>{
+        const handleScroll = () => {
+            const scrollY = window.scrollY;
+
+            if ( scrollY > 100 ) {setShowFixBanner(true)} else {setShowFixBanner(false)}
+        }
+
+        handleScroll();
+        
+        window.addEventListener('scroll', handleScroll);
+    });
+
     return (
-        <div id="fixedBanner">
+        <div id="fixedBanner" className={showFixBanner ? 'show' : ''}>
             <div className="inner">
                 <h5>간편상담신청</h5>
 
