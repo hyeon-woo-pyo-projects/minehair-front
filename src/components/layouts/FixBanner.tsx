@@ -8,7 +8,9 @@ function FixBanner () {
                 <form>
                     <input type="text" placeholder="이름" maxLength={10}></input>
                     <input type="text" placeholder="연락처(-없이)" maxLength={11}></input>
-                    <select></select>
+                    <select>
+                        <option hidden selected>선택</option>
+                    </select>
 
                     <div>
                         <input type="checkbox" id="agreeChk"/>

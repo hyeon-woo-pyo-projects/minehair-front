@@ -1,6 +1,23 @@
 .mainSlider {
     height: 800px;
     background-color: #eee;
+    cursor: pointer;
+}
+
+.mainSlider .swiper-pagination .swiper-pagination-bullet {
+    border-radius: 10px;
+    position: relative;
+    transition: all 0.25s;
+    border: 1px solid var(--brand-color);
+    background: none;
+    opacity: 1;
+    width: 12px;
+    height: 12px;
+}
+
+.mainSlider .swiper-pagination .swiper-pagination-bullet-active {
+    width: 80px;
+    background-color: var(--brand-color);
 }
 
 #fixedBanner {
@@ -52,7 +69,7 @@
     position: relative;
     transition: all 0.25s;
     color: #fff;
-    background-color: #7b7aff;
+    background-color: var(--brand-color);
     display: block;
     height: 50px;
     width: 200px;
@@ -61,5 +78,5 @@
 }
 
 #fixedBanner #sendCall:hover {
-    background-color: #8c8bef;
+    background-color: var(--brand-color-hover);
 }

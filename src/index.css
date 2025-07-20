@@ -5,16 +5,19 @@
   margin: 0;
   padding: 0;
   font-family: 'Pretendard';
+  color: var(--color-black);
 }
 
 :root {
   --color-black : #333;
   --color-white : #fff;
+  --brand-color: #7b7aff;
+  --brand-color-hover: #8c8bef;
+  --default-background: #111;
 }
 
 a {
   text-decoration: none;
-  color: inherit;
 }
 
 li {
