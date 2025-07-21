@@ -20,6 +20,7 @@ header  #menuBtn {
     z-index: 3;
     display: flex;
     justify-content: center;
+    margin-right: 24px;
 }
 
 header #menuBtn.show i { width: 0; }
@@ -34,7 +35,6 @@ header #menuBtn i {
     height: 2px;
     background-color: var(--color-black);
     top: 9px;
-    margin-right: 65px;
 }
 
 header #menuBtn i:first-child { top: 0; }
@@ -88,7 +88,7 @@ header nav .wholeMenu.show { opacity: 1; visibility: visible; }
 /* 개별 메뉴 */
 header .perMenu {
     position: absolute;
-    top: 35px;
+    top: 50px;
     z-index: 2;
     background-color: var(--color-white);
     left: 0;
