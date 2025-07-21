@@ -1,7 +1,6 @@
 
 #page-login {
     padding: 120px 0;
-    min-height: 100vh;
     background-color: var(--color-white);
 }
 
@@ -13,7 +12,7 @@
     display: block;
     width: 100%;
     font-weight: 500;
-    padding: 20px 0;
+    padding-bottom: 30px;
     border: 1px solid var(--color-line);
     border-width: 0 0 1px;
 }
@@ -28,3 +27,41 @@
     left: 0;
     z-index: 1;
 }
+
+#page-login .innerTitle { margin: 60px 0; }
+#page-login #loginForm {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 420px;
+    margin: auto;
+}
+#page-login #loginForm li {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+#page-login #loginForm li label.formTitle { width: 100px; text-align: left; font-weight: 600; flex: none; }
+#page-login #loginForm li input[type="text"],
+#page-login #loginForm li input[type="password"] { min-width: auto; width: 100%; }
+#page-login #loginForm li > div > label { font-size: 14px; }
+
+#page-login .btns { margin-top: 30px; }
+#page-login .btns button {
+    width: 100%;
+    display: block;
+    padding: 12px 0;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 5px;
+}
+
+#page-login .members {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#page-login .members a { font-size: 14px; width: 120px; }
+#page-login .members a:hover { color: var(--default-background); }

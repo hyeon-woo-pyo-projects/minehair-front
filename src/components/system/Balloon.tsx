@@ -1,4 +1,4 @@
-import Warning from '../../icons/Warning';
+import IconWarning from '../../icons/IconWarning';
 import '../../style/system/system.css';
 
 interface BalloonProps {
@@ -10,7 +10,7 @@ function Balloon({ text, status }: BalloonProps) {
 
     return (
         <div id="balloon" className={`balloon ${status}`}>
-            {status === 'notice' ? <Warning color='var(--color-white)'/> : null}
+            {status === 'notice' ? <IconWarning color='var(--color-white)'/> : null}
             {text}
         </div>
     );

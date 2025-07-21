@@ -17,6 +17,7 @@
   --brand-color-hover: #fbb46d;
   --default-background: #111;
   --color-line: #ddd;
+  --color-placeholder : #797979
 }
 
 a {
@@ -27,13 +28,40 @@ li {
   list-style: none;
 }
 
-input[type="text"] {
-  border: 0;
+input[type="text"],
+input[type="password"] {
+  position: relative;
+  transition: all 0.25s;
+  border: 1px solid var(--color-line);
   padding: 0 20px;
   font-size: 16px;
   height: 42px;
   min-width: 200px;
+  border-radius: 5px;
+  color: var(--color-black);
 }
+
+input[type="text"]::placeholder,
+input[type="password"]::placeholder { color: var(--color-placeholder); }
+
+input[type="text"]:focus,
+input[type="password"]:focus { border: 1px solid var(--color-black); }
+
+input[type="checkbox"] { display: none; }
+input[type="checkbox"] + label { cursor: pointer; display: flex; align-items: center; gap: 6px; }
+input[type="checkbox"] + label::before {
+  content: '';
+  display: block;
+  width: 15px;
+  height: 15px;
+  background-image: url('../public/check-icon-bold.svg');
+  border: 1px solid var(--color-line);
+  background-size: 100%;
+  border-radius: 3px;
+  position: relative;
+  transition: all .25s;
+}
+input[type="checkbox"]:checked + label::before { background-color: var(--color-placeholder); border-color: var(--color-placeholder); }
 
 select {
   height: 42px;
@@ -42,6 +70,10 @@ select {
   padding: 0 20px;
   outline: none;
   cursor: pointer;
+  border-radius: 5px;
+  border: 1px solid var(--color-line);
+  font-size: 16px;
+  color: var(--color-black);
 }
 
 input:focus {
@@ -49,10 +81,17 @@ input:focus {
 }
 
 button {
+  position: relative;
+  transition: all 0.25s;
   background: none;
   border: 0;
   cursor: pointer;
 }
+
+button.primaryBtn { background-color: var(--brand-color); color: var(--color-white); }
+button.blackBtn { background-color: var(--default-background); color: var(--color-white); }
+button.blackBtn:hover { background-color: var(--color-black); }
+button.whiteBtn { background-color: var(--color-white); color: var(--color-black); }
 
 @font-face {
   font-family: 'Pretendard';
@@ -133,4 +172,4 @@ code {
 }
 
 .wrapper { width: 1280px; margin: auto; }
-.inner { width: 1280px; margin: auto; }
+.inner { width: 800px; margin: auto; }

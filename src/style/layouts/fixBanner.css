@@ -1,3 +1,9 @@
 #fixedBanner { position: sticky; transition: all 0.25s; opacity: 0; }
 #fixedBanner.show { opacity: 1; }
 #fixedBanner form > div { position: relative; }
+
+#fixedBanner input[type="checkbox"] + label::before { background-color: var(--color-white); border-color: var(--color-white);}
+#fixedBanner input[type="checkbox"]:checked + label::before {
+    background-color: var(--brand-color);
+    border-color: var(--brand-color);
+}
