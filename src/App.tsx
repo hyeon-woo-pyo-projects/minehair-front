@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import HeaderBanner from './components/layouts/HeaderBanner';
 import Header from './components/layouts/Header';
 import Landing from './components/index/Landing';
 import FixBanner from './components/layouts/FixBanner';
@@ -12,7 +11,6 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <HeaderBanner/>
         <Header/>
 
         <Routes>

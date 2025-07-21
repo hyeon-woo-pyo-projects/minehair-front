@@ -59,13 +59,13 @@ header nav .inner {
 }
 
 header nav .inner li {
-    display: flex;
+    display: none;
     align-items: center;
     position: relative;
     padding: 0 18px;
     height: 50px;
 }
-
+header nav .inner li.true { display: flex; }
 header nav .inner li a { font-size: 18px; color: var(--color-black); }
 
 header nav .wholeMenu {
@@ -87,7 +87,10 @@ header nav .wholeMenu.show { opacity: 1; visibility: visible; }
 
 /* 개별 메뉴 */
 header .perMenu {
+    opacity: 0;
+    visibility: hidden;
     position: absolute;
+    transition: all 0.25s;
     top: 50px;
     z-index: 2;
     background-color: var(--color-white);
@@ -97,8 +100,8 @@ header .perMenu {
     overflow: hidden;
     display: flex;
 }
-
-header .perMenu .category { padding: 30px 35px; text-align: left; }
+header .perMenu.show { opacity: 1; visibility: visible; }
+header .perMenu .category { position: relative; transition: all 0.25s; padding: 30px 35px; text-align: left; }
 header .perMenu .category.haveImg { min-width: 250px; }
 header .perMenu .thumbnail { width: 250px; }
 header .perMenu .thumbnail img { width: 100%; height: 100%; }

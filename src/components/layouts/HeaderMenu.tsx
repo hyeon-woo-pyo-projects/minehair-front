@@ -3,11 +3,12 @@ import '../../style/layouts/header.css'
 interface ContentsProps {
     contents: number;
     imgSrc? : string;
+    isVisible : boolean;
 }
 
-function HeaderMenu ({contents, imgSrc}: ContentsProps) {
+function HeaderMenu ({contents, imgSrc, isVisible}: ContentsProps) {
     return (
-        <div className='perMenu'>
+        <div className={`perMenu ${isVisible ? 'show' : ''}`}>
             <div className={`category ${ imgSrc !== '' && 'haveImg'}`}>
                 {contents}
             </div>

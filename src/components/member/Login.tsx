@@ -1,7 +1,8 @@
+import '../../style/member/login.css'
 
 function Login () {
     return (
-        <div id="login">
+        <div id="page-login">
             
         </div>
     )
