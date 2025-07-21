@@ -12,10 +12,10 @@ interface BannerSettings {
 
 function HeaderBanner() {
     return (
-        <BrowserRouter>
+        <>
             {/* 맨 상단 배너 */}
-            <Link to="#" id="headerBanner">이벤트 배너</Link>
-        </BrowserRouter>
+            <Link to="/" id="headerBanner">이벤트 배너</Link>
+        </>
     )
 }
 
