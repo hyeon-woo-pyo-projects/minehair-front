@@ -4,14 +4,23 @@ import HeaderBanner from './components/layouts/HeaderBanner';
 import Header from './components/layouts/Header';
 import Landing from './components/index/Landing';
 import FixBanner from './components/layouts/FixBanner';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Login from './components/member/login';
 
 function App() {
   return (
     <div className="App">
-      <HeaderBanner/>
-      <Header/>
-      <Landing/>
-      <FixBanner/>
+      <BrowserRouter>
+        <HeaderBanner/>
+        <Header/>
+
+        <Routes>
+          <Route path="/" element={<Landing/>} />
+          <Route path="/member/login" element={<Login/>} />
+        </Routes>
+
+        <FixBanner/>
+      </BrowserRouter>
     </div>
   );
 }

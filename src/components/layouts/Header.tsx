@@ -24,7 +24,7 @@ function Header () {
                         </Link>
                         
                         <div id='member'>
-                            <Link to="/" id="login">로그인</Link>
+                            <Link to="/member/login" id="login">로그인</Link>
                             <Link to="/" id="register">회원가입</Link>
                         </div>
                     </div>
