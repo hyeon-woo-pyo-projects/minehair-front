@@ -58,7 +58,7 @@ function FixBanner () {
 
     return (
         <div id="fixedBanner" className={showFixBanner ? 'show' : ''}>
-            <div className="inner">
+            <div className="wrapper">
                 <h5>간편상담신청</h5>
 
                 <form>

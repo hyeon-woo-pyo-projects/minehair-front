@@ -6,7 +6,7 @@ header #headerLine {
     justify-content: space-between;
 }
 
-header #headerLine .inner {
+header #headerLine .wrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -52,21 +52,21 @@ header #headerLine #member a {
 
 header nav { position: relative; }
 
-header nav .inner {
+header nav .wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-header nav .inner li {
+header nav .wrapper li {
     display: none;
     align-items: center;
     position: relative;
     padding: 0 18px;
     height: 50px;
 }
-header nav .inner li.true { display: flex; }
-header nav .inner li a { font-size: 18px; color: var(--color-black); }
+header nav .wrapper li.true { display: flex; }
+header nav .wrapper li a { font-size: 18px; color: var(--color-black); }
 
 header nav .wholeMenu {
     position: relative;

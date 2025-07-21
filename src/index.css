@@ -16,6 +16,7 @@
   --brand-color: #ff9933;
   --brand-color-hover: #fbb46d;
   --default-background: #111;
+  --color-line: #ddd;
 }
 
 a {
@@ -131,7 +132,5 @@ code {
     monospace;
 }
 
-.inner {
-  width: 1280px;
-  margin: auto;
-}
+.wrapper { width: 1280px; margin: auto; }
+.inner { width: 1280px; margin: auto; }

@@ -58,38 +58,38 @@
     backdrop-filter: blur(3px);
 }
 
-#fixedBanner .inner {
+#fixedBanner .wrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 12px 0;
 }
 
-#fixedBanner .inner h5 {
+#fixedBanner .wrapper h5 {
     color: #fff;
     font-weight: 500;
     font-size: 24px;
 }
 
-#fixedBanner .inner form {
+#fixedBanner .wrapper form {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-#fixedBanner .inner form > div {
+#fixedBanner .wrapper form > div {
     display: flex;
     gap: 6px;
 }
 
-#fixedBanner .inner form div input[type="checkbox"] {
+#fixedBanner .wrapper form div input[type="checkbox"] {
     width: 16px;
     height: 16px;
     margin-left: 20px;
     cursor: pointer;
 }
 
-#fixedBanner .inner form div label {
+#fixedBanner .wrapper form div label {
     color: #fff;
     font-size: 14px;
     cursor: pointer;

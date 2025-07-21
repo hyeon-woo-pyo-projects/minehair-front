@@ -53,7 +53,7 @@ function Header () {
             <HeaderBanner/>
 
             <div id='headerLine'>
-                <div className="inner">
+                <div className="wrapper">
                     <div></div>
 
                     <Link to="/" id="headerLogo">
@@ -68,7 +68,7 @@ function Header () {
             </div>
 
             <nav>
-                <ul id='headerCategory' className="inner">
+                <ul id='headerCategory' className="wrapper">
                     <button type='button' id='menuBtn' className={openMenu ? 'show' : ''} onClick={toggleMenu}>
                         <i></i>
                         <i></i>
@@ -79,6 +79,7 @@ function Header () {
                     { mainMenu.map((el, idx) => {
                         return(
                             <li
+                            key={el.menuId}
                             className={`${el.menuVisible}`}
                             onMouseEnter={() => setIsHovered(el.menuId)}
                             onMouseLeave={() => setIsHovered(0)}>
