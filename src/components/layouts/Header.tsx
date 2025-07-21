@@ -77,7 +77,6 @@ function Header () {
                     </button>
 
                     { mainMenu.map((el, idx) => {
-                        console.log(el, idx)
                         return(
                             <li
                             className={`${el.menuVisible}`}
