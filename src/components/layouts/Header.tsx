@@ -1,12 +1,16 @@
 import { BrowserRouter, Link } from 'react-router-dom';
 import "../../style/layouts/header.css"
 import { useState } from 'react';
+import HeaderMenu from './HeaderMenu';
 
 function Header () {
 
     // 전체메뉴
-    const [openMenu, setOpenMenu] = useState(false);
+    const [ openMenu, setOpenMenu ] = useState(false);
     const toggleMenu = () => { setOpenMenu(!openMenu) }
+
+    // 마우스 호버 시, 각각 메뉴
+    const [ isHovered, setIsHovered ] = useState(0);
 
     return (
         <BrowserRouter>
@@ -27,17 +31,29 @@ function Header () {
                 </div>
 
                 <nav>
-                    <div className="inner">
+                    <ul id='headerCategory' className="inner">
                         <button type='button' id='menuBtn' className={openMenu ? 'show' : ''} onClick={toggleMenu}>
                             <i></i>
                             <i></i>
                             <i></i>
                             <i></i>
                         </button>
-                        <Link to="">1</Link>
-                        <Link to="">12</Link>
-                        <Link to="">13</Link>
-                    </div>
+
+                        <li onMouseEnter={() => setIsHovered(1)} onMouseLeave={() => setIsHovered(0)}>
+                            <Link to="">1</Link>
+                            { isHovered === 1 ? <HeaderMenu contents={isHovered}/> : null }
+                        </li>
+
+                        <li onMouseEnter={() => setIsHovered(2)} onMouseLeave={() => setIsHovered(0)}>
+                            <Link to="">12</Link>
+                            { isHovered === 2 ? <HeaderMenu contents={isHovered}/> : null }
+                        </li>
+
+                        <li onMouseEnter={() => setIsHovered(3)} onMouseLeave={() => setIsHovered(0)}>
+                            <Link to="">13</Link>
+                            { isHovered === 3 ? <HeaderMenu contents={isHovered}/> : null }
+                        </li>
+                    </ul>
 
                     <div className={`wholeMenu ${openMenu ? "show" : '' }`}></div>
                 </nav>
