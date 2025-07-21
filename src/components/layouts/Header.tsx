@@ -41,17 +41,17 @@ function Header () {
 
                         <li onMouseEnter={() => setIsHovered(1)} onMouseLeave={() => setIsHovered(0)}>
                             <Link to="">1</Link>
-                            { isHovered === 1 ? <HeaderMenu contents={isHovered}/> : null }
+                            { isHovered === 1 ? <HeaderMenu contents={isHovered} imgSrc=''/> : null }
                         </li>
 
                         <li onMouseEnter={() => setIsHovered(2)} onMouseLeave={() => setIsHovered(0)}>
                             <Link to="">12</Link>
-                            { isHovered === 2 ? <HeaderMenu contents={isHovered}/> : null }
+                            { isHovered === 2 ? <HeaderMenu contents={isHovered} imgSrc='12'/> : null }
                         </li>
 
                         <li onMouseEnter={() => setIsHovered(3)} onMouseLeave={() => setIsHovered(0)}>
                             <Link to="">13</Link>
-                            { isHovered === 3 ? <HeaderMenu contents={isHovered}/> : null }
+                            { isHovered === 3 ? <HeaderMenu contents={isHovered} imgSrc=''/> : null }
                         </li>
                     </ul>
 
