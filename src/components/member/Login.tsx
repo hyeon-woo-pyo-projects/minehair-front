@@ -1,8 +1,27 @@
 import { Link } from 'react-router-dom';
 
 import '../../style/member/member.css'
+import { useState } from 'react';
+import Balloon from '../system/Balloon';
+
+type LoginProps = {
+    id : string;
+    password: string;
+}
 
 function Login () {
+    // 유효성 검사
+    const [ balloonChk, setBalloonChk ] = useState(0);
+    const [ login, setLogin ] = useState<LoginProps>({
+        id : '',
+        password: '',
+    });
+    const submitLogin = () => {
+        if ( login.id.trim() === '' ) { setBalloonChk(1); return; }
+        if ( login.password.trim() === '' ) { setBalloonChk(2); return; }
+        setBalloonChk(0);
+    }
+
     return (
         <div id="page-login" className='membersComponents'>
             <div className="wrapper">
@@ -19,13 +38,15 @@ function Login () {
 
                     <form id='loginForm' className='membersForm'>
                         <li>
+                            { balloonChk === 1 && <Balloon text={'아이디를 입력해주세요.'} status={'notice'} /> }
                             <label htmlFor="loginId" className='formTitle'>아이디</label>
-                            <input type="text" placeholder='아이디' id='loginId'/>
+                            <input type="text" placeholder='아이디' id='loginId' onChange={ e => setLogin({...login, id : e.target.value})}/>
                         </li>
 
                         <li>
+                            { balloonChk === 2 && <Balloon text={'비밀번호를 입력해주세요.'} status={'notice'} /> }
                             <label htmlFor="loginPassword" className='formTitle'>비밀번호</label>
-                            <input type="password" placeholder='비밀번호' id='loginPassword'/>
+                            <input type="password" placeholder='비밀번호' id='loginPassword'onChange={ e => setLogin({...login, password : e.target.value})}/>
                         </li>
 
                         <li>
@@ -38,7 +59,7 @@ function Login () {
                         </li>
 
                         <div className="btns">
-                            <button type='button' className='blackBtn'>로그인</button>
+                            <button type='button' className='blackBtn' onClick={submitLogin}>로그인</button>
                         </div>
                     </form>
 

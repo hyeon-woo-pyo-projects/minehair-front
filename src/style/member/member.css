@@ -36,11 +36,13 @@
     display: flex;
     align-items: center;
     justify-content: start;
+    position: relative;
 }
 .membersComponents label.formTitle { width: 100px; text-align: left; font-weight: 600; flex: none; }
 .membersComponents .membersForm li input[type="text"],
 .membersComponents .membersForm li input[type="password"] { min-width: auto; width: 100%; }
 .membersComponents .membersForm li > div { display: flex; align-items: center; gap: 12px; width: 100%; }
+.membersComponents .membersForm li > div.balloon { margin-left: 100px; width: auto; }
 .membersComponents .membersForm li > div > label { font-size: 14px; }
 .membersComponents .membersForm li > div > button { display: block; width: 100%; background-color: var(--default-background); color: var(--color-white); height: 100%; height: 42px; border-radius: 5px; }
 .membersComponents .membersForm li > div > button:hover { background-color: var(--color-black); }

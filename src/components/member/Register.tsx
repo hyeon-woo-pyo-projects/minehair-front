@@ -3,6 +3,12 @@ import { Link } from 'react-router-dom';
 import '../../style/member/member.css'
 
 function Register () {
+    // 전체 동의
+    const allChkBtn = document.querySelector('#allChk');
+    const allChk = () => {
+        
+    }
+
     return (
         <div id="page-register" className='membersComponents'>
             <div className="wrapper">

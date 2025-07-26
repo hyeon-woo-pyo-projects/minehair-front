@@ -11,6 +11,7 @@
     border-radius: 5px;
     animation: balloon 0.25s linear alternate infinite;
     word-break: keep-all;
+    width: auto;
 }
 .balloon::after {
     content: '';
