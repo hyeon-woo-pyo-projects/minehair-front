@@ -6,6 +6,7 @@ import Login from './components/member/Login';
 
 import './App.css';
 import Register from './components/member/Register';
+import Forgot from './components/member/Forgot';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/" element={<Landing/>} />
           <Route path="/member/login" element={<Login/>} />
           <Route path="/member/register" element={<Register/>} />
+          <Route path="/member/forgot" element={<Forgot/>} />
         </Routes>
       </BrowserRouter>
     </div>

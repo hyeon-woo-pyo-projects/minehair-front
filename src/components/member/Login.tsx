@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import '../../style/member/member.css'
 import { useState } from 'react';
 import Balloon from '../system/Balloon';
+import MemberNav from './MemberNav';
 
 type LoginProps = {
     id : string;
@@ -25,13 +26,7 @@ function Login () {
     return (
         <div id="page-login" className='membersComponents'>
             <div className="wrapper">
-                <nav className='memberNav'>
-                    <Link className='current' to={'/member/login'}>로그인</Link>
-                    <Link to={'/member/register'}>회원가입</Link>
-                    <Link to={'/'}>아이디/비밀번호 찾기</Link>
-                    <Link to={'/'}>이용약관</Link>
-                    <Link to={'/'}>개인정보처리방침</Link>
-                </nav>
+                <MemberNav/>
 
                 <div className="inner">
                     <h1 className='innerTitle'>로그인</h1>
