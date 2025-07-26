@@ -8,7 +8,7 @@
     width: 100%;
     font-weight: 500;
     padding-bottom: 30px;
-    border: 1px solid var(--color-lightGray);
+    border: 1px solid var(--color-Gray);
     border-width: 0 0 1px;
 }
 .memberNav a.current { color: var(--brand-color); font-weight: 700; }
@@ -78,7 +78,7 @@
 .registerTerms ul {
     display: flex;
     margin-top: 12px;
-    border: 1px solid var(--color-lightGray);
+    border: 1px solid var(--color-Gray);
     padding: 20px;
     border-radius: 5px;
     flex-direction: column;
@@ -88,3 +88,27 @@
 .registerTerms li label { font-size: 14px; }
 .registerTerms li span { color: var(--color-red); font-size: 14px; }
 .registerTerms li a { position: absolute; right: 0; font-size: 12px; border-bottom: 1px solid var(--color-black); }
+
+
+
+/* forgot 아이디 비밀번호 찾기 */
+#page-forgot .inner {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+}
+
+#page-forgot .inner .childs { width: 100%; }
+#page-forgot .inner form {
+    background-color: var(--color-lightGray);
+    padding: 20px;
+    border-radius: 5px;
+    min-height: 310px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0;
+}
+
+#page-forgot .inner form ul { display: flex; flex-direction: column; gap: 20px; }
+#page-forgot .inner form .btns { margin-top: 0; }
