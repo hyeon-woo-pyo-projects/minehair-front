@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom';
 
 import '../../style/member/member.css'
 
-function Login () {
+function Register () {
     return (
-        <div id="page-login">
+        <div id="page-register">
             <div className="wrapper">
                 <nav id='memberNav'>
                     <Link className='current' to={'/member/login'}>로그인</Link>
@@ -52,4 +52,4 @@ function Login () {
     )
 }
 
-export default Login;
+export default Register;
