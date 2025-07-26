@@ -4,9 +4,11 @@ import '../../style/member/member.css'
 
 function Register () {
     // 전체 동의
-    const allChkBtn = document.querySelector('#allChk');
-    const allChk = () => {
-        
+    const termsBtn = document.querySelectorAll<HTMLInputElement>('.termsCheck');
+    const allChk = (chk: boolean) => {
+        termsBtn.forEach((el)=>{
+                el.checked = chk;
+        });
     }
 
     return (
@@ -57,20 +59,20 @@ function Register () {
                             <div>
                                 <label htmlFor="" className='formTitle'>약관동의</label>
                                 <li>
-                                    <input type="checkbox" id='allChk' />
+                                    <input type="checkbox" id='allChk' onChange={(e) => allChk(e.target.checked)}/>
                                     <label htmlFor="allChk">전체동의</label>
                                 </li>
                             </div>
                             
                             <ul>
                                 <li>
-                                    <input type="checkbox" id='chk01' />
+                                    <input type="checkbox" id='chk01' className='termsCheck'/>
                                     <label htmlFor="chk01">이용약관 동의 <span>[필수]</span></label>
                                     <Link to={'/'}>자세히보기</Link>
                                 </li>
 
                                 <li>
-                                    <input type="checkbox" id='chk02' />
+                                    <input type="checkbox" id='chk02' className='termsCheck'/>
                                     <label htmlFor="chk02">개인정보처리방침 동의 <span>[필수]</span></label>
                                     <Link to={'/'}>자세히보기</Link>
                                 </li>

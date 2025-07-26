@@ -79,10 +79,10 @@
     display: flex;
     margin-top: 12px;
     border: 1px solid var(--color-lightGray);
-    padding: 12px;
+    padding: 20px;
     border-radius: 5px;
     flex-direction: column;
-    gap: 6px;
+    gap: 12px;
 }
 .registerTerms li { position: relative; display: flex; align-items: center; gap: 6px; }
 .registerTerms li label { font-size: 14px; }
