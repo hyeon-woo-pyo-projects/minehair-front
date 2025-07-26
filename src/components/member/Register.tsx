@@ -1,14 +1,19 @@
 import { Link } from 'react-router-dom';
 
 import '../../style/member/member.css'
+import { useState } from 'react';
 
 function Register () {
     // 전체 동의
-    const termsBtn = document.querySelectorAll<HTMLInputElement>('.termsCheck');
-    const allChk = (chk: boolean) => {
-        termsBtn.forEach((el)=>{
-                el.checked = chk;
-        });
+    const [ terms, setTerms ] = useState({
+        chk01 : false,
+        chk02 : false,
+    });
+    const allChk = (chk : boolean) => {
+        setTerms({
+            chk01: chk,
+            chk02: chk,
+        })
     }
 
     return (
@@ -59,20 +64,20 @@ function Register () {
                             <div>
                                 <label htmlFor="" className='formTitle'>약관동의</label>
                                 <li>
-                                    <input type="checkbox" id='allChk' onChange={(e) => allChk(e.target.checked)}/>
+                                    <input type="checkbox" id='allChk' checked={terms.chk01 && terms.chk02} onChange={(e) => allChk(e.target.checked)}/>
                                     <label htmlFor="allChk">전체동의</label>
                                 </li>
                             </div>
                             
                             <ul>
                                 <li>
-                                    <input type="checkbox" id='chk01' className='termsCheck'/>
+                                    <input type="checkbox" id='chk01' className='termsCheck' checked={terms.chk01} onChange={(e) => setTerms(prev => ({...prev, chk01: e.target.checked}))}/>
                                     <label htmlFor="chk01">이용약관 동의 <span>[필수]</span></label>
                                     <Link to={'/'}>자세히보기</Link>
                                 </li>
 
                                 <li>
-                                    <input type="checkbox" id='chk02' className='termsCheck'/>
+                                    <input type="checkbox" id='chk02' className='termsCheck' checked={terms.chk02} onChange={(e) => setTerms(prev => ({...prev, chk02: e.target.checked}))}/>
                                     <label htmlFor="chk02">개인정보처리방침 동의 <span>[필수]</span></label>
                                     <Link to={'/'}>자세히보기</Link>
                                 </li>
