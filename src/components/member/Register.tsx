@@ -4,48 +4,77 @@ import '../../style/member/member.css'
 
 function Register () {
     return (
-        <div id="page-register">
+        <div id="page-register" className='membersComponents'>
             <div className="wrapper">
-                <nav id='memberNav'>
-                    <Link className='current' to={'/member/login'}>로그인</Link>
-                    <Link to={'/'}>회원가입</Link>
+                <nav className='memberNav'>
+                    <Link to={'/member/login'}>로그인</Link>
+                    <Link className='current'  to={'/member/register'}>회원가입</Link>
                     <Link to={'/'}>아이디/비밀번호 찾기</Link>
                     <Link to={'/'}>이용약관</Link>
                     <Link to={'/'}>개인정보처리방침</Link>
                 </nav>
 
                 <div className="inner">
-                    <h1 className='innerTitle'>로그인</h1>
+                    <h1 className='innerTitle'>회원가입</h1>
 
-                    <form id='loginForm'>
+                    <form id='registerForm' className='membersForm'>
                         <li>
-                            <label htmlFor="loginId" className='formTitle'>아이디</label>
-                            <input type="text" placeholder='아이디' id='loginId'/>
+                            <label htmlFor="registerId" className='formTitle'>아이디</label>
+                            <input type="text" placeholder='아이디' id='registerId'/>
                         </li>
 
                         <li>
-                            <label htmlFor="loginPassword" className='formTitle'>비밀번호</label>
-                            <input type="password" placeholder='비밀번호' id='loginPassword'/>
+                            <label htmlFor="registerPassword" className='formTitle'>비밀번호</label>
+                            <input type="password" placeholder='비밀번호' id='registerPassword'/>
                         </li>
 
                         <li>
-                            <label htmlFor='' className='formTitle'></label>
+                            <label htmlFor="registerPasswordChk" className='formTitle'>비밀번호 확인</label>
+                            <input type="password" placeholder='비밀번호' id='registerPasswordChk'/>
+                        </li>
+
+                        <li>
+                            <label htmlFor="phone" className='formTitle'>휴대폰번호</label>
 
                             <div>
-                                <input type="checkbox" id='autoLogin'/>
-                                <label htmlFor="autoLogin">자동로그인</label>
+                                <input type="text" placeholder='"-"없이' id='phone' maxLength={11} />
+                                <button type='button'>인증번호 받기</button>
                             </div>
                         </li>
 
+                        <li>
+                            <label htmlFor="certiNum" className='formTitle'></label>
+                            <input type="text" placeholder='인증번호' id='certiNum' maxLength={6} />
+                        </li>
+
+                        <div className='registerTerms'>
+                            <div>
+                                <label htmlFor="" className='formTitle'>약관동의</label>
+                                <li>
+                                    <input type="checkbox" id='allChk' />
+                                    <label htmlFor="allChk">전체동의</label>
+                                </li>
+                            </div>
+                            
+                            <ul>
+                                <li>
+                                    <input type="checkbox" id='chk01' />
+                                    <label htmlFor="chk01">이용약관 동의 <span>[필수]</span></label>
+                                    <Link to={'/'}>자세히보기</Link>
+                                </li>
+
+                                <li>
+                                    <input type="checkbox" id='chk02' />
+                                    <label htmlFor="chk02">개인정보처리방침 동의 <span>[필수]</span></label>
+                                    <Link to={'/'}>자세히보기</Link>
+                                </li>
+                            </ul>
+                        </div>
+
                         <div className="btns">
-                            <button type='button' className='blackBtn'>로그인</button>
+                            <button type='button' className='disabledBtn'>회원가입</button>
                         </div>
                     </form>
-
-                    <div className="members">
-                        <Link to={'/'}>회원가입</Link>
-                        <Link to={'/'}>아이디/비밀번호 찾기</Link>
-                    </div>
                 </div>
             </div>
         </div>

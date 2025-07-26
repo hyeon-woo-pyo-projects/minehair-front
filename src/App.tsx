@@ -5,6 +5,7 @@ import Landing from './components/index/Landing';
 import Login from './components/member/Login';
 
 import './App.css';
+import Register from './components/member/Register';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Landing/>} />
           <Route path="/member/login" element={<Login/>} />
+          <Route path="/member/register" element={<Register/>} />
         </Routes>
       </BrowserRouter>
     </div>

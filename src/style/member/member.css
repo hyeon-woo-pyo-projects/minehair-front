@@ -1,18 +1,18 @@
 
 /* 공통 */
-#memberNav { display: flex; align-items: center; justify-content: center; }
-#memberNav a {
+.memberNav { display: flex; align-items: center; justify-content: center; }
+.memberNav a {
     font-size: 18px;
     position: relative;
     display: block;
     width: 100%;
     font-weight: 500;
     padding-bottom: 30px;
-    border: 1px solid var(--color-line);
+    border: 1px solid var(--color-lightGray);
     border-width: 0 0 1px;
 }
-#memberNav a.current { color: var(--brand-color); font-weight: 700; }
-#memberNav a.current::before {
+.memberNav a.current { color: var(--brand-color); font-weight: 700; }
+.memberNav a.current::before {
     content: '';
     width: 100%;
     position: absolute;
@@ -23,34 +23,29 @@
     z-index: 1;
 }
 
-
-
-/* login 로그인 */
-#page-login {
-    padding: 60px 0;
-    background-color: var(--color-white);
-}
-
-#page-login .innerTitle { margin: 60px 0; }
-#page-login #loginForm {
+.membersComponents { padding: 60px 0;  background-color: var(--color-white); }
+.membersComponents .innerTitle { margin: 60px 0; }
+.membersComponents .membersForm {
     display: flex;
     flex-direction: column;
     gap: 20px;
     width: 420px;
     margin: auto;
 }
-#page-login #loginForm li {
+.membersComponents .membersForm li {
     display: flex;
     align-items: center;
     justify-content: start;
 }
-#page-login #loginForm li label.formTitle { width: 100px; text-align: left; font-weight: 600; flex: none; }
-#page-login #loginForm li input[type="text"],
-#page-login #loginForm li input[type="password"] { min-width: auto; width: 100%; }
-#page-login #loginForm li > div > label { font-size: 14px; }
-
-#page-login .btns { margin-top: 30px; }
-#page-login .btns button {
+.membersComponents label.formTitle { width: 100px; text-align: left; font-weight: 600; flex: none; }
+.membersComponents .membersForm li input[type="text"],
+.membersComponents .membersForm li input[type="password"] { min-width: auto; width: 100%; }
+.membersComponents .membersForm li > div { display: flex; align-items: center; gap: 12px; width: 100%; }
+.membersComponents .membersForm li > div > label { font-size: 14px; }
+.membersComponents .membersForm li > div > button { display: block; width: 100%; background-color: var(--default-background); color: var(--color-white); height: 100%; height: 42px; border-radius: 5px; }
+.membersComponents .membersForm li > div > button:hover { background-color: var(--color-black); }
+.membersComponents .btns { margin-top: 30px; }
+.membersComponents .btns button {
     width: 100%;
     display: block;
     padding: 12px 0;
@@ -59,6 +54,9 @@
     border-radius: 5px;
 }
 
+
+
+/* login 로그인 */
 #page-login .members {
     margin-top: 30px;
     display: flex;
@@ -73,3 +71,18 @@
 
 
 /* register 회원가입 */
+.registerTerms { margin-top: 40px; text-align: left; }
+.registerTerms div { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+.registerTerms ul {
+    display: flex;
+    margin-top: 12px;
+    border: 1px solid var(--color-lightGray);
+    padding: 12px;
+    border-radius: 5px;
+    flex-direction: column;
+    gap: 6px;
+}
+.registerTerms li { position: relative; display: flex; align-items: center; gap: 6px; }
+.registerTerms li label { font-size: 14px; }
+.registerTerms li span { color: var(--color-red); font-size: 14px; }
+.registerTerms li a { position: absolute; right: 0; font-size: 12px; border-bottom: 1px solid var(--color-black); }

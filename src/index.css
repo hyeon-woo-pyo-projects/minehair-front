@@ -13,11 +13,11 @@
   --color-white : #fff;
   --color-red : #ee5050;
   --color-hover : #eee;
+  --color-lightGray: #ddd;
+  --color-placeholder : #797979;
   --brand-color: #ff9933;
   --brand-color-hover: #fbb46d;
   --default-background: #111;
-  --color-line: #ddd;
-  --color-placeholder : #797979
 }
 
 a {
@@ -32,7 +32,7 @@ input[type="text"],
 input[type="password"] {
   position: relative;
   transition: all 0.25s;
-  border: 1px solid var(--color-line);
+  border: 1px solid var(--color-lightGray);
   padding: 0 20px;
   font-size: 16px;
   height: 42px;
@@ -55,7 +55,7 @@ input[type="checkbox"] + label::before {
   width: 15px;
   height: 15px;
   background-image: url('../public/check-icon-bold.svg');
-  border: 1px solid var(--color-line);
+  border: 1px solid var(--color-lightGray);
   background-size: 100%;
   border-radius: 3px;
   position: relative;
@@ -71,7 +71,7 @@ select {
   outline: none;
   cursor: pointer;
   border-radius: 5px;
-  border: 1px solid var(--color-line);
+  border: 1px solid var(--color-lightGray);
   font-size: 16px;
   color: var(--color-black);
 }
@@ -89,6 +89,8 @@ button {
 }
 
 button.primaryBtn { background-color: var(--brand-color); color: var(--color-white); }
+button.primaryBtn:hover { background-color: var(--brand-color-hover); }
+button.disabledBtn { background-color: var(--color-lightGray); color: var(--color-white); cursor: no-drop; }
 button.blackBtn { background-color: var(--default-background); color: var(--color-white); }
 button.blackBtn:hover { background-color: var(--color-black); }
 button.whiteBtn { background-color: var(--color-white); color: var(--color-black); }
