@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { useEffect, useState } from 'react';
@@ -18,6 +18,7 @@ interface menuProps {
 }
 
 function Header () {
+    const navigate = useNavigate();
     // API 연동 시작
     // 1.메인 메뉴 호출
     const [ mainMenu, setMainMenu ] = useState<menuProps[]>([]);
@@ -50,6 +51,19 @@ function Header () {
 
     // 로그인 감지
     const [ userLogin, setUserLogin ] = useState(false);
+    useEffect(()=>{
+        const token = localStorage.getItem('accessToken');
+        setUserLogin(!!token);
+    }, [])
+
+    // 로그아웃
+    const logOut = () => {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        setUserLogin(false);
+        navigate('/');
+        window.location.reload();
+    }
     
     return (
         <header>
@@ -71,7 +85,7 @@ function Header () {
                         </>
                         :
                         <>
-                            <Link to="/member/login">로그아웃</Link>
+                            <Link to='/' onClick={logOut}>로그아웃</Link>
                             <Link to="/member/register">마이페이지</Link>
                         </>
                         }
