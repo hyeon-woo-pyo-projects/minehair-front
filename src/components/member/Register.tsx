@@ -5,7 +5,14 @@ import { useState } from 'react';
 import MemberNav from './MemberNav';
 
 function Register () {
-    // 전체 동의
+    // 유효성 검사
+    const [ id, setId ] = useState('');
+    const [ password, setPassword ] = useState('');
+    const [ passwordChk, setPasswordChk ] = useState('');
+    const [ phone, setPhone ] = useState('');
+    const [ certi, setCerti ] = useState('');
+
+    // 약관 전체 동의
     const [ terms, setTerms ] = useState({
         chk01 : false,
         chk02 : false,
@@ -38,7 +45,7 @@ function Register () {
 
                         <li>
                             <label htmlFor="registerPasswordChk" className='formTitle'>비밀번호 확인</label>
-                            <input type="password" placeholder='비밀번호' id='registerPasswordChk'/>
+                            <input type="password" placeholder='비밀번호 확인' id='registerPasswordChk'/>
                         </li>
 
                         <li>
