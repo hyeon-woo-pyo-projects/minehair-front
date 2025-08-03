@@ -104,7 +104,7 @@
     background-color: var(--color-lightGray);
     padding: 20px;
     border-radius: 5px;
-    min-height: 310px;
+    min-height: 250px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

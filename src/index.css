@@ -29,7 +29,8 @@ li {
 }
 
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+input[type="email"] {
   position: relative;
   transition: all 0.25s;
   border: 1px solid var(--color-gray);
@@ -37,15 +38,18 @@ input[type="password"] {
   font-size: 16px;
   height: 42px;
   min-width: 200px;
+  width: 100%;
   border-radius: 5px;
   color: var(--color-black);
 }
 
 input[type="text"]::placeholder,
-input[type="password"]::placeholder { color: var(--color-placeholder); }
+input[type="password"]::placeholder,
+input[type="email"]::placeholder { color: var(--color-placeholder); }
 
 input[type="text"]:focus,
-input[type="password"]:focus { border: 1px solid var(--color-black); }
+input[type="password"]:focus,
+input[type="email"]:focus { border: 1px solid var(--color-black); }
 
 input[type="checkbox"] { display: none; }
 input[type="checkbox"] + label { cursor: pointer; display: flex; align-items: center; gap: 6px; }

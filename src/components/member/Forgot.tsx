@@ -6,14 +6,14 @@ import { useState } from 'react';
 
 type FindIdProps = {
     name : string;
-    certiNum: string;
+    email: string;
 }
 
 
 type FindPasswordProps = {
     name : string;
     id : string;
-    certiNum: string;
+    email: string;
 }
 
 function Forgot () {
@@ -21,13 +21,13 @@ function Forgot () {
     const [ balloonChk2, setBalloonChk2 ] = useState(0);
     const [ findId, setFindId ] = useState<FindIdProps> ({
         name : '',
-        certiNum : '',
+        email : '',
     });
 
     const [ findPasword, setFindPassword ] = useState<FindPasswordProps> ({
         name : '',
         id : '',
-        certiNum : '',
+        email : '',
     });
 
     return (
@@ -49,17 +49,8 @@ function Forgot () {
                             </li>
 
                             <li>
-                                <label htmlFor="forgorId_phone" className='formTitle'>휴대폰번호</label>
-
-                                <div>
-                                    <input type="text" placeholder='"-"없이' id='forgorId_phone' maxLength={11} />
-                                    <button type='button'>인증번호 받기</button>
-                                </div>
-                            </li>
-
-                            <li>
-                                <label htmlFor="forgorId_certiNum" className='formTitle'></label>
-                                <input type="text" placeholder='인증번호' id='forgorId_certiNum' maxLength={6} />
+                                <label htmlFor="forgotId_Email" className='formTitle'>이메일 주소</label>
+                                <input type="email" placeholder='이메일 주소' id='forgotId_Email'/>
                             </li>
                         </ul>
 
@@ -87,17 +78,8 @@ function Forgot () {
                             </li>
 
                             <li>
-                                <label htmlFor="forgorPassword_phone" className='formTitle'>휴대폰번호</label>
-
-                                <div>
-                                    <input type="text" placeholder='"-"없이' id='forgorPassword_phone' maxLength={11} />
-                                    <button type='button'>인증번호 받기</button>
-                                </div>
-                            </li>
-
-                            <li>
-                                <label htmlFor="forgorPassword_certiNum" className='formTitle'></label>
-                                <input type="text" placeholder='인증번호' id='forgorPassword_certiNum' maxLength={6} />
+                                <label htmlFor="forgorPassword_Email" className='formTitle'>이메일 주소</label>
+                                <input type="email" placeholder='이메일 주소' id='forgorPassword_Email'/>
                             </li>
                         </ul>
 
