@@ -1,19 +1,35 @@
 
 
 import { Link } from "react-router-dom";
-import IconArrowLeft from "../../../icons/IconArrowLeft";
 
 import '../../../style/admin/adminHeader.css';
+import { useState } from "react";
 
 function AdminFixHeader () {
+    const [ openMenu, setOpenMenu ] = useState(false);
+    const toggleMenu = () => { setOpenMenu(!openMenu) }
+
     return (
-        <div id="admin-header">
-            <Link to={'/'}><IconArrowLeft color="var(--color-black)" width={30} height={30}/></Link>
-            <h5>관리자 페이지</h5>
-            <div className="btns">
-                <button type="button" className="saveBtn">저장하기</button>
+        <>
+            <div id="admin-header">
+                <button type='button' id='menuBtn' className={openMenu ? 'show' : ''} onClick={toggleMenu}>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                </button>
+
+                <h5>관리자 페이지</h5>
+                <div className="btns">
+                    <button type="button" className="saveBtn">저장하기</button>
+                    <Link to={'/'}><button type="button" className="exitBtn">나가기</button></Link>
+                </div>
             </div>
-        </div>
+
+            <div id="admin-menu" className={ openMenu === true ? 'show' : '' }>
+                
+            </div>
+        </>
     )
 }
 

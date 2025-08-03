@@ -19,3 +19,40 @@
 }
 #admin-header .btns .saveBtn { background-color: var(--brand-color); }
 #admin-header .btns .saveBtn:hover { background-color: var(--brand-color-hover); }
+#admin-header .btns .exitBtn { background-color: var(--color-black); }
+#admin-header .btns .exitBtn:hover { background-color: var(--color-placeholder); }
+#admin-header #menuBtn {
+    position: relative;
+    width: 30px;
+    height: 20px;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    margin-right: 24px;
+}
+#admin-header #menuBtn.show i { width: 0; }
+#admin-header #menuBtn.show i:nth-child(2) { width: 100%; transform: rotate(45deg); }
+#admin-header #menuBtn.show i:nth-child(3) { width: 100%; transform: rotate(-45deg); }
+#admin-header #menuBtn i {
+    position: absolute;
+    transition: all 0.25s;
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-black);
+    top: 9px;
+}
+#admin-header #menuBtn i:first-child { top: 0; }
+#admin-header #menuBtn i:last-child { top: unset; bottom: 0; }
+
+#admin-menu {
+    position: absolute;
+    transition: all 0.25s;
+    left: -1000px;
+    top: 0;
+    background-color: var(--color-white);
+    width: 20%;
+    height: 100%;
+    box-shadow: 0 10px 10px 10px var(--color-lightGray);
+}
+#admin-menu.show { left: 0; }
