@@ -46,7 +46,7 @@
     background-color: var(--color-white);
 }
 
-.my-navigation-buttons button:hover { background-color: var(--color-hover); }
+.my-navigation-buttons button:hover { background-color: var(--color-lightGray); }
 .my-navigation-buttons button.my-button-pause { width: 130px; height: 130px; }
 .my-navigation-buttons button.my-button-pause.paused { background-color: red !important; }
 
