@@ -47,6 +47,9 @@ function Header () {
 
     // 마우스 호버 시, 각각 메뉴
     const [ isHovered, setIsHovered ] = useState(0);
+
+    // 로그인 감지
+    const [ userLogin, setUserLogin ] = useState(false);
     
     return (
         <header>
@@ -61,8 +64,17 @@ function Header () {
                     </Link>
                     
                     <div id='member'>
-                        <Link to="/member/login">로그인</Link>
-                        <Link to="/member/register">회원가입</Link>
+                        { userLogin === false ?
+                        <>
+                            <Link to="/member/login">로그인</Link>
+                            <Link to="/member/register">회원가입</Link>
+                        </>
+                        :
+                        <>
+                            <Link to="/member/login">로그아웃</Link>
+                            <Link to="/member/register">마이페이지</Link>
+                        </>
+                        }
                     </div>
                 </div>
             </div>

@@ -12,3 +12,12 @@
 #headerBanner:hover {
     opacity: 0.8;
 }
+
+#adminBanner {
+    width: 100%;
+    display: block;
+    color: var(--color-white);
+    background-color: var(--brand-color);
+    font-size: 14px;
+    padding: 6px 0;
+}
