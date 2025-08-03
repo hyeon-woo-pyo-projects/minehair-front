@@ -18,7 +18,7 @@ function HeaderBanner() {
     return (
         <>
             {/* 맨 상단 배너 */}
-            { admin === false ? <Link to="/" id="adminBanner">관리자 페이지 바로가기</Link> : '' }
+            { admin === false ? <Link to="/admin/index" id="adminBanner">관리자 페이지 바로가기</Link> : '' }
             <Link to="/" id="headerBanner">이벤트 배너</Link>
         </>
     )
