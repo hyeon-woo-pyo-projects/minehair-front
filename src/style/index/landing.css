@@ -18,7 +18,7 @@
     background-color: var(--color-white);
 }
 
-.mainSlider .swiper-pagination .swiper-pagination-bullet:hover { background-color: var(--color-hover); }
+.mainSlider .swiper-pagination .swiper-pagination-bullet:hover { background-color: var(--color-lightGray); }
 .mainSlider .swiper-pagination .swiper-pagination-bullet-active { width: 80px; background-color: var(--brand-color); }
 .mainSlider .swiper-pagination .swiper-pagination-bullet-active:hover { background-color: var(--brand-color);}
 
