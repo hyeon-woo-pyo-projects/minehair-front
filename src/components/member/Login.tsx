@@ -1,12 +1,13 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import '../../style/member/member.css'
 import { useState } from 'react';
 import Balloon from '../system/Balloon';
 import MemberNav from './MemberNav';
+import axiosInstance from '../../api/axiosInstance';
 
 type LoginProps = {
-    id : string;
+    userId : string;
     password: string;
 }
 
@@ -14,13 +15,38 @@ function Login () {
     // 유효성 검사
     const [ balloonChk, setBalloonChk ] = useState(0);
     const [ login, setLogin ] = useState<LoginProps>({
-        id : '',
+        userId : '',
         password: '',
     });
+
     const submitLogin = () => {
-        if ( login.id.trim() === '' ) { setBalloonChk(1); return; }
+        if ( login.userId.trim() === '' ) { setBalloonChk(1); return; }
         if ( login.password.trim() === '' ) { setBalloonChk(2); return; }
         setBalloonChk(0);
+        getLogin();
+    }
+
+    const [ errMsg, setErrMsg ] = useState(false);
+    const navigate = useNavigate();
+
+    const getLogin = () => {
+        axiosInstance
+        .post('/auth/login', { userId : login.userId.trim(), password : login.password.trim() })
+        .then((response) => {
+            if ( response.data.success === true ) {
+                const { accessToken, refreshToken } = response.data.data;
+
+                localStorage.setItem('accessToken', accessToken);
+                localStorage.setItem('refreshToken', refreshToken);
+                setErrMsg(false);
+
+                navigate('/');
+            }
+        })
+        .catch((error) => {
+            console.log('error');
+            setErrMsg(true);
+        })
     }
 
     return (
@@ -35,7 +61,7 @@ function Login () {
                         <li>
                             { balloonChk === 1 && <Balloon text={'아이디를 입력해주세요.'} status={'notice'} /> }
                             <label htmlFor="loginId" className='formTitle'>아이디</label>
-                            <input type="text" placeholder='아이디' id='loginId' onChange={ e => setLogin({...login, id : e.target.value})}/>
+                            <input type="text" placeholder='아이디' id='loginId' onChange={ e => setLogin({...login, userId : e.target.value})}/>
                         </li>
 
                         <li>
@@ -54,6 +80,7 @@ function Login () {
                         </li>
 
                         <div className="btns">
+                            { errMsg === true ? <span className='notice'>아이디와 비밀번호를 다시 확인해주세요.</span> : null }
                             <button type='button' className='blackBtn' onClick={submitLogin}>로그인</button>
                         </div>
                     </form>

@@ -95,6 +95,9 @@ button.blackBtn { background-color: var(--default-background); color: var(--colo
 button.blackBtn:hover { background-color: var(--color-black); }
 button.whiteBtn { background-color: var(--color-white); color: var(--color-black); }
 
+.notice { font-size: 14px; color: var(--color-red); font-weight: 500; }
+.notice::before { content: '※'; color: var(--color-red); font-size: 16px; margin-right: 5px; }
+
 @font-face {
   font-family: 'Pretendard';
   src: url('./fonts/Pretendard/woff/Pretendard-Thin.woff') format('woff'),
