@@ -1,8 +1,9 @@
+import AdminFixHeader from "./components/layouts/AdminFixHeader";
 
 function AdminIndex () {
     return (
         <>
-            asdas
+            <AdminFixHeader/>
         </>
     )
 }
