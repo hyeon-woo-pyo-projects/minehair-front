@@ -1,5 +1,4 @@
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 import { useEffect, useState } from 'react';
 import HeaderMenu from './HeaderMenu';
@@ -29,7 +28,21 @@ function Header () {
         .get('/role-menus')
         .then((response) => {
             if ( response.data.success === true ) {
-                setMainMenu(response.data.data)
+                setMainMenu(response.data.data);
+                console.log(response)
+            }
+        })
+        .catch((error) => {
+            console.log('error');
+        })
+    }
+
+    const test = () => {
+        axiosInstance
+        .get('/menus')
+        .then((response) => {
+            // console.log(response)
+            if ( response.data.success === true ) {
             }
         })
         .catch((error) => {
@@ -39,6 +52,7 @@ function Header () {
 
     useEffect(() => {
         getMenu();
+        test();
     }, []);
     // 연동 끝
 
@@ -61,6 +75,7 @@ function Header () {
     const logOut = () => {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
+        localStorage.removeItem('roleCode');
         setUserLogin(false);
         navigate('/');
         window.location.reload();
@@ -87,7 +102,7 @@ function Header () {
                         :
                         <>
                             <Link to='/' onClick={logOut}>로그아웃</Link>
-                            <Link to="/member/register">마이페이지</Link>
+                            <Link to="/">마이페이지</Link>
                         </>
                         }
                     </div>

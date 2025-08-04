@@ -34,10 +34,11 @@ function Login () {
         .post('/auth/login', { userId : login.userId.trim(), password : login.password.trim() })
         .then((response) => {
             if ( response.data.success === true ) {
-                const { accessToken, refreshToken } = response.data.data;
+                const { accessToken, refreshToken, roleCode } = response.data.data;
 
                 localStorage.setItem('accessToken', accessToken);
                 localStorage.setItem('refreshToken', refreshToken);
+                localStorage.setItem('roleCode', roleCode);
                 setErrMsg(false);
 
                 navigate('/');

@@ -1,6 +1,6 @@
 import { BrowserRouter, Link } from 'react-router-dom';
 import "../../style/layouts/headerBanner.css"
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface BannerSettings {
     bannerBg : string;
@@ -14,6 +14,11 @@ interface BannerSettings {
 function HeaderBanner() {
     // 관리자 감지
     const [ admin, setAdmin ] = useState(false);
+
+    useEffect(()=>{
+        const role = localStorage.getItem('roleCode');
+        if ( role === 'ROLE_ADMIN' ) { setAdmin(true) } else { setAdmin(false) }
+    }, [])
 
     return (
         <>
