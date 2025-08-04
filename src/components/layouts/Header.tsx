@@ -6,6 +6,7 @@ import HeaderMenu from './HeaderMenu';
 import HeaderBanner from './HeaderBanner';
 
 import "../../style/layouts/header.css"
+import axiosInstance from '../../api/axiosInstance';
 
 interface menuProps {
     menuId : number;
@@ -24,8 +25,8 @@ function Header () {
     const [ mainMenu, setMainMenu ] = useState<menuProps[]>([]);
     
     const getMenu = () => {
-        axios
-        .get('http://woopi.shop:38081/api/role-menus')
+        axiosInstance
+        .get('/role-menus')
         .then((response) => {
             if ( response.data.success === true ) {
                 setMainMenu(response.data.data)

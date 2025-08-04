@@ -71,14 +71,14 @@ function Login () {
                             <input type="password" placeholder='비밀번호' id='loginPassword'onChange={ e => setLogin({...login, password : e.target.value})}/>
                         </li>
 
-                        <li>
+                        {/* <li>
                             <label htmlFor='' className='formTitle'></label>
 
                             <div>
                                 <input type="checkbox" id='autoLogin'/>
                                 <label htmlFor="autoLogin">자동로그인</label>
                             </div>
-                        </li>
+                        </li> */}
 
                         <div className="btns">
                             { errMsg === true ? <span className='notice'>아이디와 비밀번호를 다시 확인해주세요.</span> : null }
