@@ -69,6 +69,7 @@ function Register () {
             }
         })
         .catch((error) => {
+            alert(error.response.data.error.message);
             console.log('error');
         })
     }
