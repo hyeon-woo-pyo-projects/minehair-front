@@ -82,7 +82,7 @@ function Login () {
                         </li> */}
 
                         <div className="btns">
-                            { errMsg === true ? <span className='notice'>아이디와 비밀번호를 다시 확인해주세요.</span> : null }
+                            { errMsg === true ? <span className='noticeText'>아이디와 비밀번호를 다시 확인해주세요.</span> : null }
                             <button type='button' className='blackBtn' onClick={submitLogin}>로그인</button>
                         </div>
                     </form>

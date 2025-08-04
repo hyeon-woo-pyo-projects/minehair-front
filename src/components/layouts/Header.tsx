@@ -28,8 +28,15 @@ function Header () {
         .get('/role-menus')
         .then((response) => {
             if ( response.data.success === true ) {
-                setMainMenu(response.data.data);
-                console.log(response)
+                const setMenu : any[] = [];
+                console.log(response.data.data)
+                response.data.data.forEach((el: any)=>{
+                    if ( el.parentId === null ) {
+                        setMenu.push(el);
+                    }
+                })
+                
+                setMainMenu(setMenu);
             }
         })
         .catch((error) => {
@@ -41,7 +48,6 @@ function Header () {
         axiosInstance
         .get('/menus')
         .then((response) => {
-            // console.log(response)
             if ( response.data.success === true ) {
             }
         })

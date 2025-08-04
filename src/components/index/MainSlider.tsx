@@ -34,7 +34,7 @@ function MainSlider () {
                 modules={[Navigation, Pagination, Scrollbar, Autoplay]}
                 spaceBetween={50}
                 slidesPerView={1}
-                onSlideChange={() => console.log('slide change')}
+                // onSlideChange={() => console.log('slide change')}
                 loop={true}
                 pagination={{
                     clickable: true,
