@@ -59,7 +59,7 @@ function Login () {
                 <div className="inner">
                     <h1 className='innerTitle'>로그인</h1>
 
-                    <form id='loginForm' className='membersForm'>
+                    <form id='loginForm' className='membersForm' onSubmit={(e) => { e.preventDefault(); submitLogin(); }}>
                         <li>
                             { balloonChk === 1 && <Balloon text={'아이디를 입력해주세요.'} status={'notice'} /> }
                             <label htmlFor="loginId" className='formTitle'>아이디</label>
@@ -83,7 +83,7 @@ function Login () {
 
                         <div className="btns">
                             { errMsg === true ? <span className='noticeText'>아이디와 비밀번호를 다시 확인해주세요.</span> : null }
-                            <button type='button' className='blackBtn' onClick={submitLogin}>로그인</button>
+                            <button type='submit' className='blackBtn' onClick={submitLogin}>로그인</button>
                         </div>
                     </form>
 
