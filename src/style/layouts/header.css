@@ -103,7 +103,8 @@ header .perMenu {
     min-width: 150px;
 }
 header .perMenu.show { opacity: 1; visibility: visible; width: auto; }
-header nav .wrapper li .perMenu a { font-size: 16px; font-weight: 400; }
+header nav .wrapper li .perMenu a { position: relative; transition: all 0.25s; font-size: 16px; font-weight: 500; }
+header nav .wrapper li .perMenu a:hover { color: var(--brand-color); }
 header .perMenu .category { position: relative; transition: all 0.25s; padding: 30px 35px; text-align: left; flex: none; }
 header .perMenu .category.haveImg { min-width: 250px; }
 header .perMenu .thumbnail { width: 250px; }
