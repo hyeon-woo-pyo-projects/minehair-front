@@ -8,7 +8,7 @@ import "../../style/layouts/header.css"
 import axiosInstance from '../../api/axiosInstance';
 
 interface menuProps {
-    menuId : number;
+    menuId : string;
     menuName : string;
     menuOrderNo : number;
     menuPath : string;
@@ -17,11 +17,18 @@ interface menuProps {
     status : "active" | ""
 }
 
+type subMenuProps = {
+    parent : string,
+    title: string,
+    link: string,
+};
+
 function Header () {
     const navigate = useNavigate();
     // API 연동 시작
     // 1.메인 메뉴 호출
     const [ mainMenu, setMainMenu ] = useState<menuProps[]>([]);
+    let [ subMenu, setSubMenu ] = useState<subMenuProps[]>([])
     
     const getMenu = () => {
         axiosInstance
@@ -29,10 +36,27 @@ function Header () {
         .then((response) => {
             if ( response.data.success === true ) {
                 const setMenu : any[] = [];
-                console.log(response.data.data)
                 response.data.data.forEach((el: any)=>{
                     if ( el.parentId === null ) {
                         setMenu.push(el);
+                    }else {
+                        let parentId = el.parentId;
+
+                        document.querySelectorAll('.navMenu').forEach((data)=>{
+                            let menuTab = data.getAttribute('data-tab')?.replaceAll('menu', '')
+                            
+                            if ( parentId === Number(menuTab) ) {
+                                setSubMenu((prev) => [
+                                    ...prev,
+                                    {
+                                        parent : el.parentId,
+                                        title : el.menuName,
+                                        link : el.menuPath,
+                                    }
+                                ]);
+                            }
+                        });
+
                     }
                 })
                 
@@ -44,21 +68,8 @@ function Header () {
         })
     }
 
-    const test = () => {
-        axiosInstance
-        .get('/menus')
-        .then((response) => {
-            if ( response.data.success === true ) {
-            }
-        })
-        .catch((error) => {
-            console.log('error');
-        })
-    }
-
     useEffect(() => {
         getMenu();
-        test();
     }, []);
     // 연동 끝
 
@@ -68,7 +79,7 @@ function Header () {
     const toggleMenu = () => { setOpenMenu(!openMenu) }
 
     // 마우스 호버 시, 각각 메뉴
-    const [ isHovered, setIsHovered ] = useState(0);
+    const [ isHovered, setIsHovered ] = useState('');
 
     // 로그인 감지
     const [ userLogin, setUserLogin ] = useState(false);
@@ -124,18 +135,32 @@ function Header () {
                         <i></i>
                     </button>
 
-                    { mainMenu.map((el, idx) => {
-                        return(
+                    { mainMenu.map((el) => {
+                        return (
                             <li
-                            key={el.menuId}
-                            className={`${el.menuVisible}`}
-                            onMouseEnter={() => setIsHovered(el.menuId)}
-                            onMouseLeave={() => setIsHovered(0)}>
+                                key={el.menuId}
+                                data-tab={`menu${el.menuId}`}
+                                className={`navMenu ${el.menuVisible}`}
+                                onMouseEnter={() => setIsHovered(el.menuId)}
+                                onMouseLeave={() => setIsHovered('')}
+                            >
                                 <Link to={el.menuPath}>{el.menuName}</Link>
-                                <HeaderMenu contents={isHovered} imgSrc= '' isVisible = { isHovered === el.menuId }/>
+                                
+                                {/* 올바르게 렌더링 */}
+                                {subMenu.map((data) =>
+                                    el.menuId === data.parent ? (
+                                        <HeaderMenu
+                                            key={data.link}  // 또는 data.title 등 유니크한 값
+                                            contents={data}
+                                            imgSrc=""
+                                            isVisible={isHovered === el.menuId}
+                                        />
+                                    ) : null
+                                )}
                             </li>
-                        )
+                        );
                     })}
+
                 </ul>
 
                 <div className={`wholeMenu ${openMenu ? "show" : '' }`}></div>

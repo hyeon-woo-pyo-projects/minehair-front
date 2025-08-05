@@ -1,7 +1,12 @@
+import { Link } from 'react-router-dom';
 import '../../style/layouts/header.css'
 
 interface ContentsProps {
-    contents: number;
+    contents: {
+        parent : string,
+        title : string,
+        link : string;
+    }
     imgSrc? : string;
     isVisible : boolean;
 }
@@ -10,7 +15,7 @@ function HeaderMenu ({contents, imgSrc, isVisible}: ContentsProps) {
     return (
         <div className={`perMenu ${isVisible ? 'show' : ''}`}>
             <div className={`category ${ imgSrc !== '' && 'haveImg'}`}>
-                {contents}
+                <Link to={contents.link}>{contents.title}</Link>
             </div>
 
             { imgSrc !== '' ?
