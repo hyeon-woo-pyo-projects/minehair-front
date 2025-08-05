@@ -66,7 +66,7 @@ header nav .wrapper li {
     height: 50px;
 }
 header nav .wrapper li.true { display: flex; }
-header nav .wrapper li p { font-size: 18px; color: var(--color-black); cursor: pointer; }
+header nav .wrapper li a { font-size: 18px; color: var(--color-black); }
 
 header nav .wholeMenu {
     position: relative;
