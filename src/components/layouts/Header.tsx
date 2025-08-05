@@ -143,6 +143,12 @@ function Header () {
                                 className={`navMenu ${el.menuVisible}`}
                                 onMouseEnter={() => setIsHovered(el.menuId)}
                                 onMouseLeave={() => setIsHovered('')}
+                                onClick={() => {
+                                    const firstSub = subMenu.find((data) => data.parent === el.menuId);
+                                    if (firstSub) {
+                                        navigate(firstSub.link);
+                                    }
+                                }}
                             >
                                 <Link to={el.menuPath}>{el.menuName}</Link>
                                 
