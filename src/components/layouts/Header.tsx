@@ -144,7 +144,7 @@ function Header () {
                                 onMouseEnter={() => setIsHovered(el.menuId)}
                                 onMouseLeave={() => setIsHovered('')}
                             >
-                                <Link to={el.menuPath}>{el.menuName}</Link>
+                                <p className='menuTitle'>{el.menuName}</p>
                                 
                                 {/* 올바르게 렌더링 */}
                                 {subMenu.map((data) =>
