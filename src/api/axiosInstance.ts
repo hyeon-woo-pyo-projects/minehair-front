@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://woopi.shop:38081/api',
+  baseURL: 'https://minehair401.com/api',
   headers: {
     'Content-Type': 'application/json',
   },

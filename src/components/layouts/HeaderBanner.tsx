@@ -1,15 +1,7 @@
-import { BrowserRouter, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import "../../style/layouts/headerBanner.css"
 import { useEffect, useState } from 'react';
 
-interface BannerSettings {
-    bannerBg : string;
-    bannerText : string;
-    textColor: string;
-    textBold : string;
-    fontSize: number;
-    link: string;
-}
 
 function HeaderBanner() {
     // 관리자 감지

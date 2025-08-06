@@ -1,0 +1,52 @@
+
+.admin-index section {
+    position: relative;
+    text-align: left;
+    padding: 30px 120px;
+    border-bottom: 1px solid var(--color-gray);
+}
+
+.admin-index section h3.admin-title {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.admin-index section ul.admin-contents { margin-top: 15px; }
+.admin-index section ul.admin-contents li { position: relative; }
+.admin-index section ul.admin-contents li a {
+    position: relative;
+    transition: 0.25s;
+    background-color: var(--color-black);
+    color: var(--color-white);
+    font-size: 14px;
+    width: 130px;
+    height: 42px;
+    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+}
+.admin-index section ul.admin-contents li a:hover { background-color: var(--default-background); }
+
+
+/* ADMIN-WIDGET 어드민 위젯 */
+.admin-widget {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 30px;
+    border-bottom: 1px solid var(--color-gray);
+}
+.admin-widget button.back-btn { cursor: pointer; }
+
+.admin-widget button.save-btn {
+    color: #fff;
+    width: 120px;
+    height: 35px;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 14px;
+    background-color: var(--brand-color);
+}
+.admin-widget button.save-btn:hover { background-color: var(--brand-color-hover); }

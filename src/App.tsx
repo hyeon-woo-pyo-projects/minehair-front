@@ -10,16 +10,23 @@ import Privacy from './components/member/Privacy';
 import AdminIndex from './admin/AdminIndex';
 
 import './App.css';
+import AdminRouter from './admin/AdminRouter';
+import EventBanner from './admin/components/common/EventBanner';
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          {/* Admin 전용 라우트 - Header 없음 */}
-          <Route path="/admin/index" element={<AdminIndex />} />
+          {/* Admin 전용 라우트 */}
+          <Route path="/admin" element={<AdminRouter />}>
+            <Route path="/admin/index" element={<AdminIndex />} />
+            <Route path="/admin/event-banner" element={<EventBanner />} />
+          </Route>
+          
+          
 
-          {/* 일반 사용자 레이아웃 - Header 포함 */}
+          {/* 일반 사용자 레이아웃 */}
           <Route
             path="*"
             element={

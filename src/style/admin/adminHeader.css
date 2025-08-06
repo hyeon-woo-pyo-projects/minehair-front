@@ -17,23 +17,20 @@
     font-weight: 500;
     font-size: 14px;
 }
-#admin-header .btns .saveBtn { background-color: var(--brand-color); }
-#admin-header .btns .saveBtn:hover { background-color: var(--brand-color-hover); }
-#admin-header .btns .exitBtn { background-color: var(--color-black); }
-#admin-header .btns .exitBtn:hover { background-color: var(--color-placeholder); }
-#admin-header #menuBtn {
+#admin-header .btns .exit-btn { background-color: var(--color-black); }
+#admin-header .btns .exit-btn:hover { background-color: var(--color-placeholder); }
+#admin-header #menu-btn {
     position: relative;
     width: 30px;
     height: 20px;
     z-index: 3;
     display: flex;
     justify-content: center;
-    margin-right: 24px;
 }
-#admin-header #menuBtn.show i { width: 0; }
-#admin-header #menuBtn.show i:nth-child(2) { width: 100%; transform: rotate(45deg); }
-#admin-header #menuBtn.show i:nth-child(3) { width: 100%; transform: rotate(-45deg); }
-#admin-header #menuBtn i {
+#admin-header #menu-btn.show i { width: 0; }
+#admin-header #menu-btn.show i:nth-child(2) { width: 100%; transform: rotate(45deg); }
+#admin-header #menu-btn.show i:nth-child(3) { width: 100%; transform: rotate(-45deg); }
+#admin-header #menu-btn i {
     position: absolute;
     transition: all 0.25s;
     display: block;
@@ -42,8 +39,8 @@
     background-color: var(--color-black);
     top: 9px;
 }
-#admin-header #menuBtn i:first-child { top: 0; }
-#admin-header #menuBtn i:last-child { top: unset; bottom: 0; }
+#admin-header #menu-btn i:first-child { top: 0; }
+#admin-header #menu-btn i:last-child { top: unset; bottom: 0; }
 
 #admin-menu {
     position: absolute;

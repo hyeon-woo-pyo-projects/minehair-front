@@ -12,7 +12,7 @@ function AdminFixHeader () {
     return (
         <>
             <div id="admin-header">
-                <button type='button' id='menuBtn' className={openMenu ? 'show' : ''} onClick={toggleMenu}>
+                <button type='button' id='menu-btn' className={openMenu ? 'show' : ''} onClick={toggleMenu}>
                     <i></i>
                     <i></i>
                     <i></i>
@@ -21,8 +21,7 @@ function AdminFixHeader () {
 
                 <h5>관리자 페이지</h5>
                 <div className="btns">
-                    <button type="button" className="saveBtn">저장하기</button>
-                    <Link to={'/'}><button type="button" className="exitBtn">나가기</button></Link>
+                    <Link to={'/admin/event-banner'}><button type="button" className="exit-btn">나가기</button></Link>
                 </div>
             </div>
 
