@@ -29,14 +29,18 @@
 }
 .admin-index section ul.admin-contents li a:hover { background-color: var(--default-background); }
 
+.admin-body { padding: 30px 0; }
 
 /* ADMIN-WIDGET 어드민 위젯 */
 .admin-widget {
+    position: sticky;
+    top: 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 12px 30px;
     border-bottom: 1px solid var(--color-gray);
+    z-index: 10;
 }
 .admin-widget button.back-btn { cursor: pointer; }
 
@@ -50,3 +54,44 @@
     background-color: var(--brand-color);
 }
 .admin-widget button.save-btn:hover { background-color: var(--brand-color-hover); }
+
+
+
+/* EVENT-BANNER 이벤트 배너 */
+.event-banner #adminBanner { display: none; }
+.event-banner #headerBanner { pointer-events: none; }
+.event-banner .event-banner-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.event-banner .event-banner-header p.pulblish-status { font-size: 14px; display: flex; align-items: center; gap: 6px; }
+.event-banner .event-banner-header p.pulblish-status::before { content: ''; display: block; width: 10px; height: 10px;  border-radius: 50%; background-color: var(--color-red); }
+.event-banner .event-banner-header p.pulblish-status.active::before {
+    background-color: var(--color-green);
+    animation: twinkle 1s alternate infinite;
+}
+.event-banner .event-banner-header .publish { display: flex; align-items: center; gap: 6px; }
+.event-banner .event-banner-header span { font-size: 14px; }
+.event-banner .event-banner-header button.publish-btn {
+    position: relative;
+    width: 35px;
+    height: 20px;
+    border: 1px solid var(--color-gray);
+    background-color: var(--color-gray);
+    display: flex;
+    align-items: center;
+    border-radius: 50px;
+}
+.event-banner .event-banner-header button.publish-btn i.ball {
+    position: absolute;
+    transition: all 0.25s;
+    width: 15px;
+    height: 15px;
+    display: block;
+    background-color: var(--color-white);
+    border-radius: 50%;
+    left: 2px;
+}
+.event-banner .event-banner-header button.publish-btn.active { background-color: var(--color-skyblue); }
+.event-banner .event-banner-header button.publish-btn.active i.ball { left: unset; left: 15px;}
+@keyframes twinkle {
+    0% { opacity: 0;}
+    100% { opacity: 1;}
+}

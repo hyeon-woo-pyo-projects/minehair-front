@@ -21,7 +21,7 @@ function AdminFixHeader () {
 
                 <h5>관리자 페이지</h5>
                 <div className="btns">
-                    <Link to={'/admin/event-banner'}><button type="button" className="exit-btn">나가기</button></Link>
+                    <Link to={'/'}><button type="button" className="exit-btn">나가기</button></Link>
                 </div>
             </div>
 

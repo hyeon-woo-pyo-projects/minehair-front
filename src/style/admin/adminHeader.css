@@ -5,6 +5,7 @@
     justify-content: space-between;
     align-items: center;
     background-color: var(--color-lightGray);
+    z-index: 100;
 }
 #admin-header svg { cursor: pointer; }
 #admin-header h5 { font-size: 18px; font-weight: 400; letter-spacing: -1px;}
@@ -26,6 +27,7 @@
     z-index: 3;
     display: flex;
     justify-content: center;
+    z-index: 51;
 }
 #admin-header #menu-btn.show i { width: 0; }
 #admin-header #menu-btn.show i:nth-child(2) { width: 100%; transform: rotate(45deg); }
@@ -51,5 +53,6 @@
     width: 20%;
     height: 100%;
     box-shadow: 0 10px 10px 10px var(--color-lightGray);
+    z-index: 50;
 }
 #admin-menu.show { left: 0; }
