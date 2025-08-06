@@ -23,7 +23,20 @@ function EventBanner () {
                         <button className={publish === true ? 'publish-btn active' : 'publish-btn'} onClick={publishing}><i className="ball"></i></button>
                     </div>
                 </div>
+
                 <HeaderBanner/>
+
+                <form className="admin-form" id="event-banner-form">
+                    <ul>
+                        <li>
+                            <span className="admin-form-title">텍스트</span>
+
+                            <div className="input-area">
+                                <input type="text"/>
+                            </div>
+                        </li>
+                    </ul>
+                </form>
             </div>
         </div>
     )

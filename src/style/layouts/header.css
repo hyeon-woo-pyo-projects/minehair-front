@@ -12,8 +12,8 @@ header #headerLine .wrapper {
     align-items: center;
     height: auto;
 }
-
-header #headerLine .wrapper #headerLogo { width: 300px; height: auto; }
+header #headerLine .wrapper .empty { width: 100px; }
+header #headerLine .wrapper #headerLogo { width: 200px; height: auto; }
 header #headerLine .wrapper #headerLogo img { width: 100%; height: 100%; }
 
 header  #menuBtn {

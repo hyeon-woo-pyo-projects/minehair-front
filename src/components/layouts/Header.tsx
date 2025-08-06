@@ -119,7 +119,7 @@ function Header () {
 
             <div id='headerLine'>
                 <div className="wrapper">
-                    <div></div>
+                    <div className='empty'></div>
 
                     <Link to="/" id="headerLogo">
                         <img src={require('../../img/logo.png')} alt="민이헤어_로고" />

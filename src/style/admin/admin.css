@@ -1,3 +1,7 @@
+/* ADMIN 어드민 공통 */
+.admin-page input[type="text"] { height: 30px; }
+.admin-page .admin-form { text-align: left; margin-top: 50px;}
+.admin-page .admin-form ul li { display: flex; flex-direction: column; gap: 12px; }
 
 .admin-index section {
     position: relative;
