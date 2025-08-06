@@ -76,7 +76,10 @@ function FixBanner () {
                         { balloonChk === 3 && <Balloon text={'카테고리를 선택해주세요.'} status={'notice'} /> }
                         <select defaultValue='' value={consultForm.category} onChange={ e => setConsultForm({...consultForm, category : e.target.value})}>
                             <option value='' hidden>선택</option>
-                            <option value="1">as</option>
+                            <option value="1">뿌리 탈색</option>
+                            <option value="2">전체 탈색</option>
+                            <option value="3">뿌리 염색</option>
+                            <option value="4">전체 염색</option>
                         </select>
                     </div>
 
