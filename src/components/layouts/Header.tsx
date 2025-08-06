@@ -122,7 +122,7 @@ function Header () {
                     <div></div>
 
                     <Link to="/" id="headerLogo">
-                        <img src="" alt="민이헤어_로고" />
+                        <img src={require('../../img/logo.png')} alt="민이헤어_로고" />
                     </Link>
                     
                     <div id='member'>
