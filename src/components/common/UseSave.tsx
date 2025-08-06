@@ -1,30 +1,28 @@
+// hooks/useSave.ts
 import { useState } from "react";
+import axiosInstance from "../../api/axiosInstance";
 
-export function useSave() {
+export interface SaveOptions {
+    call?: "post" | "patch" | "put" | "delete" | string;
+    apiUrl?: string;
+    payload?: any;
+}
+
+export function useSave<T extends SaveOptions = SaveOptions>() {
     const [loading, setLoading] = useState(false);
 
-    function save() {
-        // setLoading(true);
-        console.log('!!!')
-
-        const save = async (data?: any) => {
-            console.log(data)
-            if (!data) return; // 데이터 없을 경우 예외 처리
-            setLoading(true);
-            try {
-                // 예시: API 호출
-                await fetch("/api/save", {
-                    method: "POST",
-                    body: JSON.stringify(data),
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                });
-            } finally {
-                setLoading(false);
+    const save = async (data?: T): Promise<void> => {
+        if (!data) return;
+        setLoading(true);
+        try {
+            if (data.call === "patch" && data.apiUrl) {
+                axiosInstance.patch(data.apiUrl, data.payload);
             }
-        };
-    }
+        // 기타 처리...
+        } finally {
+        setLoading(false);
+        }
+    };
 
     return { loading, save };
 }

@@ -11,6 +11,8 @@ interface BannerProps {
     link : string,
     imgUrl : string,      // 기존 서버의 이미지 URL
     isPost : boolean,
+    apiUrl : string,
+    call : string,
 }
 
 function EventBanner () {
@@ -52,15 +54,17 @@ function EventBanner () {
     useEffect(()=>{
         getBanner();
     },[]);
-    
+
     useEffect(() => {
         const form: BannerProps = {
-        content,
-        textColor,
-        color,
-        link: url,
-        imgUrl: bannerData?.imgUrl ?? "",
-        isPost: bannerData?.isPost ?? false
+            content,
+            textColor,
+            color,
+            link: url,
+            imgUrl: bannerData?.imgUrl ?? "",
+            isPost: bannerData?.isPost ?? false,
+            apiUrl : '/banner/0',
+            call : 'patch'
         };
 
         setSaveForm(form);
