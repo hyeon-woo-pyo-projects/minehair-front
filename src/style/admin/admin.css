@@ -85,7 +85,6 @@
     z-index: 10;
 }
 .admin-widget button.back-btn { cursor: pointer; }
-
 .admin-widget button.save-btn {
     color: #fff;
     width: 120px;
@@ -96,6 +95,7 @@
     background-color: var(--brand-color);
 }
 .admin-widget button.save-btn:hover { background-color: var(--brand-color-hover); }
+.admin-widget button.save-btn:disabled { opacity: 0.5; cursor: no-drop; }
 
 
 

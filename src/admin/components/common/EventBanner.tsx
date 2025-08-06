@@ -3,6 +3,7 @@ import AdminWidget from "../layouts/AdminWidget";
 import axiosInstance from "../../../api/axiosInstance";
 import EventBannerDummy from "../dummy/EventBannerDummy";
 import IconUpload from "../../../icons/IconUpload";
+import Loading from "../../../components/system/Loading";
 
 interface BannerProps {
     content : string,
@@ -39,6 +40,7 @@ function EventBanner () {
     const [ textColor, setTextColor ] = useState<string>("");
     const [ color, setColor ] = useState<string>("");
     const [ url, setUrl ] = useState<string>("");
+    const [ save, setSave ] = useState(false);
 
     useEffect(()=>{
         setContent(bannerData?.content ?? "");
@@ -46,11 +48,11 @@ function EventBanner () {
         setColor(bannerData?.color ?? "var(--color-gray)");
         setColor(bannerData?.color ?? "var(--color-gray)");
         setUrl(bannerData?.link ?? "#");
-    }, [bannerData])
+    }, [bannerData]);
 
     return (
         <div className="admin-page event-banner">
-            <AdminWidget title={'이벤트 배너'}/>
+            <AdminWidget title={'이벤트 배너'} status={save}/>
 
             <div className="admin-body wrapper">
                 <div className="event-banner-header">
@@ -74,7 +76,7 @@ function EventBanner () {
                             <span className="admin-form-title">텍스트</span>
 
                             <div className="input-area">
-                                <input type="text" placeholder="텍스트를 입력하세요" value={content} onChange={(e) => setContent(e.target.value)}/>
+                                <input type="text" placeholder="텍스트를 입력하세요" value={content} onChange={(e) => {setContent(e.target.value); setSave(true)}}/>
                             </div>
                         </li>
 
@@ -82,7 +84,7 @@ function EventBanner () {
                             <span className="admin-form-title">텍스트색</span>
 
                             <div className="input-area">
-                                <input type="text" value={textColor} placeholder="#000000" onChange={(e) => setTextColor(e.target.value)}/>
+                                <input type="text" value={textColor} placeholder="#000000" onChange={(e) => {setTextColor(e.target.value); setSave(true)}}/>
                                 <input type="color" value={textColor} onChange={(e) => setTextColor(e.target.value)}/>
                             </div>
                         </li>
@@ -91,8 +93,8 @@ function EventBanner () {
                             <span className="admin-form-title">배경색</span>
 
                             <div className="input-area">
-                                <input type="text" value={color} placeholder="#000000" maxLength={7} onChange={(e) => setColor(e.target.value)}/>
-                                <input type="color" value={color} onChange={(e) => setColor(e.target.value)}/>
+                                <input type="text" value={color} placeholder="#000000" maxLength={7} onChange={(e) => {setColor(e.target.value); setSave(true)}}/>
+                                <input type="color" value={color} onChange={(e) => {setColor(e.target.value); setSave(true)}}/>
                             </div>
                         </li>
                         
@@ -100,7 +102,7 @@ function EventBanner () {
                             <span className="admin-form-title">링크</span>
 
                             <div className="input-area">
-                                <input type="text" value={url} onChange={(e) => setUrl(e.target.value)}/>
+                                <input type="text" value={url} onChange={(e) => {setUrl(e.target.value); setSave(true)}}/>
                             </div>
                         </li>
 
@@ -108,7 +110,7 @@ function EventBanner () {
                             <span className="admin-form-title">이미지 업로드</span>
 
                             <div className="input-area">
-                                <input type="file" id="event-banner-upload"/>
+                                <input type="file" id="event-banner-upload" onChange={(e) => { setSave(true) }}/>
                                 <label htmlFor="event-banner-upload"><IconUpload color="var(--color-white)" width={17} height={17}/>이미지 업로드</label>
                             </div>
                         </li>
