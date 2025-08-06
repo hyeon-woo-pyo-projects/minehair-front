@@ -21,6 +21,13 @@ type subMenuProps = {
     parent : string,
     title: string,
     link: string,
+    menuId : string,
+};
+
+type subSubMenuProps = {
+    parent: string;
+    title: string;
+    link: string;
 };
 
 function Header () {
@@ -28,45 +35,53 @@ function Header () {
     // API 연동 시작
     // 1.메인 메뉴 호출
     const [ mainMenu, setMainMenu ] = useState<menuProps[]>([]);
-    let [ subMenu, setSubMenu ] = useState<subMenuProps[]>([])
+    let [ subMenu, setSubMenu ] = useState<subMenuProps[]>([]);
+    const [subSubMenu, setSubSubMenu] = useState<subSubMenuProps[]>([]);
     
     const getMenu = () => {
         axiosInstance
-        .get('/role-menus')
-        .then((response) => {
-            if ( response.data.success === true ) {
-                const setMenu : any[] = [];
-                response.data.data.forEach((el: any)=>{
-                    if ( el.parentId === null ) {
-                        setMenu.push(el);
-                    }else {
-                        let parentId = el.parentId;
+            .get('/role-menus')
+            .then((response) => {
+                if (response.data.success === true) {
+                    const rawMenu: any[] = response.data.data;
 
-                        document.querySelectorAll('.navMenu').forEach((data)=>{
-                            let menuTab = data.getAttribute('data-tab')?.replaceAll('menu', '')
-                            
-                            if ( parentId === Number(menuTab) ) {
-                                setSubMenu((prev) => [
-                                    ...prev,
-                                    {
-                                        parent : el.parentId,
-                                        title : el.menuName,
-                                        link : el.menuPath,
-                                    }
-                                ]);
-                            }
-                        });
+                    // 1. 메인 메뉴 추출
+                    const mainMenus = rawMenu.filter((el) => el.parentId === null);
+                    setMainMenu(mainMenus);
 
-                    }
-                })
-                
-                setMainMenu(setMenu);
-            }
-        })
-        .catch((error) => {
-            console.log('error');
-        })
-    }
+                    // 2. 서브 메뉴 추출 (메인 메뉴의 자식)
+                    const mainMenuIds = mainMenus.map((menu) => menu.menuId);
+                    const subMenus = rawMenu.filter(
+                        (el) => el.parentId !== null && mainMenuIds.includes(el.parentId)
+                    );
+
+                    const formattedSubMenus = subMenus.map((el) => ({
+                        parent: el.parentId,
+                        menuId : el.menuId,
+                        title: el.menuName,
+                        link: el.menuPath,
+                    }));
+
+                    setSubMenu(formattedSubMenus);
+
+                    // 3. 서브서브 메뉴 추출 (서브 메뉴의 자식)
+                    const subMenuIds = subMenus.map((menu) => menu.menuId);
+                    const subSubMenus = rawMenu
+                        .filter((el) => el.parentId !== null && subMenuIds.includes(el.parentId))
+                        .map((el) => ({
+                            parent: el.parentId,
+                            title: el.menuName,
+                            link: el.menuPath,
+                        }));
+
+                    setSubSubMenu(subSubMenus);
+                }
+            })
+            .catch((error) => {
+                console.log('error', error);
+            });
+    };
+
 
     useEffect(() => {
         getMenu();
@@ -152,16 +167,25 @@ function Header () {
                             >
                                 <Link to={el.menuPath}>{el.menuName}</Link>
                                 
-                                {subMenu.map((data) =>
-                                    el.menuId === data.parent ? (
-                                        <HeaderMenu
-                                            key={data.link}  // 또는 data.title 등 유니크한 값
-                                            contents={data}
-                                            imgSrc=""
-                                            isVisible={isHovered === el.menuId}
-                                        />
-                                    ) : null
-                                )}
+                                {subMenu.map((data) => {
+                                    if (el.menuId === data.parent) {
+                                        const grandchildren = subSubMenu.filter(
+                                            (child) => child.parent === data.menuId
+                                        );
+
+                                        return (
+                                            <HeaderMenu
+                                                key={data.link}
+                                                contents={data}
+                                                imgSrc=""
+                                                isVisible={isHovered === el.menuId}
+                                                childrenMenu={grandchildren}
+                                            />
+                                        );
+                                    }
+
+                                    return null;
+                                })}
                             </li>
                         );
                     })}

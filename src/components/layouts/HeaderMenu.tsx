@@ -9,13 +9,29 @@ interface ContentsProps {
     }
     imgSrc? : string;
     isVisible : boolean;
+    childrenMenu?: { title: string; link: string }[];
 }
 
-function HeaderMenu ({contents, imgSrc, isVisible}: ContentsProps) {
+function HeaderMenu ({contents, imgSrc, isVisible, childrenMenu}: ContentsProps) {
     return (
         <div className={`perMenu ${isVisible ? 'show' : ''}`}>
             <div className={`category ${ imgSrc !== '' && 'haveImg'}`}>
                 <Link to={contents.link}>{contents.title}</Link>
+
+                { childrenMenu !== undefined ?
+                    <ul className="grandChildMenu">
+                        { childrenMenu?.map((data, index)=>{
+                            return(
+                                <li key={index}>
+                                    <Link to={data.link}>{data.title}</Link>
+                                </li>
+                            )
+                        }) }
+                    </ul>
+                :
+                null
+                }
+                
             </div>
 
             { imgSrc !== '' ?

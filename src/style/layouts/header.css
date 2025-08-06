@@ -109,3 +109,14 @@ header .perMenu .category { position: relative; transition: all 0.25s; padding: 
 header .perMenu .category.haveImg { min-width: 250px; }
 header .perMenu .thumbnail { width: 250px; }
 header .perMenu .thumbnail img { width: 100%; height: 100%; }
+
+header .perMenu .category ul.grandChildMenu { margin-top: 6px; }
+header .perMenu .category ul.grandChildMenu li {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    gap: 6px;
+    height: auto;
+}
+header .perMenu .category ul.grandChildMenu li a { color: var(--color-placeholder); font-size: 14px; margin-left: 12px; }
+header .perMenu .category ul.grandChildMenu li a:hover { color: var(--brand-color); }
