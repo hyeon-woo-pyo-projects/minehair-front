@@ -1,9 +1,16 @@
 import { Link } from 'react-router-dom';
 import "../../style/layouts/headerBanner.css"
 import { useEffect, useState } from 'react';
+import axiosInstance from '../../api/axiosInstance';
 
+interface getBannerData {
+    content? : string,
+    color? : string,
+    link? : string,
+    isPost? : Boolean,
+}
 
-function HeaderBanner() {
+function HeaderBanner({content} : getBannerData) {
     // 관리자 감지
     const [ admin, setAdmin ] = useState(false);
 
@@ -12,11 +19,32 @@ function HeaderBanner() {
         if ( role === 'ROLE_ADMIN' ) { setAdmin(true) } else { setAdmin(false) }
     }, [])
 
+    // 데이터 가져오기
+    const getBanner = () => {
+        axiosInstance
+        .get('/banner')
+        .then((response) => {
+            if ( response.data.success === true ) {
+                setBannerData(response.data.data[0]);
+            }
+        })
+        .catch((error) => {
+            console.log('error');
+        })
+    }
+
+    useEffect(()=>{
+        getBanner();
+    },[])
+    
+
+    // 데이터 담기
+    const [ bannerData, setBannerData ] = useState<getBannerData | null>(null);
+
     return (
         <>
-            {/* 맨 상단 배너 */}
             { admin === true ? <Link to="/admin/index" id="adminBanner">관리자 페이지 바로가기</Link> : '' }
-            <Link to="/" id="headerBanner">이벤트 배너</Link>
+            { bannerData?.isPost === true ? <Link to={bannerData?.link ?? '#'} id="headerBanner" style={{ backgroundColor: bannerData?.color ?? 'var(--color-gray)' }}>{bannerData?.content}</Link> : null }
         </>
     )
 }

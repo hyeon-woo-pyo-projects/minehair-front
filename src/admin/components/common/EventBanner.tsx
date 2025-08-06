@@ -1,10 +1,47 @@
-import { useState } from "react";
-import HeaderBanner from "../../../components/layouts/HeaderBanner";
+import { useEffect, useState } from "react";
 import AdminWidget from "../layouts/AdminWidget";
+import axiosInstance from "../../../api/axiosInstance";
+import EventBannerDummy from "../dummy/EventBannerDummy";
+
+interface BannerProps {
+    content : string,
+    textColor : string,
+    color: string,
+    link : string,
+    imgUrl : string
+}
 
 function EventBanner () {
     const [ publish, setPublish ] = useState(false);
     function publishing () { setPublish(!publish) }
+
+    // 배너 데이터 받아오기
+    const [bannerData, setBannerData] = useState<BannerProps | null>(null);
+    const [ bannerTitle, setBannerTitle ] = useState('');
+
+    const getBanner = () => {
+        axiosInstance
+        .get('/banner')
+        .then((response) => {
+            if ( response.data.success === true ) {
+                setBannerData(response.data.data[0]);
+                console.log(response.data.data[0])
+            }
+        })
+        .catch((error) => {
+            console.log('error');
+        })
+    }
+
+    useEffect(()=>{
+        getBanner();
+    },[])
+
+    // 폼 데이터 변경 시
+    const [content, setContent] = useState<string>("");
+    useEffect(()=>{
+        setContent(bannerData?.content ?? "");
+    }, [bannerData])
 
     return (
         <div className="admin-page event-banner">
@@ -24,7 +61,7 @@ function EventBanner () {
                     </div>
                 </div>
 
-                <HeaderBanner/>
+                <EventBannerDummy title={content}/>
 
                 <form className="admin-form" id="event-banner-form">
                     <ul>
@@ -32,7 +69,7 @@ function EventBanner () {
                             <span className="admin-form-title">텍스트</span>
 
                             <div className="input-area">
-                                <input type="text"/>
+                                <input type="text" placeholder="텍스트를 입력하세요" value={content} onChange={(e) => setContent(e.target.value)}/>
                             </div>
                         </li>
                     </ul>
