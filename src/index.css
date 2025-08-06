@@ -7,7 +7,6 @@
   font-family: 'Pretendard';
   color: var(--color-black);
   box-sizing: border-box;
-  flex: none;
 }
 
 :root {
