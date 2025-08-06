@@ -1,7 +1,45 @@
 /* ADMIN 어드민 공통 */
-.admin-page input[type="text"] { height: 30px; }
+.admin-page input[type="text"] { height: 40px; font-size: 14px; }
+.admin-page input[type="color"] {
+    border: 0;
+    background: none;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    flex: none;
+    position: absolute;
+    right: 6px;
+    border-radius: 10px;
+}
+.admin-page input[type="color"]::-webkit-color-swatch,
+.admin-page input[type="color"]::-webkit-color-swatch-wrapper {
+    border: none;
+    border-radius: 10px;
+    padding: 0;
+}
+.admin-page input[type="file"] { display: none; }
+.admin-page input[type="file"] + label {
+    position: relative;
+    transition: 0.25s;
+    width: 100%;
+    background-color: var(--color-black);
+    color: var(--color-white);
+    min-height: 40px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    cursor: pointer;
+}
+.admin-page input[type="file"] + label:hover { background-color: var(--default-background); }
+.admin-page input[type="file"] + label svg { margin-bottom: 2px; }
 .admin-page .admin-form { text-align: left; margin-top: 50px;}
-.admin-page .admin-form ul li { display: flex; flex-direction: column; gap: 12px; }
+.admin-page .admin-form ul { position: relative; display: flex; flex-wrap: wrap; gap: 30px; }
+.admin-page .admin-form ul li { display: flex; flex-direction: column; gap: 12px; width: calc((100% / 4) - 25px); }
+.admin-page .admin-form ul li span.admin-form-title { display: block; font-size: 14px; font-weight: 500; }
+.admin-page .admin-form ul li .input-area { position: relative; display: flex; align-items: center; gap: 6px; }
 
 .admin-index section {
     position: relative;

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import '../style/common.css'
 import '../style/admin/admin.css'
 
 function AdminIndex () {

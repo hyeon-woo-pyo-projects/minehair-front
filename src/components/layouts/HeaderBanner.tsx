@@ -10,7 +10,7 @@ interface getBannerData {
     isPost? : Boolean,
 }
 
-function HeaderBanner({content} : getBannerData) {
+function HeaderBanner() {
     // 관리자 감지
     const [ admin, setAdmin ] = useState(false);
 

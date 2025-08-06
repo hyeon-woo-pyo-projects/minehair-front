@@ -1,9 +1,15 @@
 
 #header-banner-dummy {
-    padding: 12px 0;
+    padding: 12px 20px;
     text-align: center;
-    background-color: #eee;
+    background-color: var(--color-gray);
     width: 100%;
     display: block;
     position: relative;
+    min-height: 43px;
+    opacity: 0.5;
+    transition: all 0.25s;
+    cursor: no-drop;
+    user-select: none;
 }
+#header-banner-dummy.active { opacity: 1; cursor: unset; pointer-events: unset; user-select: unset; }
