@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import '../style/common.css'
 import '../style/admin/admin.css'
+import Loading from '../components/system/Loading';
 
 function AdminIndex () {
     return (

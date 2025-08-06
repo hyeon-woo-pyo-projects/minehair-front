@@ -11,5 +11,6 @@
     transition: all 0.25s;
     cursor: no-drop;
     user-select: none;
+    border: 1px solid var(--color-gray);
 }
 #header-banner-dummy.active { opacity: 1; cursor: unset; pointer-events: unset; user-select: unset; }

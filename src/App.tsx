@@ -13,13 +13,11 @@ import AdminIndex from './admin/AdminIndex';
 import './App.css';
 import AdminRouter from './admin/AdminRouter';
 import EventBanner from './admin/components/common/EventBanner';
-import Loading from './components/system/Loading';
 
 function App() {
   return (
     <div className="App">
       <HashRouter>
-        <Loading/>
         <Routes>
           {/* Admin 전용 라우트: parent 경로는 "admin", children은 상대경로로 정의 */}
           <Route path="admin" element={<AdminRouter />}>

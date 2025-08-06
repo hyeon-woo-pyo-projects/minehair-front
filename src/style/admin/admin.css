@@ -10,6 +10,7 @@
     position: absolute;
     right: 6px;
     border-radius: 10px;
+    border: 1px solid var(--color-gray);
 }
 .admin-page input[type="color"]::-webkit-color-swatch,
 .admin-page input[type="color"]::-webkit-color-swatch-wrapper {
