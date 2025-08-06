@@ -1,4 +1,5 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+// App.tsx
+import { HashRouter, Route, Routes } from 'react-router-dom';
 
 import Header from './components/layouts/Header';
 import Landing from './components/index/Landing';
@@ -16,17 +17,15 @@ import EventBanner from './admin/components/common/EventBanner';
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
-          {/* Admin 전용 라우트 */}
-          <Route path="/admin" element={<AdminRouter />}>
-            <Route path="/admin/index" element={<AdminIndex />} />
-            <Route path="/admin/event-banner" element={<EventBanner />} />
+          {/* Admin 전용 라우트: parent 경로는 "admin", children은 상대경로로 정의 */}
+          <Route path="admin" element={<AdminRouter />}>
+            <Route path="index" element={<AdminIndex />} />
+            <Route path="event-banner" element={<EventBanner />} />
           </Route>
-          
-          
 
-          {/* 일반 사용자 레이아웃 */}
+          {/* 일반 사용자 레이아웃: 모든 비-관리자 경로 처리 */}
           <Route
             path="*"
             element={
@@ -44,7 +43,7 @@ function App() {
             }
           />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </div>
   );
 }
