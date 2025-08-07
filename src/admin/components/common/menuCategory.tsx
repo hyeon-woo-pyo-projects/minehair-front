@@ -70,22 +70,10 @@ function SortableItem({
 
     const style: React.CSSProperties = {
         transform: CSS.Transform.toString(transform),
-        transition,
-        padding: "10px",
-        border: "1px solid #ccc",
-        marginRight: "8px",
-        borderRadius: "4px",
-        backgroundColor: isDragging ? "#f0f8ff" : "#fff",
-        boxShadow: isDragging ? "0 4px 12px rgba(0,0,0,0.2)" : "none",
-        opacity: isDragging ? 0.9 : 1,
-        position: "relative",
-        cursor: dragEnabled ? "grab" : "default",
-        userSelect: "none",
-        whiteSpace: "nowrap",
     };
 
     return (
-        <div ref={setNodeRef} style={style} {...(dragEnabled ? { ...attributes, ...listeners } : {})} onClick={onClick} >
+        <div ref={setNodeRef} className="bar-contents" style={style} {...(dragEnabled ? { ...attributes, ...listeners } : {})} onClick={onClick} >
             {isEditing ? (
                 <input
                 value={editingText}
@@ -98,19 +86,6 @@ function SortableItem({
                 />
             ) : (
                 <button type="button">{item.menuName}</button>
-            )}
-
-            {isOver && !isDragging && (
-                <div
-                style={{
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
-                    height: "4px",
-                    width: "100%",
-                    backgroundColor: "#3498db",
-                }}
-                />
             )}
         </div>
     );
@@ -193,7 +168,17 @@ function MenuCategory() {
         <div className="admin-page menu-category">
             <AdminWidget title="헤더 메뉴" />
             <div className="admin-body wrapper">
-                <button className={dragEnabled ? 'active' : '' } onClick={() => setDragEnabled(!dragEnabled)}>순서 변경</button>
+                <div className="admin-body-header">
+                    { dragEnabled ? <span className="noticeText">드래그 하여 움직여주세요</span> : <div></div>  }
+
+                    <div className="publish">
+                        <label htmlFor="publish-toggle">순서변경</label>
+                            <button id="publish-toggle" className={dragEnabled ? 'publish-btn active' : 'publish-btn' } onClick={() => setDragEnabled(!dragEnabled)}>
+                            <i className="ball"></i>
+                        </button>
+                    </div>
+                </div>
+                
 
                 <DndContext collisionDetection={closestCenter} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
                     <SortableContext
@@ -218,16 +203,8 @@ function MenuCategory() {
 
                     <DragOverlay>
                         {activeId !== null && (
-                        <div
-                            style={{
-                            padding: "10px",
-                            border: "1px solid #aaa",
-                            backgroundColor: "#e0e0e0",
-                            borderRadius: "4px",
-                            whiteSpace: "nowrap",
-                            }}
-                        >
-                            {menus.find((item) => item.menuId === activeId)?.menuName}
+                        <div className="moving">
+                            <p><span>{menus.find((item) => item.menuId === activeId)?.menuName}</span></p>
                         </div>
                         )}
                     </DragOverlay>
