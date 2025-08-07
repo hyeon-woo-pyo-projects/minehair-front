@@ -164,6 +164,9 @@
     border: 0;
     height: 30px;
     padding: 0 12px;
+    border-radius: 5px;
+    width: 100%;
+    text-align: center;
 }
 
 .menu-category .admin-body .moving {

@@ -76,14 +76,14 @@ function SortableItem({
         <div ref={setNodeRef} className="bar-contents" style={style} {...(dragEnabled ? { ...attributes, ...listeners } : {})} onClick={onClick} >
             {isEditing ? (
                 <input
-                className="edit-input"
-                value={editingText}
-                onChange={(e) => onChange(e.target.value)}
-                onBlur={onConfirm}
-                onKeyDown={(e) => {
-                    if (e.key === "Enter") onConfirm();
-                }}
-                autoFocus
+                    className="edit-input"
+                    value={editingText}
+                    onChange={(e) => onChange(e.target.value)}
+                    onBlur={onConfirm}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") onConfirm();
+                    }}
+                    autoFocus
                 />
             ) : (
                 <button type="button">{item.menuName}</button>
