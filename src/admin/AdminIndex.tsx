@@ -11,6 +11,7 @@ function AdminIndex () {
 
                 <ul className="admin-contents">
                     <li><Link to={'/admin/event-banner'}>이벤트 배너</Link></li>
+                    <li><Link to={'/admin/menu-category'}>헤더 메뉴</Link></li>
                 </ul>
             </section>
         </div>

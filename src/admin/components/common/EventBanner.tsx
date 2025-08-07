@@ -78,7 +78,7 @@ function EventBanner () {
 
     return (
         <div className="admin-page event-banner">
-        <AdminWidget title={'이벤트 배너'} status={save} saveData={saveForm}/>
+            <AdminWidget title={'이벤트 배너'} status={save} saveData={saveForm}/>
 
             <div className="admin-body wrapper">
                 <div className="event-banner-header">

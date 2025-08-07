@@ -13,7 +13,7 @@ interface BannerProps {
 
 interface WidgetProps {
     title: string;
-    status: boolean;
+    status? : boolean;
     saveData?: BannerProps | null;
 }
 

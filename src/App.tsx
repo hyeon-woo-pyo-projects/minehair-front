@@ -13,6 +13,7 @@ import AdminIndex from './admin/AdminIndex';
 import './App.css';
 import AdminRouter from './admin/AdminRouter';
 import EventBanner from './admin/components/common/EventBanner';
+import MenuCategory from './admin/components/common/menuCategory';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="admin" element={<AdminRouter />}>
             <Route path="index" element={<AdminIndex />} />
             <Route path="event-banner" element={<EventBanner />} />
+            <Route path="menu-category" element={<MenuCategory />} />
           </Route>
 
           {/* 일반 사용자 레이아웃: 모든 비-관리자 경로 처리 */}
