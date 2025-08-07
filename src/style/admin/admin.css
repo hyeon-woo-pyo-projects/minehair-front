@@ -160,6 +160,11 @@
     color: var(--color-white);
     height: 40px;
 }
+.menu-category .admin-body .menu-bar .bar-contents .edit-input {
+    border: 0;
+    height: 30px;
+    padding: 0 12px;
+}
 
 .menu-category .admin-body .moving {
     height: 40px;

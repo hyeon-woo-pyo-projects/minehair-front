@@ -76,6 +76,7 @@ function SortableItem({
         <div ref={setNodeRef} className="bar-contents" style={style} {...(dragEnabled ? { ...attributes, ...listeners } : {})} onClick={onClick} >
             {isEditing ? (
                 <input
+                className="edit-input"
                 value={editingText}
                 onChange={(e) => onChange(e.target.value)}
                 onBlur={onConfirm}
