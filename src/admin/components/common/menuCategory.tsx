@@ -5,6 +5,7 @@ import {
     DndContext,
     closestCenter,
     DragEndEvent,
+    DragStartEvent,
     DragOverlay,
 } from "@dnd-kit/core";
 import {
@@ -57,13 +58,9 @@ function SortableItem({
     onEditClick: (item: MenuProps) => void;
     onDeleteClick: (id: string) => void;
 }) {
-    const {
-        attributes,
-        listeners,
-        setNodeRef,
-        transform,
-        transition,
-    } = useSortable({ id: item.menuId });
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+        id: `top:${item.menuId}`,
+    });
 
     const [hovered, setHovered] = useState(false);
 
@@ -108,11 +105,24 @@ function SubMenuItem({
     onEditClick: (item: SubMenuProps) => void;
     onDeleteClick: (id: string) => void;
 }) {
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+        id: `middle:${item.menuId}`,
+    });
+
     const [hovered, setHovered] = useState(false);
+
+    const style: React.CSSProperties = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        position: "relative",
+    };
 
     return (
         <div
+            ref={setNodeRef}
             className="bar-contents children"
+            style={style}
+            {...(dragEnabled ? { ...attributes, ...listeners } : {})}
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
         >
@@ -137,16 +147,29 @@ function GrandChildItem({
     onEditClick,
     onDeleteClick,
 }: {
-    item: SubMenuProps;
+    item: GrandChildProps;
     dragEnabled: boolean;
-    onEditClick: (item: SubMenuProps) => void;
+    onEditClick: (item: GrandChildProps) => void;
     onDeleteClick: (id: string) => void;
 }) {
+    const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+        id: `bottom:${item.menuId}`,
+    });
+
     const [hovered, setHovered] = useState(false);
+
+    const style: React.CSSProperties = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        position: "relative",
+    };
 
     return (
         <div
+            ref={setNodeRef}
             className="bar-contents grandChild"
+            style={style}
+            {...(dragEnabled ? { ...attributes, ...listeners } : {})}
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
         >
@@ -173,7 +196,7 @@ function MenuCategory() {
     const [dragEnabled, setDragEnabled] = useState<boolean>(false);
     const [selectedMenuData, setSelectedMenuData] = useState<{
         menuType: "top" | "middle" | "bottom" | null;
-        data: MenuProps | SubMenuProps | null;
+        data: MenuProps | SubMenuProps | GrandChildProps | null;
     }>({ menuType: null, data: null });
 
     const getMenu = () => {
@@ -185,12 +208,12 @@ function MenuCategory() {
                 const mainMenuIds = mainMenus.map((m) => m.menuId);
 
                 const subs = rawMenu.filter(
-                    (el) => el.parentId !== null && mainMenuIds.includes(el.parentId)
+                    (el) => el.parentId !== null && mainMenuIds.includes(el.parentId!)
                 );
                 const subMenuIds = subs.map((s) => s.menuId);
 
-                const grandChildMenus = rawMenu.filter(
-                    (el) => el.parentId !== null && subMenuIds.includes(el.parentId)
+                const grandChilds = rawMenu.filter(
+                    (el) => el.parentId !== null && subMenuIds.includes(el.parentId!)
                 );
 
                 const formattedSubs: SubMenuProps[] = subs.map((el) => ({
@@ -200,7 +223,7 @@ function MenuCategory() {
                     link: el.menuPath,
                 }));
 
-                const formattedGrandChildren: SubMenuProps[] = grandChildMenus.map((el) => ({
+                const formattedGrandChildren: GrandChildProps[] = grandChilds.map((el) => ({
                     parent: el.parentId!,
                     menuId: el.menuId,
                     title: el.menuName,
@@ -218,22 +241,106 @@ function MenuCategory() {
         getMenu();
     }, []);
 
-    const handleDragStart = (event: any) => {
-        setActiveId(event.active.id);
+    const handleDragStart = (event: DragStartEvent) => {
+        setActiveId(String(event.active.id));
     };
 
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
-        if (!over) return;
-        if (active.id !== over.id) {
-            const oldIndex = menus.findIndex((item) => item.menuId === active.id);
-            const newIndex = menus.findIndex((item) => item.menuId === over.id);
-            setMenus((items) => arrayMove(items, oldIndex, newIndex));
+        if (!over) {
+            setActiveId(null);
+            return;
         }
+        if (String(active.id) === String(over.id)) {
+            setActiveId(null);
+            return;
+        }
+
+        const [levelA, idA] = String(active.id).split(":");
+        const [levelB, idB] = String(over.id).split(":");
+
+        // 서로 다른 레벨이면 아무 동작도 하지 않음
+        if (levelA !== levelB) {
+            setActiveId(null);
+            return;
+        }
+
+        if (levelA === "top") {
+            setMenus((prev) => {
+                const oldIndex = prev.findIndex((m) => m.menuId === idA);
+                const newIndex = prev.findIndex((m) => m.menuId === idB);
+                if (oldIndex === -1 || newIndex === -1) return prev;
+                return arrayMove(prev, oldIndex, newIndex);
+            });
+        } else if (levelA === "middle") {
+            // 같은 parent 내에서만
+            const parentId = subMenus.find((m) => m.menuId === idA)?.parent;
+            const parentIdB = subMenus.find((m) => m.menuId === idB)?.parent;
+            if (!parentId || parentId !== parentIdB) {
+                setActiveId(null);
+                return;
+            }
+
+            setSubMenus((prev) => {
+                const prevCopy = [...prev];
+                const siblingIndices: number[] = [];
+                const siblings: SubMenuProps[] = [];
+
+                prevCopy.forEach((it, idx) => {
+                    if (it.parent === parentId) {
+                        siblingIndices.push(idx);
+                        siblings.push(it);
+                    }
+                });
+
+                const oldLocalIndex = siblings.findIndex((s) => s.menuId === idA);
+                const newLocalIndex = siblings.findIndex((s) => s.menuId === idB);
+                if (oldLocalIndex === -1 || newLocalIndex === -1) return prev;
+
+                const reordered = arrayMove(siblings, oldLocalIndex, newLocalIndex);
+                const result = [...prevCopy];
+                siblingIndices.forEach((origIdx, i) => {
+                    result[origIdx] = reordered[i];
+                });
+                return result;
+            });
+        } else if (levelA === "bottom") {
+            const parentId = grandChildMenus.find((m) => m.menuId === idA)?.parent;
+            const parentIdB = grandChildMenus.find((m) => m.menuId === idB)?.parent;
+            if (!parentId || parentId !== parentIdB) {
+                setActiveId(null);
+                return;
+            }
+
+            setGrandChildMenus((prev) => {
+                const prevCopy = [...prev];
+                const siblingIndices: number[] = [];
+                const siblings: GrandChildProps[] = [];
+
+                prevCopy.forEach((it, idx) => {
+                    if (it.parent === parentId) {
+                        siblingIndices.push(idx);
+                        siblings.push(it);
+                    }
+                });
+
+                const oldLocalIndex = siblings.findIndex((s) => s.menuId === idA);
+                const newLocalIndex = siblings.findIndex((s) => s.menuId === idB);
+                if (oldLocalIndex === -1 || newLocalIndex === -1) return prev;
+
+                const reordered = arrayMove(siblings, oldLocalIndex, newLocalIndex);
+                const result = [...prevCopy];
+                siblingIndices.forEach((origIdx, i) => {
+                    result[origIdx] = reordered[i];
+                });
+                return result;
+            });
+        }
+
         setActiveId(null);
     };
 
-    const handleEditClick = (item: MenuProps | SubMenuProps, menuType: "top" | "middle" | "bottom") => {
+    const handleEditClick = (item: MenuProps | SubMenuProps | GrandChildProps, menuType: "top" | "middle" | "bottom") => {
         if (!dragEnabled) {
             setSelectedMenuData({ menuType, data: item });
         }
@@ -244,7 +351,7 @@ function MenuCategory() {
             setMenus((prev) => prev.filter((menu) => menu.menuId !== id));
             setSubMenus((prev) => prev.filter((menu) => menu.menuId !== id));
             setGrandChildMenus((prev) => prev.filter((menu) => menu.menuId !== id));
-            if (selectedMenuData.data?.menuId === id) {
+            if ((selectedMenuData.data as any)?.menuId === id) {
                 setSelectedMenuData({ menuType: null, data: null });
             }
         }
@@ -272,7 +379,6 @@ function MenuCategory() {
 
         const { menuType, data } = selectedMenuData;
 
-        // boolean 타입 필드는 변환
         const normalizedValue =
             field === "menuVisible" ? (value === "true" || value === true) : value;
 
@@ -289,7 +395,7 @@ function MenuCategory() {
             );
             setSelectedMenuData({ menuType, data: updated });
         } else if (menuType === "bottom") {
-            const updated = { ...(data as SubMenuProps), [field]: normalizedValue };
+            const updated = { ...(data as GrandChildProps), [field]: normalizedValue };
             setGrandChildMenus((prev) =>
                 prev.map((m) => (m.menuId === updated.menuId ? updated : m))
             );
@@ -300,7 +406,7 @@ function MenuCategory() {
     const handleDeleteFromForm = () => {
         if (!selectedMenuData.data) return;
         if (window.confirm("정말 삭제하시겠습니까?")) {
-            const id = selectedMenuData.data.menuId;
+            const id = (selectedMenuData.data as any).menuId;
             setMenus((prev) => prev.filter((menu) => menu.menuId !== id));
             setSubMenus((prev) => prev.filter((menu) => menu.menuId !== id));
             setGrandChildMenus((prev) => prev.filter((menu) => menu.menuId !== id));
@@ -333,6 +439,16 @@ function MenuCategory() {
     const [ categoryChoose, setCategoryChoose ] = useState('')
     const [ middleChoose, setMiddleChoose ] = useState('')
 
+    // DragOverlay label 결정
+    const getOverlayLabel = () => {
+        if (!activeId) return "";
+        const [lvl, id] = activeId.split(":");
+        if (lvl === "top") return menus.find((m) => m.menuId === id)?.menuName ?? "";
+        if (lvl === "middle") return subMenus.find((s) => s.menuId === id)?.title ?? "";
+        if (lvl === "bottom") return grandChildMenus.find((g) => g.menuId === id)?.title ?? "";
+        return "";
+    };
+
     return (
         <div className="admin-page menu-category">
             <AdminWidget title="헤더 메뉴" />
@@ -360,66 +476,68 @@ function MenuCategory() {
                     onDragStart={handleDragStart}
                     onDragEnd={handleDragEnd}
                 >
+                    {/* top 메뉴 SortableContext: top들만 */}
                     <SortableContext
-                        items={menus.map((item) => item.menuId)}
+                        items={menus.map((item) => `top:${item.menuId}`)}
                         strategy={horizontalListSortingStrategy}
                     >
                         <div className="menu-bar">
                             {menus.map((item) => (
                                 <ul key={item.menuId}>
+                                    {/* top 메뉴 */}
                                     <li className="top-menu">
                                         <SortableItem
                                             item={item}
                                             dragEnabled={dragEnabled}
-                                            onEditClick={(item) => handleEditClick(item, "top")}
+                                            onEditClick={(it) => handleEditClick(it, "top")}
                                             onDeleteClick={handleDeleteClick}
                                         />
                                     </li>
 
-                                    {subMenus.some((sub) => sub.parent === item.menuId) &&
-                                        subMenus
+                                    {/* middle 메뉴 SortableContext: 해당 top의 자식들만 */}
+                                    <SortableContext
+                                        items={subMenus
+                                            .filter((sub) => sub.parent === item.menuId)
+                                            .map((s) => `middle:${s.menuId}`)}
+                                        strategy={horizontalListSortingStrategy}
+                                    >
+                                        {subMenus
                                             .filter((sub) => sub.parent === item.menuId)
                                             .map((sub) => (
-                                                <div key={sub.menuId} className="midde-menu">
+                                                <div key={sub.menuId} className="middle-menu">
                                                     <SubMenuItem
                                                         item={sub}
                                                         dragEnabled={dragEnabled}
-                                                        onEditClick={(item) =>
-                                                            handleEditClick(item, "middle")
-                                                        }
+                                                        onEditClick={(it) => handleEditClick(it, "middle")}
                                                         onDeleteClick={handleDeleteClick}
                                                     />
 
-                                                    {grandChildMenus.some(
-                                                        (gc) => gc.parent === sub.menuId
-                                                    ) && (
-                                                        <>
-                                                            {grandChildMenus
-                                                                .filter((gc) => gc.parent === sub.menuId)
-                                                                .map((gc) => (
-                                                                    <li
-                                                                        key={gc.menuId}
-                                                                        className="bottom-menu"
-                                                                    >
-                                                                        <GrandChildItem
-                                                                            item={gc}
-                                                                            dragEnabled={dragEnabled}
-                                                                            onEditClick={(item) =>
-                                                                                handleEditClick(
-                                                                                    item,
-                                                                                    "bottom"
-                                                                                )
-                                                                            }
-                                                                            onDeleteClick={
-                                                                                handleDeleteClick
-                                                                            }
-                                                                        />
-                                                                    </li>
-                                                                ))}
-                                                        </>
-                                                    )}
+                                                    {/* bottom 메뉴 SortableContext: 해당 middle의 자식들만 */}
+                                                    <SortableContext
+                                                        items={grandChildMenus
+                                                            .filter((gc) => gc.parent === sub.menuId)
+                                                            .map((g) => `bottom:${g.menuId}`)}
+                                                        strategy={horizontalListSortingStrategy}
+                                                    >
+                                                        {grandChildMenus
+                                                            .filter((gc) => gc.parent === sub.menuId)
+                                                            .map((gc) => (
+                                                                <li
+                                                                    key={gc.menuId}
+                                                                    className="bottom-menu"
+                                                                >
+                                                                    <GrandChildItem
+                                                                        item={gc}
+                                                                        dragEnabled={dragEnabled}
+                                                                        onEditClick={(it) => handleEditClick(it, "bottom")}
+                                                                        onDeleteClick={handleDeleteClick}
+                                                                    />
+                                                                </li>
+                                                            ))}
+                                                    </SortableContext>
                                                 </div>
                                             ))}
+                                    </SortableContext>
                                 </ul>
                             ))}
                         </div>
@@ -429,10 +547,7 @@ function MenuCategory() {
                         {activeId !== null && (
                             <div className="moving">
                                 <p>
-                                    <span>
-                                        {menus.find((item) => item.menuId === activeId)
-                                            ?.menuName}
-                                    </span>
+                                    <span>{getOverlayLabel()}</span>
                                 </p>
                             </div>
                         )}
@@ -616,9 +731,7 @@ function MenuCategory() {
                                     >
                                         { menus.map((data, index)=>{
                                             return (
-                                                <>
-                                                    <option key={index} value={data.menuId}>{data.menuName}</option>
-                                                </>
+                                                <option key={index} value={data.menuId}>{data.menuName}</option>
                                             )
                                         })}
                                     </select>
@@ -655,16 +768,13 @@ function MenuCategory() {
                                         { subMenus.map((data, index)=>{
                                             if ( Number(data.parent) === Number(middleChoose) ) {
                                                 return (
-                                                <>
                                                     <option key={index} value={data.menuId}>{data.title}</option>
-                                                </>
-                                            )}else {
-                                                return (
-                                                    <>
-                                                        <option value={''} hidden>상위 메뉴를 먼저 생성해주세요</option>
-                                                    </>
-                                                )}
+                                                )
+                                            } else {
+                                                return null;
+                                            }
                                         })}
+                                        <option value={''} hidden>상위 메뉴를 먼저 생성해주세요</option>
                                     </select>
                                 </div>
                             </li>
