@@ -1,4 +1,3 @@
-// 상단 import는 동일
 import { useEffect, useState } from "react";
 import axiosInstance from "../../../api/axiosInstance";
 import AdminWidget from "../layouts/AdminWidget";
@@ -46,28 +45,16 @@ interface GrandChildProps {
     link: string;
 }
 
-// ------------------------------------
-// 대메뉴용 컴포넌트
 function SortableItem({
     item,
-    isEditing,
-    editingText,
-    onClick,
-    onChange,
-    onConfirm,
     dragEnabled,
     onEditClick,
     onDeleteClick,
 }: {
     item: MenuProps;
-    isEditing: boolean;
-    editingText: string;
-    onClick: () => void;
-    onChange: (value: string) => void;
-    onConfirm: () => void;
     dragEnabled: boolean;
-    onEditClick: () => void;
-    onDeleteClick: () => void;
+    onEditClick: (item: MenuProps) => void;
+    onDeleteClick: (id: string) => void;
 }) {
     const {
         attributes,
@@ -91,206 +78,137 @@ function SortableItem({
             className="bar-contents"
             style={style}
             {...(dragEnabled ? { ...attributes, ...listeners } : {})}
-            onClick={onClick}
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
         >
-            {isEditing ? (
-                <input
-                    className="edit-input"
-                    value={editingText}
-                    onChange={(e) => onChange(e.target.value)}
-                    onBlur={onConfirm}
-                    onKeyDown={(e) => {
-                        if (e.key === "Enter") onConfirm();
-                    }}
-                    autoFocus
-                />
-            ) : (
-                <>
-                    <button type="button">{item.menuName}</button>
-                    {hovered && !dragEnabled && (
-                        <div className="action-icons" onClick={e => e.stopPropagation()}>
-                            <button type="button" className="icon-btn" onClick={onEditClick}>
-                                <IconPencil color="var(--color-black)" />
-                            </button>
-                            <button type="button" className="icon-btn" onClick={onDeleteClick}>
-                                <IconTrash color="var(--color-black)" />
-                            </button>
-                        </div>
-                    )}
-                </>
+            <button type="button">{item.menuName}</button>
+            {hovered && !dragEnabled && (
+                <div className="action-icons" onClick={(e) => e.stopPropagation()}>
+                    <button type="button" className="icon-btn" onClick={() => onEditClick(item)}>
+                        <IconPencil color="var(--color-black)" />
+                    </button>
+                    <button type="button" className="icon-btn" onClick={() => onDeleteClick(item.menuId)}>
+                        <IconTrash color="var(--color-black)" />
+                    </button>
+                </div>
             )}
         </div>
     );
 }
 
-// ------------------------------------
-// 중메뉴용 컴포넌트
 function SubMenuItem({
     item,
-    isEditing,
-    editingText,
-    onClick,
-    onChange,
-    onConfirm,
+    dragEnabled,
     onEditClick,
     onDeleteClick,
 }: {
     item: SubMenuProps;
-    isEditing: boolean;
-    editingText: string;
-    onClick: () => void;
-    onChange: (value: string) => void;
-    onConfirm: () => void;
-    onEditClick: () => void;
-    onDeleteClick: () => void;
+    dragEnabled: boolean;
+    onEditClick: (item: SubMenuProps) => void;
+    onDeleteClick: (id: string) => void;
 }) {
     const [hovered, setHovered] = useState(false);
 
     return (
         <div
             className="bar-contents children"
-            onClick={onClick}
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
         >
-            {isEditing ? (
-                <input
-                    className="edit-input"
-                    value={editingText}
-                    onChange={(e) => onChange(e.target.value)}
-                    onBlur={onConfirm}
-                    onKeyDown={(e) => {
-                        if (e.key === "Enter") onConfirm();
-                    }}
-                    autoFocus
-                />
-            ) : (
-                <>
-                    <button type="button">{item.title}</button>
-                    {hovered && (
-                        <div className="action-icons" onClick={e => e.stopPropagation()}>
-                            <button type="button" className="icon-btn" onClick={onEditClick}>
-                                <IconPencil color="var(--color-black)" />
-                            </button>
-                            <button type="button" className="icon-btn" onClick={onDeleteClick}>
-                                <IconTrash color="var(--color-black)" />
-                            </button>
-                        </div>
-                    )}
-                </>
+            <button type="button">{item.title}</button>
+            {hovered && !dragEnabled && (
+                <div className="action-icons" onClick={(e) => e.stopPropagation()}>
+                    <button type="button" className="icon-btn" onClick={() => onEditClick(item)}>
+                        <IconPencil color="var(--color-black)" />
+                    </button>
+                    <button type="button" className="icon-btn" onClick={() => onDeleteClick(item.menuId)}>
+                        <IconTrash color="var(--color-black)" />
+                    </button>
+                </div>
             )}
         </div>
     );
 }
 
-// ------------------------------------
-// 소메뉴용 컴포넌트
 function GrandChildItem({
     item,
-    isEditing,
-    editingText,
-    onClick,
-    onChange,
-    onConfirm,
+    dragEnabled,
     onEditClick,
     onDeleteClick,
 }: {
     item: SubMenuProps;
-    isEditing: boolean;
-    editingText: string;
-    onClick: () => void;
-    onChange: (value: string) => void;
-    onConfirm: () => void;
-    onEditClick: () => void;
-    onDeleteClick: () => void;
+    dragEnabled: boolean;
+    onEditClick: (item: SubMenuProps) => void;
+    onDeleteClick: (id: string) => void;
 }) {
     const [hovered, setHovered] = useState(false);
 
     return (
         <div
             className="bar-contents grandChild"
-            onClick={onClick}
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
         >
-            {isEditing ? (
-                <input
-                    className="edit-input"
-                    value={editingText}
-                    onChange={(e) => onChange(e.target.value)}
-                    onBlur={onConfirm}
-                    onKeyDown={(e) => {
-                        if (e.key === "Enter") onConfirm();
-                    }}
-                    autoFocus
-                />
-            ) : (
-                <>
-                    <button type="button">{item.title}</button>
-                    {hovered && (
-                        <div className="action-icons" onClick={e => e.stopPropagation()}>
-                            <button type="button" className="icon-btn" onClick={onEditClick}>
-                                <IconPencil color="var(--color-black)" />
-                            </button>
-                            <button type="button" className="icon-btn" onClick={onDeleteClick}>
-                                <IconTrash color="var(--color-black)" />
-                            </button>
-                        </div>
-                    )}
-                </>
+            <button type="button">{item.title}</button>
+            {hovered && !dragEnabled && (
+                <div className="action-icons" onClick={(e) => e.stopPropagation()}>
+                    <button type="button" className="icon-btn" onClick={() => onEditClick(item)}>
+                        <IconPencil color="var(--color-black)" />
+                    </button>
+                    <button type="button" className="icon-btn" onClick={() => onDeleteClick(item.menuId)}>
+                        <IconTrash color="var(--color-black)" />
+                    </button>
+                </div>
             )}
         </div>
     );
 }
 
-
-// ------------------------------------
-// 메인 컴포넌트
 function MenuCategory() {
     const [menus, setMenus] = useState<MenuProps[]>([]);
     const [subMenus, setSubMenus] = useState<SubMenuProps[]>([]);
     const [grandChildMenus, setGrandChildMenus] = useState<GrandChildProps[]>([]);
     const [activeId, setActiveId] = useState<string | null>(null);
     const [dragEnabled, setDragEnabled] = useState<boolean>(false);
-    const [editingId, setEditingId] = useState<string | null>(null);
-    const [editingText, setEditingText] = useState<string>("");
-
-    const handleEditClick = (id: string, name: string) => {
-        if (!dragEnabled) {
-            setEditingId(id);
-            setEditingText(name);
-        }
-    };
-
-    const handleDeleteClick = (id: string) => {
-        if (window.confirm("정말 삭제하시겠습니까?")) {
-            setMenus(prev => prev.filter(menu => menu.menuId !== id));
-            setSubMenus(prev => prev.filter(menu => menu.menuId !== id));
-            if (editingId === id) {
-                setEditingId(null);
-                setEditingText("");
-            }
-        }
-    };
+    const [selectedMenuData, setSelectedMenuData] = useState<{
+        menuType: "top" | "middle" | "bottom" | null;
+        data: MenuProps | SubMenuProps | null;
+    }>({ menuType: null, data: null });
 
     const getMenu = () => {
         axiosInstance.get("/role-menus").then((response) => {
             if (response.data.success === true) {
                 const rawMenu: MenuProps[] = response.data.data;
+
                 const mainMenus = rawMenu.filter((el) => el.parentId === null);
                 const mainMenuIds = mainMenus.map((m) => m.menuId);
-                const subs = rawMenu.filter((el) => el.parentId && mainMenuIds.includes(el.parentId));
+
+                const subs = rawMenu.filter(
+                    (el) => el.parentId !== null && mainMenuIds.includes(el.parentId)
+                );
+                const subMenuIds = subs.map((s) => s.menuId);
+
+                const grandChildMenus = rawMenu.filter(
+                    (el) => el.parentId !== null && subMenuIds.includes(el.parentId)
+                );
+
                 const formattedSubs: SubMenuProps[] = subs.map((el) => ({
                     parent: el.parentId!,
                     menuId: el.menuId,
                     title: el.menuName,
                     link: el.menuPath,
                 }));
-                console.log(rawMenu)
+
+                const formattedGrandChildren: SubMenuProps[] = grandChildMenus.map((el) => ({
+                    parent: el.parentId!,
+                    menuId: el.menuId,
+                    title: el.menuName,
+                    link: el.menuPath,
+                }));
+
                 setMenus(mainMenus);
                 setSubMenus(formattedSubs);
+                setGrandChildMenus(formattedGrandChildren);
             }
         });
     };
@@ -314,17 +232,21 @@ function MenuCategory() {
         setActiveId(null);
     };
 
-    const handleClick = (item: MenuProps | SubMenuProps) => {
+    const handleEditClick = (item: MenuProps | SubMenuProps, menuType: "top" | "middle" | "bottom") => {
         if (!dragEnabled) {
-            setEditingId(item.menuId);
-            setEditingText("menuName" in item ? item.menuName : item.title);
+            setSelectedMenuData({ menuType, data: item });
         }
     };
 
-    const handleEditConfirm = (id: string) => {
-        setMenus(prev => prev.map(m => m.menuId === id ? { ...m, menuName: editingText } : m));
-        setSubMenus(prev => prev.map(m => m.menuId === id ? { ...m, title: editingText } : m));
-        setEditingId(null);
+    const handleDeleteClick = (id: string) => {
+        if (window.confirm("정말 삭제하시겠습니까?")) {
+            setMenus((prev) => prev.filter((menu) => menu.menuId !== id));
+            setSubMenus((prev) => prev.filter((menu) => menu.menuId !== id));
+            setGrandChildMenus((prev) => prev.filter((menu) => menu.menuId !== id));
+            if (selectedMenuData.data?.menuId === id) {
+                setSelectedMenuData({ menuType: null, data: null });
+            }
+        }
     };
 
     const handleAddMenu = () => {
@@ -340,13 +262,64 @@ function MenuCategory() {
             status: "new",
         };
         setMenus((prev) => [...prev, newMenu]);
-        setEditingId(newMenuId);
-        setEditingText("새 메뉴");
+        setSelectedMenuData({ menuType: "top", data: newMenu });
     };
 
-    // form
-    const [ menuName, setMenuName ] = useState<string>('');
-    const [ menuLink, setMenuLink ] = useState<string>('');
+    const onFormChange = (field: string, value: string) => {
+        if (!selectedMenuData.data) return;
+
+        const { menuType, data } = selectedMenuData;
+
+        if (menuType === "top") {
+            const updated = { ...(data as MenuProps), [field]: value };
+            setMenus((prev) =>
+                prev.map((m) => (m.menuId === updated.menuId ? updated : m))
+            );
+            setSelectedMenuData({ menuType, data: updated });
+        } else if (menuType === "middle") {
+            const updated = { ...(data as SubMenuProps), [field]: value };
+            setSubMenus((prev) =>
+                prev.map((m) => (m.menuId === updated.menuId ? updated : m))
+            );
+            setSelectedMenuData({ menuType, data: updated });
+        } else if (menuType === "bottom") {
+            const updated = { ...(data as SubMenuProps), [field]: value };
+            setGrandChildMenus((prev) =>
+                prev.map((m) => (m.menuId === updated.menuId ? updated : m))
+            );
+            setSelectedMenuData({ menuType, data: updated });
+        }
+    };
+
+    const handleDeleteFromForm = () => {
+        if (!selectedMenuData.data) return;
+        if (window.confirm("정말 삭제하시겠습니까?")) {
+            const id = selectedMenuData.data.menuId;
+            setMenus((prev) => prev.filter((menu) => menu.menuId !== id));
+            setSubMenus((prev) => prev.filter((menu) => menu.menuId !== id));
+            setGrandChildMenus((prev) => prev.filter((menu) => menu.menuId !== id));
+            setSelectedMenuData({ menuType: null, data: null });
+        }
+    };
+
+    // 링크에서 영어만 가져오기
+    function getEnglishNameByType(
+    path: string | undefined,
+    type: "top" | "middle" | "bottom"
+    ) {
+        if (!path) return "";
+        const parts = path.split("/").filter(Boolean);
+        switch (type) {
+            case "top":
+                return parts[0] ?? "";
+            case "middle":
+                return parts[1] ?? "";
+            case "bottom":
+                return parts[2] ?? "";
+            default:
+                return "";
+        }
+    }
 
     return (
         <div className="admin-page menu-category">
@@ -354,58 +327,98 @@ function MenuCategory() {
             <div className="admin-body wrapper">
                 <div className="admin-body-header">
                     {dragEnabled ? (
-                        <span className="noticeText">드래그 하여 움직여주세요</span>
-                    ) : <div />}
+                        <span className="noticeText">드래그하여 움직여주세요</span>
+                    ) : (
+                        <div />
+                    )}
                     <div className="publish">
                         <label htmlFor="publish-toggle">순서변경</label>
-                        <button id="publish-toggle" className={dragEnabled ? 'publish-btn active' : 'publish-btn'} onClick={() => setDragEnabled(!dragEnabled)}>
+                        <button
+                            id="publish-toggle"
+                            className={dragEnabled ? "publish-btn active" : "publish-btn"}
+                            onClick={() => setDragEnabled(!dragEnabled)}
+                        >
                             <i className="ball"></i>
                         </button>
                     </div>
                 </div>
 
-                <DndContext collisionDetection={closestCenter} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-                    <SortableContext items={menus.map((item) => item.menuId)} strategy={horizontalListSortingStrategy}>
+                <DndContext
+                    collisionDetection={closestCenter}
+                    onDragStart={handleDragStart}
+                    onDragEnd={handleDragEnd}
+                >
+                    <SortableContext
+                        items={menus.map((item) => item.menuId)}
+                        strategy={horizontalListSortingStrategy}
+                    >
                         <div className="menu-bar">
                             {menus.map((item) => (
                                 <ul key={item.menuId}>
-                                    <li>
+                                    <li className="top-menu">
                                         <SortableItem
                                             item={item}
-                                            isEditing={editingId === item.menuId}
-                                            editingText={editingText}
-                                            onClick={() => handleClick(item)}
-                                            onChange={setEditingText}
-                                            onConfirm={() => handleEditConfirm(item.menuId)}
                                             dragEnabled={dragEnabled}
-                                            onEditClick={() => handleEditClick(item.menuId, item.menuName)}
-                                            onDeleteClick={() => handleDeleteClick(item.menuId)}
+                                            onEditClick={(item) => handleEditClick(item, "top")}
+                                            onDeleteClick={handleDeleteClick}
                                         />
                                     </li>
 
-                                    {subMenus.some(sub => sub.parent === item.menuId) && (
-                                        subMenus.filter(sub => sub.parent === item.menuId).map((sub) => (
-                                            <li key={sub.menuId}>
-                                                <SubMenuItem
-                                                    item={sub}
-                                                    isEditing={editingId === sub.menuId}
-                                                    editingText={editingText}
-                                                    onClick={() => handleClick(sub)}
-                                                    onChange={setEditingText}
-                                                    onConfirm={() => handleEditConfirm(sub.menuId)}
-                                                    onEditClick={() => handleEditClick(sub.menuId, sub.title)}
-                                                    onDeleteClick={() => handleDeleteClick(sub.menuId)}
-                                                />
-                                            </li>
-                                        ))
-                                    )}
+                                    {subMenus.some((sub) => sub.parent === item.menuId) &&
+                                        subMenus
+                                            .filter((sub) => sub.parent === item.menuId)
+                                            .map((sub) => (
+                                                <li key={sub.menuId} className="midde-menu">
+                                                    <SubMenuItem
+                                                        item={sub}
+                                                        dragEnabled={dragEnabled}
+                                                        onEditClick={(item) =>
+                                                            handleEditClick(item, "middle")
+                                                        }
+                                                        onDeleteClick={handleDeleteClick}
+                                                    />
+
+                                                    {grandChildMenus.some(
+                                                        (gc) => gc.parent === sub.menuId
+                                                    ) && (
+                                                        <>
+                                                            {grandChildMenus
+                                                                .filter((gc) => gc.parent === sub.menuId)
+                                                                .map((gc) => (
+                                                                    <li
+                                                                        key={gc.menuId}
+                                                                        className="bottom-menu"
+                                                                    >
+                                                                        <GrandChildItem
+                                                                            item={gc}
+                                                                            dragEnabled={dragEnabled}
+                                                                            onEditClick={(item) =>
+                                                                                handleEditClick(
+                                                                                    item,
+                                                                                    "bottom"
+                                                                                )
+                                                                            }
+                                                                            onDeleteClick={
+                                                                                handleDeleteClick
+                                                                            }
+                                                                        />
+                                                                    </li>
+                                                                ))}
+                                                        </>
+                                                    )}
+                                                </li>
+                                            ))}
                                 </ul>
                             ))}
 
                             <ul>
-                                <li>
+                                <li className="top-menu">
                                     <div className="bar-contents">
-                                        <button type="button" className="add-btn" onClick={handleAddMenu}>
+                                        <button
+                                            type="button"
+                                            className="add-btn"
+                                            onClick={handleAddMenu}
+                                        >
                                             <IconCirclePlus color="var(--color-white)" />
                                         </button>
                                     </div>
@@ -417,35 +430,92 @@ function MenuCategory() {
                     <DragOverlay>
                         {activeId !== null && (
                             <div className="moving">
-                                <p><span>{menus.find((item) => item.menuId === activeId)?.menuName}</span></p>
+                                <p>
+                                    <span>
+                                        {menus.find((item) => item.menuId === activeId)
+                                            ?.menuName}
+                                    </span>
+                                </p>
                             </div>
                         )}
                     </DragOverlay>
                 </DndContext>
 
-                <div className="admin-form" id="menu-category-form">
+                <form className="admin-form" id="menu-category-form" onSubmit={(e) => e.preventDefault()}>
                     <ul>
                         <li>
                             <span className="admin-form-title">메뉴 이름</span>
-
                             <div className="input-area">
-                                <input type="text" placeholder="메뉴 이름"/>
+                                <input
+                                    type="text"
+                                    placeholder="메뉴 이름"
+                                    value={
+                                        selectedMenuData.data
+                                            ? "menuName" in selectedMenuData.data
+                                                ? (selectedMenuData.data as MenuProps).menuName
+                                                : (selectedMenuData.data as SubMenuProps).title
+                                            : ""
+                                    }
+                                    onChange={(e) =>
+                                        onFormChange(
+                                            "menuName" in (selectedMenuData.data ?? {})
+                                                ? "menuName"
+                                                : "title",
+                                            e.target.value
+                                        )
+                                    }
+                                    disabled={!selectedMenuData.data}
+                                />
                             </div>
                         </li>
 
                         <li>
                             <span className="admin-form-title">영어 이름</span>
-
                             <div className="input-area">
-                                <input type="text" placeholder="영어 이름"/>
+                                <input
+                                    type="text"
+                                    placeholder="영어 이름"
+                                    value={
+                                        selectedMenuData.data
+                                            ? getEnglishNameByType(
+                                                "menuPath" in selectedMenuData.data
+                                                    ? (selectedMenuData.data as MenuProps).menuPath
+                                                    : (selectedMenuData.data as SubMenuProps).link,
+                                                selectedMenuData.menuType ?? "top"
+                                            )
+                                            : ""
+                                    }
+                                    onChange={(e) =>
+                                        onFormChange(
+                                            "menuPath" in (selectedMenuData.data ?? {})
+                                                ? "menuPath"
+                                                : "link",
+                                            e.target.value
+                                        )
+                                    }
+                                    disabled={!selectedMenuData.data}
+                                />
                             </div>
                         </li>
-                        
+
                         <li>
                             <span className="admin-form-title">노출</span>
-
                             <div className="input-area">
-                                <select name="" id="">
+                                <select
+                                    value={
+                                        selectedMenuData.data && "menuVisible" in selectedMenuData.data
+                                            ? (selectedMenuData.data as MenuProps).menuVisible
+                                                ? "true"
+                                                : "false"
+                                            : "true"
+                                    }
+                                    onChange={(e) =>
+                                        onFormChange(
+                                            "menuVisible",
+                                            e.target.value === "true" ? "true" : "false"
+                                        )
+                                    }
+                                >
                                     <option value="true">노출</option>
                                     <option value="false">숨김</option>
                                 </select>
@@ -454,61 +524,66 @@ function MenuCategory() {
 
                         <li>
                             <span className="admin-form-title">노출 권한</span>
-
                             <div className="input-area">
-                                <select name="" id="">
-                                    <option value="0">방문회원</option>
-                                    <option value="0">로그인회원</option>
-                                    <option value="0">관리자</option>
+                                <select>
+                                    <option>전체</option>
+                                    <option>로그인회원</option>
+                                    <option>관리자</option>
                                 </select>
                             </div>
                         </li>
 
                         <li>
                             <span className="admin-form-title">메뉴 구분</span>
-
                             <div className="input-area">
-                                <select name="" id="">
-                                    <option value="0">대메뉴</option>
-                                    <option value="0">중메뉴</option>
-                                    <option value="0">소메뉴</option>
+                                <select>
+                                    <option>대메뉴</option>
+                                    <option>중메뉴</option>
+                                    <option>소메뉴</option>
                                 </select>
                             </div>
                         </li>
 
                         <li>
                             <span className="admin-form-title">최상위 메뉴</span>
-
                             <div className="input-area">
-                                <select name="" id="">
-                                    <option value="0">대메뉴</option>
-                                    <option value="0">중메뉴</option>
-                                    <option value="0">소메뉴</option>
+                                <select>
+                                    <option>선택</option>
+                                    <option>대메뉴</option>
+                                    <option>중메뉴</option>
+                                    <option>소메뉴</option>
                                 </select>
                             </div>
                         </li>
 
                         <li>
                             <span className="admin-form-title">상위 메뉴</span>
-
                             <div className="input-area">
-                                <select name="" id="">
-                                    <option value="0">대메뉴</option>
-                                    <option value="0">중메뉴</option>
-                                    <option value="0">소메뉴</option>
+                                <select>
+                                    <option>선택</option>
+                                    <option>대메뉴</option>
+                                    <option>중메뉴</option>
+                                    <option>소메뉴</option>
                                 </select>
                             </div>
                         </li>
 
                         <li>
                             <span className="admin-form-title">메뉴 삭제</span>
-
                             <div className="input-area">
-                                <button type="button" className="blackBtn"><IconTrash color="var(--color-white)"/>삭제하기</button>
+                                <button
+                                    type="button"
+                                    className="blackBtn"
+                                    disabled={!selectedMenuData.data}
+                                    onClick={handleDeleteFromForm}
+                                >
+                                    <IconTrash color="var(--color-white)" />
+                                    삭제하기
+                                </button>
                             </div>
                         </li>
                     </ul>
-                </div>
+                </form>
             </div>
         </div>
     );
