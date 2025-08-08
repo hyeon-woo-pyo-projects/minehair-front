@@ -38,6 +38,7 @@
 .admin-page input[type="file"] + label:hover { background-color: var(--default-background); }
 .admin-page input[type="file"] + label svg { margin-bottom: 2px; }
 .admin-page .admin-form { text-align: left; margin-top: 50px;}
+.admin-page .admin-form .center-menu { display: flex; justify-content: center; align-items: center; margin: 50px 0; }
 .admin-page .admin-form ul { position: relative; display: flex; flex-wrap: wrap; gap: 30px; }
 .admin-page .admin-form ul li { display: flex; flex-direction: column; gap: 12px; width: calc((100% / 4) - 25px); }
 .admin-page .admin-form ul li span.admin-form-title { display: block; font-size: 14px; font-weight: 500; }
@@ -153,12 +154,14 @@
     align-items: start;
     flex-wrap: wrap;
     gap: 50px 0;
+    margin-bottom: 120px;
 }
 .menu-category .admin-body .menu-bar ul {
     display: flex;
     flex-direction: column;
     position: relative;
-    width: calc(100% / 10);
+    width: auto;
+    min-width: calc(100% / 10);
     transition: all 0.25s;
 }
 .menu-category .admin-body .menu-bar ul li.top-menu { background-color: var(--color-black); }
@@ -213,3 +216,18 @@
     align-items: center;
     justify-content: center;
 }
+
+.menu-category .add-btn {
+    background-color: var(--color-lightGray);
+    border: 1px dashed var(--color-gray);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    gap: 12px;
+    min-height: 60px;
+    min-width: 50%;
+}
+
+.menu-category .add-btn:hover { background-color: var(--color-gray); }

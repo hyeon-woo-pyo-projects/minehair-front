@@ -29,6 +29,7 @@ interface MenuProps {
     menuVisible: boolean;
     parentId: string | null;
     status: string;
+    authority : string
 }
 
 interface SubMenuProps {
@@ -260,30 +261,35 @@ function MenuCategory() {
             menuVisible: true,
             parentId: null,
             status: "new",
+            authority : '',
         };
-        setMenus((prev) => [...prev, newMenu]);
+
         setSelectedMenuData({ menuType: "top", data: newMenu });
     };
 
-    const onFormChange = (field: string, value: string) => {
+    const onFormChange = (field: string, value: any) => {
         if (!selectedMenuData.data) return;
 
         const { menuType, data } = selectedMenuData;
 
+        // boolean 타입 필드는 변환
+        const normalizedValue =
+            field === "menuVisible" ? (value === "true" || value === true) : value;
+
         if (menuType === "top") {
-            const updated = { ...(data as MenuProps), [field]: value };
+            const updated = { ...(data as MenuProps), [field]: normalizedValue };
             setMenus((prev) =>
                 prev.map((m) => (m.menuId === updated.menuId ? updated : m))
             );
             setSelectedMenuData({ menuType, data: updated });
         } else if (menuType === "middle") {
-            const updated = { ...(data as SubMenuProps), [field]: value };
+            const updated = { ...(data as SubMenuProps), [field]: normalizedValue };
             setSubMenus((prev) =>
                 prev.map((m) => (m.menuId === updated.menuId ? updated : m))
             );
             setSelectedMenuData({ menuType, data: updated });
         } else if (menuType === "bottom") {
-            const updated = { ...(data as SubMenuProps), [field]: value };
+            const updated = { ...(data as SubMenuProps), [field]: normalizedValue };
             setGrandChildMenus((prev) =>
                 prev.map((m) => (m.menuId === updated.menuId ? updated : m))
             );
@@ -303,9 +309,11 @@ function MenuCategory() {
     };
 
     // 링크에서 영어만 가져오기
+    type MenuDivision = "top" | "middle" | "bottom";
+
     function getEnglishNameByType(
-    path: string | undefined,
-    type: "top" | "middle" | "bottom"
+        path: string | undefined,
+        type: MenuDivision
     ) {
         if (!path) return "";
         const parts = path.split("/").filter(Boolean);
@@ -320,6 +328,10 @@ function MenuCategory() {
                 return "";
         }
     }
+
+    // 메뉴 구분 선택
+    const [ categoryChoose, setCategoryChoose ] = useState('')
+    const [ middleChoose, setMiddleChoose ] = useState('')
 
     return (
         <div className="admin-page menu-category">
@@ -368,7 +380,7 @@ function MenuCategory() {
                                         subMenus
                                             .filter((sub) => sub.parent === item.menuId)
                                             .map((sub) => (
-                                                <li key={sub.menuId} className="midde-menu">
+                                                <div key={sub.menuId} className="midde-menu">
                                                     <SubMenuItem
                                                         item={sub}
                                                         dragEnabled={dragEnabled}
@@ -406,24 +418,10 @@ function MenuCategory() {
                                                                 ))}
                                                         </>
                                                     )}
-                                                </li>
+                                                </div>
                                             ))}
                                 </ul>
                             ))}
-
-                            <ul>
-                                <li className="top-menu">
-                                    <div className="bar-contents">
-                                        <button
-                                            type="button"
-                                            className="add-btn"
-                                            onClick={handleAddMenu}
-                                        >
-                                            <IconCirclePlus color="var(--color-white)" />
-                                        </button>
-                                    </div>
-                                </li>
-                            </ul>
                         </div>
                     </SortableContext>
 
@@ -442,11 +440,23 @@ function MenuCategory() {
                 </DndContext>
 
                 <form className="admin-form" id="menu-category-form" onSubmit={(e) => e.preventDefault()}>
+                    <div className="center-menu">
+                        <button
+                            type="button"
+                            className="add-btn"
+                            onClick={handleAddMenu}
+                        >
+                            <IconCirclePlus color="var(--color-black)" />
+                            메뉴 생성
+                        </button>
+                    </div>
+
                     <ul>
                         <li>
                             <span className="admin-form-title">메뉴 이름</span>
                             <div className="input-area">
                                 <input
+                                    id="menuName"
                                     type="text"
                                     placeholder="메뉴 이름"
                                     value={
@@ -470,11 +480,11 @@ function MenuCategory() {
                         </li>
 
                         <li>
-                            <span className="admin-form-title">영어 이름</span>
+                            <span className="admin-form-title">링크명</span>
                             <div className="input-area">
                                 <input
                                     type="text"
-                                    placeholder="영어 이름"
+                                    placeholder="링크명"
                                     value={
                                         selectedMenuData.data
                                             ? getEnglishNameByType(
@@ -503,18 +513,14 @@ function MenuCategory() {
                             <div className="input-area">
                                 <select
                                     value={
-                                        selectedMenuData.data && "menuVisible" in selectedMenuData.data
+                                        selectedMenuData.data && "status" in selectedMenuData.data
                                             ? (selectedMenuData.data as MenuProps).menuVisible
                                                 ? "true"
                                                 : "false"
                                             : "true"
                                     }
-                                    onChange={(e) =>
-                                        onFormChange(
-                                            "menuVisible",
-                                            e.target.value === "true" ? "true" : "false"
-                                        )
-                                    }
+                                    onChange={(e) => onFormChange("menuVisible", e.target.value)}
+                                    disabled={!selectedMenuData.data}
                                 >
                                     <option value="true">노출</option>
                                     <option value="false">숨김</option>
@@ -525,7 +531,20 @@ function MenuCategory() {
                         <li>
                             <span className="admin-form-title">노출 권한</span>
                             <div className="input-area">
-                                <select>
+                                <select
+                                    value={
+                                        selectedMenuData.data
+                                            ? getEnglishNameByType(
+                                                "authority" in selectedMenuData.data
+                                                    ? (selectedMenuData.data as MenuProps).menuPath
+                                                    : (selectedMenuData.data as SubMenuProps).link,
+                                                selectedMenuData.menuType ?? "top"
+                                            )
+                                            : ""
+                                    }
+                                    onChange={(e) => onFormChange("authority", e.target.value)}
+                                    disabled={!selectedMenuData.data}
+                                >
                                     <option>전체</option>
                                     <option>로그인회원</option>
                                     <option>관리자</option>
@@ -536,52 +555,138 @@ function MenuCategory() {
                         <li>
                             <span className="admin-form-title">메뉴 구분</span>
                             <div className="input-area">
-                                <select>
-                                    <option>대메뉴</option>
-                                    <option>중메뉴</option>
-                                    <option>소메뉴</option>
-                                </select>
-                            </div>
-                        </li>
+                                <select
+                                    id="menu-division"
+                                    value={
+                                        selectedMenuData.data
+                                            ? getEnglishNameByType(
+                                                "menuPath" in selectedMenuData.data
+                                                    ? (selectedMenuData.data as MenuProps).menuPath
+                                                    : (selectedMenuData.data as SubMenuProps).link,
+                                                selectedMenuData.menuType ?? "top"
+                                            )
+                                            : ""
+                                    }
+                                    onChange={(e) => {
+                                        onFormChange(
+                                            "menuPath" in (selectedMenuData.data ?? {})
+                                                ? "menuPath"
+                                                : "link",
+                                            e.target.value
+                                        );
+                                        setCategoryChoose(e.target.value);
+                                    }}
 
-                        <li>
-                            <span className="admin-form-title">최상위 메뉴</span>
-                            <div className="input-area">
-                                <select>
-                                    <option>선택</option>
-                                    <option>대메뉴</option>
-                                    <option>중메뉴</option>
-                                    <option>소메뉴</option>
-                                </select>
-                            </div>
-                        </li>
-
-                        <li>
-                            <span className="admin-form-title">상위 메뉴</span>
-                            <div className="input-area">
-                                <select>
-                                    <option>선택</option>
-                                    <option>대메뉴</option>
-                                    <option>중메뉴</option>
-                                    <option>소메뉴</option>
-                                </select>
-                            </div>
-                        </li>
-
-                        <li>
-                            <span className="admin-form-title">메뉴 삭제</span>
-                            <div className="input-area">
-                                <button
-                                    type="button"
-                                    className="blackBtn"
                                     disabled={!selectedMenuData.data}
-                                    onClick={handleDeleteFromForm}
                                 >
-                                    <IconTrash color="var(--color-white)" />
-                                    삭제하기
-                                </button>
+                                    <option value={''}>선택</option>
+                                    <option value={'top'}>대메뉴</option>
+                                    <option value={'middle'}>중메뉴</option>
+                                    <option value={'bottom'}>소메뉴</option>
+                                </select>
                             </div>
                         </li>
+                        
+                        { categoryChoose === 'middle' || categoryChoose === 'bottom' ?
+                            <li>
+                                <span className="admin-form-title">최상위 메뉴</span>
+
+                                <div className="input-area">
+                                    <select
+                                        value={
+                                            selectedMenuData.data
+                                                ? getEnglishNameByType(
+                                                    "menuPath" in selectedMenuData.data
+                                                        ? (selectedMenuData.data as MenuProps).menuPath
+                                                        : (selectedMenuData.data as SubMenuProps).link,
+                                                    selectedMenuData.menuType ?? "top"
+                                                )
+                                                : ""
+                                        }
+                                        onChange={(e) => {
+                                            onFormChange(
+                                                "menuPath" in (selectedMenuData.data ?? {})
+                                                    ? "menuPath"
+                                                    : "link",
+                                                e.target.value
+                                            );
+                                            setMiddleChoose(e.target.value);
+                                        }}
+                                        disabled={!selectedMenuData.data}
+                                    >
+                                        { menus.map((data, index)=>{
+                                            return (
+                                                <>
+                                                    <option key={index} value={data.menuId}>{data.menuName}</option>
+                                                </>
+                                            )
+                                        })}
+                                    </select>
+                                </div>
+                            </li>
+                        : null}
+                        
+
+                        { categoryChoose === 'bottom' ? 
+                            <li>
+                                <span className="admin-form-title">상위 메뉴</span>
+                                <div className="input-area">
+                                    <select
+                                        value={
+                                            selectedMenuData.data
+                                                ? getEnglishNameByType(
+                                                    "menuPath" in selectedMenuData.data
+                                                        ? (selectedMenuData.data as MenuProps).menuPath
+                                                        : (selectedMenuData.data as SubMenuProps).link,
+                                                    selectedMenuData.menuType ?? "top"
+                                                )
+                                                : ""
+                                        }
+                                        onChange={(e) =>
+                                            onFormChange(
+                                                "menuPath" in (selectedMenuData.data ?? {})
+                                                    ? "menuPath"
+                                                    : "link",
+                                                e.target.value
+                                            )
+                                        }
+                                        disabled={!selectedMenuData.data}
+                                    >
+                                        { subMenus.map((data, index)=>{
+                                            if ( Number(data.parent) === Number(middleChoose) ) {
+                                                return (
+                                                <>
+                                                    <option key={index} value={data.menuId}>{data.title}</option>
+                                                </>
+                                            )}else {
+                                                return (
+                                                    <>
+                                                        <option value={''} hidden>상위 메뉴를 먼저 생성해주세요</option>
+                                                    </>
+                                                )}
+                                        })}
+                                    </select>
+                                </div>
+                            </li>
+                        : null}
+                        
+                        {selectedMenuData.data ? 
+                            <li>
+                                <span className="admin-form-title">메뉴 삭제</span>
+
+                                <div className="input-area">
+                                    <button
+                                        type="button"
+                                        className="blackBtn"
+                                        disabled={!selectedMenuData.data}
+                                        onClick={handleDeleteFromForm}
+                                    >
+                                        <IconTrash color="var(--color-white)" />
+                                        삭제하기
+                                    </button>
+                                </div>
+                            </li>
+                        : null} 
                     </ul>
                 </form>
             </div>

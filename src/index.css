@@ -55,6 +55,11 @@ input[type="text"]:focus,
 input[type="password"]:focus,
 input[type="email"]:focus { border: 1px solid var(--color-black); }
 
+input[type="text"]:disabled,
+input[type="password"]:disabled,
+input[type="email"]:disabled,
+select:disabled { background-color: var(--color-lightGray); cursor: no-drop; }
+
 input[type="checkbox"] { display: none; }
 input[type="checkbox"] + label { cursor: pointer; display: flex; align-items: center; gap: 6px; }
 input[type="checkbox"] + label::before {
