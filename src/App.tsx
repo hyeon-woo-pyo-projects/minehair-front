@@ -12,8 +12,9 @@ import AdminIndex from './admin/AdminIndex';
 
 import './App.css';
 import AdminRouter from './admin/AdminRouter';
-import EventBanner from './admin/components/common/EventBanner';
-import MenuCategory from './admin/components/common/menuCategory';
+import AdminBanner from './admin/components/common/AdminBanner';
+import AdminCategory from './admin/components/common/AdminCategory';
+import AdminLogo from './admin/components/common/AdminLogo';
 
 function App() {
   return (
@@ -23,8 +24,9 @@ function App() {
           {/* Admin 전용 라우트: parent 경로는 "admin", children은 상대경로로 정의 */}
           <Route path="admin" element={<AdminRouter />}>
             <Route path="index" element={<AdminIndex />} />
-            <Route path="event-banner" element={<EventBanner />} />
-            <Route path="menu-category" element={<MenuCategory />} />
+            <Route path="admin-banner" element={<AdminBanner />} />
+            <Route path="admin-category" element={<AdminCategory />} />
+            <Route path="admin-logo" element={<AdminLogo />} />
           </Route>
 
           {/* 일반 사용자 레이아웃: 모든 비-관리자 경로 처리 */}

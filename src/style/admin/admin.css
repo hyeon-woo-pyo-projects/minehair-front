@@ -231,3 +231,14 @@
 }
 
 .menu-category .add-btn:hover { background-color: var(--color-gray); }
+
+
+
+/* ADMIN-LOGO 어드민 로고 */
+.admin-page .admin-form#admin-logo-form ul li { width: calc(50% - 15px); }
+.admin-page .admin-form#admin-logo-form ul li span.admin-form-title { text-align: center; font-size: 18px; margin-bottom: 12px; }
+#admin-logo #admin-logo-form .logo-box { width: 100%; border: 1px dashed var(--color-gray); padding: 12px 30px; border-radius: 5px; height: 350px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+#admin-logo #admin-logo-form .logo-box img { width: 100%; }
+.admin-page .admin-form#admin-logo-form ul li .input-area { margin-top: 15px; }
+.admin-page .admin-form#admin-logo-form ul li .input-area.size-input { gap: 6px; }
+.admin-page .admin-form#admin-logo-form ul li .input-area.size-input label { flex: none; font-size: 14px; margin-right: 30px; }

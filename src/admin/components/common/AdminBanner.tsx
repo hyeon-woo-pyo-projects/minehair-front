@@ -15,7 +15,7 @@ interface BannerProps {
     call : string,
 }
 
-function EventBanner () {
+function AdminBanner () {
     // 배너 데이터 받아오기
     const [bannerData, setBannerData] = useState<BannerProps | null>(null);
 
@@ -154,4 +154,4 @@ function EventBanner () {
     )
 }
 
-export default EventBanner;
+export default AdminBanner;

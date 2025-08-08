@@ -188,7 +188,7 @@ function GrandChildItem({
     );
 }
 
-function MenuCategory() {
+function AdminCategory() {
     const [menus, setMenus] = useState<MenuProps[]>([]);
     const [subMenus, setSubMenus] = useState<SubMenuProps[]>([]);
     const [grandChildMenus, setGrandChildMenus] = useState<GrandChildProps[]>([]);
@@ -804,4 +804,4 @@ function MenuCategory() {
     );
 }
 
-export default MenuCategory;
+export default AdminCategory;

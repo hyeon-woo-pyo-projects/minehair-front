@@ -10,8 +10,9 @@ function AdminIndex () {
                 <h3 className="admin-title">공통 레이아웃</h3>
 
                 <ul className="admin-contents">
-                    <li><Link to={'/admin/event-banner'}>이벤트 배너</Link></li>
-                    <li><Link to={'/admin/menu-category'}>헤더 메뉴</Link></li>
+                    <li><Link to={'/admin/admin-banner'}>이벤트 배너</Link></li>
+                    <li><Link to={'/admin/admin-category'}>헤더 메뉴</Link></li>
+                    <li><Link to={'/admin/admin-logo'}>로고 관리</Link></li>
                 </ul>
             </section>
         </div>
