@@ -43,7 +43,7 @@ function EventBanner () {
         .get('/banner')
         .then((response) => {
             if ( response.data.success === true ) {
-            setBannerData(response.data.data[0]);
+                setBannerData(response.data.data[0]);
             }
         })
         .catch((error) => {

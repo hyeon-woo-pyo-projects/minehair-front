@@ -41,6 +41,7 @@
 .admin-page .admin-form ul li { display: flex; flex-direction: column; gap: 12px; width: calc((100% / 4) - 25px); }
 .admin-page .admin-form ul li span.admin-form-title { display: block; font-size: 14px; font-weight: 500; }
 .admin-page .admin-form ul li .input-area { position: relative; display: flex; align-items: center; gap: 6px; }
+.admin-page select { width: 100%; height: 40px; font-size: 14px; }
 
 .admin-page .admin-body-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
 .admin-page .admin-body-header p.pulblish-status { font-size: 14px; display: flex; align-items: center; gap: 6px; }
@@ -146,19 +147,45 @@
 /* 헤더 메뉴 */
 .menu-category .admin-body .menu-bar {
     display: flex; 
+    justify-content: start;
+    align-items: start;
+    flex-wrap: wrap;
+    gap: 50px 0;
+}
+.menu-category .admin-body .menu-bar ul {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: calc(100% / 10);
+    transition: all 0.25s;
+}
+.menu-category .admin-body .menu-bar .bar-contents { position: relative; }
+.menu-category .admin-body .menu-bar .bar-contents.children button { background-color: rgba(0, 0, 0, 0.5);}
+.menu-category .admin-body .menu-bar .bar-contents .action-icons {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    backdrop-filter: blur(1px);
     justify-content: center;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 15px 0;
-    background-color: var(--color-black);
+    gap: 20px;
 }
-.menu-category .admin-body .menu-bar .bar-contents { position: relative; width: calc(100% / 10); transition: all 0.25s; }
+
+.menu-category .admin-body .menu-bar .bar-contents .action-icons button { width: auto; background-color: unset;}
+.menu-category .admin-body .menu-bar .bar-contents .action-icons button:hover { opacity: 0.6; }
 .menu-category .admin-body .menu-bar .bar-contents button {
     width: 100%;
     font-size: 16px;
     background-color: var(--color-black);
     color: var(--color-white);
     height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .menu-category .admin-body .menu-bar .bar-contents .edit-input {
     border: 0;
