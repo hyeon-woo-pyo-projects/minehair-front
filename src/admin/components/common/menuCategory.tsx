@@ -434,10 +434,10 @@ function MenuCategory() {
                         </li>
 
                         <li>
-                            <span className="admin-form-title">메뉴 링크</span>
+                            <span className="admin-form-title">영어 이름</span>
 
                             <div className="input-area">
-                                <input type="text" placeholder="메뉴 링크"/>
+                                <input type="text" placeholder="영어 이름"/>
                             </div>
                         </li>
                         
@@ -461,6 +461,50 @@ function MenuCategory() {
                                     <option value="0">로그인회원</option>
                                     <option value="0">관리자</option>
                                 </select>
+                            </div>
+                        </li>
+
+                        <li>
+                            <span className="admin-form-title">메뉴 구분</span>
+
+                            <div className="input-area">
+                                <select name="" id="">
+                                    <option value="0">대메뉴</option>
+                                    <option value="0">중메뉴</option>
+                                    <option value="0">소메뉴</option>
+                                </select>
+                            </div>
+                        </li>
+
+                        <li>
+                            <span className="admin-form-title">최상위 메뉴</span>
+
+                            <div className="input-area">
+                                <select name="" id="">
+                                    <option value="0">대메뉴</option>
+                                    <option value="0">중메뉴</option>
+                                    <option value="0">소메뉴</option>
+                                </select>
+                            </div>
+                        </li>
+
+                        <li>
+                            <span className="admin-form-title">상위 메뉴</span>
+
+                            <div className="input-area">
+                                <select name="" id="">
+                                    <option value="0">대메뉴</option>
+                                    <option value="0">중메뉴</option>
+                                    <option value="0">소메뉴</option>
+                                </select>
+                            </div>
+                        </li>
+
+                        <li>
+                            <span className="admin-form-title">메뉴 삭제</span>
+
+                            <div className="input-area">
+                                <button type="button" className="blackBtn"><IconTrash color="var(--color-white)"/>삭제하기</button>
                             </div>
                         </li>
                     </ul>

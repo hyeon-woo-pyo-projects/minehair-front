@@ -1,6 +1,8 @@
+
 import { useNavigate } from "react-router-dom";
-import { useSave, SaveOptions } from '../../../components/common/UseSave';
+import { useSave, SaveOptions } from "../../../components/common/UseSave";
 import IconArrowLeft from "../../../icons/IconArrowLeft";
+import { useState, useEffect } from "react";
 
 interface BannerProps {
     content: string;
@@ -13,27 +15,40 @@ interface BannerProps {
 
 interface WidgetProps {
     title: string;
-    status? : boolean;
+    status?: boolean;
     saveData?: BannerProps | null;
 }
 
-function AdminWidget({ title, status, saveData }: WidgetProps) {
+function AdminWidget({ title, status = false, saveData }: WidgetProps) {
     const navigate = useNavigate();
-    
-    type BannerSaveData = BannerProps & SaveOptions;
-    const { loading, save } = useSave<BannerSaveData>();
 
-    const handleSave = () => {
-        if (!saveData) return; // null/undefined 방지
+    type BannerSaveData = BannerProps & SaveOptions;
+    const { save } = useSave<BannerSaveData>();
+
+    // 버튼 활성/비활성 관리
+    const [canSave, setCanSave] = useState(status && !!saveData);
+
+    // 외부 status 변경 시 내부 동기화
+    useEffect(() => {
+        setCanSave(status && !!saveData);
+    }, [status, saveData]);
+
+    const handleSave = async () => {
+        if (!saveData) return;
+        if (!window.confirm("저장 하시겠습니까?")) return;
+
         const payload = { ...saveData };
         const dataToSave: BannerSaveData = {
-        ...payload,
-        call: "patch",
-        apiUrl: `/api/banner/0`,
-        payload,
+            ...payload,
+            call: "patch",
+            apiUrl: `/api/banner/0`,
+            payload,
         };
 
-        save(dataToSave);
+        const success = await save(dataToSave);
+        if (success) {
+            setCanSave(false); // 성공 시에만 버튼 비활성화
+        }
     };
 
     return (
@@ -43,11 +58,11 @@ function AdminWidget({ title, status, saveData }: WidgetProps) {
             </button>
 
             <h3>{title}</h3>
-            
+
             <button
                 type="button"
                 className="save-btn"
-                disabled={!status || !saveData}
+                disabled={!canSave}
                 onClick={handleSave}
             >
                 저장하기
