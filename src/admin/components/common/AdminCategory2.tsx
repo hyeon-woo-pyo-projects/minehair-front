@@ -96,26 +96,42 @@ function AdminCategory2 () {
 
     useEffect(() => {
         if (selectedMenu) {
-            // newPath 세팅
             const getPath = selectedMenu.menuPath.split('/');
             let newPath = '';
             if (selectedMenu.menuType === 'MAJOR') newPath = getPath[1];
             else if (selectedMenu.menuType === 'MINOR') newPath = getPath[2];
             else if (selectedMenu.menuType === 'SUB') newPath = getPath[3];
 
+            // 부모 메뉴 id 할당용 변수
+            let selection02 = '';
+            let selection03 = '';
+
+            if (selectedMenu.menuType === 'MINOR') {
+                selection02 = selectedMenu.parentId?.toString() ?? '';
+            }
+            if (selectedMenu.menuType === 'SUB') {
+                // 소메뉴인 경우 상위 메뉴는 parentId, 최상위 메뉴는 부모 메뉴(중메뉴)의 parentId
+                selection03 = selectedMenu.parentId?.toString() ?? '';
+
+                // 소메뉴의 부모(중메뉴)를 찾아서 그 부모Id를 최상위 메뉴로 넣기
+                const parentMinor = minorMenu.find((m) => m.menuId === selectedMenu.parentId);
+                selection02 = parentMinor?.parentId?.toString() ?? '';
+            }
+
             setForm({
                 menuName: selectedMenu.menuName ?? '',
                 menuPath: selectedMenu.menuPath ?? '',
-                newPath : newPath,
+                newPath: newPath,
                 menuVisible: selectedMenu.menuVisible ?? true,
                 menuType: selectedMenu.menuType ?? '',
-                selection01 : '',
-                selection02 : '',
-                selection03 : '',
+                selection01: selectedMenu.menuType ?? '',
+                selection02: selection02,
+                selection03: selection03,
                 imageUrl: selectedMenu.imageUrl ?? '',
             });
         }
-    }, [selectedMenu]);
+    }, [selectedMenu, minorMenu]);
+
 
     useEffect(()=>{
         getMenu();
@@ -263,6 +279,7 @@ function AdminCategory2 () {
                                 <select
                                     name="category-form"
                                     id="menu-division"
+                                    value={form.selection01}
                                     onChange={(e)=>{
                                         setForm((prev) => ({
                                             ...prev,
@@ -285,6 +302,7 @@ function AdminCategory2 () {
                                     <select
                                         name="category-form"
                                         id="menu-major"
+                                        value={form.selection02}
                                         onChange={(e)=>{
                                             setForm((prev) => ({
                                                 ...prev,
@@ -307,6 +325,7 @@ function AdminCategory2 () {
                                     <select 
                                         name="category-form" 
                                         id="menu-minor"
+                                        value={form.selection03}
                                         onChange={(e)=>{
                                             setForm((prev) => ({
                                                 ...prev,
