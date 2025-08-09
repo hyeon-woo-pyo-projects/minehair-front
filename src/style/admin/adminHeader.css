@@ -56,5 +56,18 @@
     box-shadow: 0 10px 10px 10px var(--color-gray);
     z-index: 50;
     min-height: 100vh;
+    padding-top: 100px;
 }
 #admin-menu.show { left: 0; }
+#admin-menu .main-switch,
+#admin-menu .sub-switch { 
+    display: flex; 
+    width: 100%; 
+    padding: 12px 30px; 
+    align-items: center; 
+    justify-content: space-between;
+    cursor: pointer;
+}
+#admin-menu .main-switch { background-color: var(--color-black); border-top: 1px solid var(--color-white); }
+#admin-menu .main-switch p { color: var(--color-white); }
+#admin-menu .sub-switch { background-color: var(--color-darkGray); }

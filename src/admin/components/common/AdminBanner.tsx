@@ -77,10 +77,13 @@ function AdminBanner () {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
-
         if (!file.type.includes("image")) {
             alert("이미지 형식만 업로드 가능합니다.");
             return;
+        }
+        if ( file.size > 10485760 ) {
+            alert('10MB 이하의 파일만 업로드 가능합니다.');
+            return false;
         }
 
         // 미리보기용 URL 생성

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 import '../../../style/admin/adminHeader.css';
 import { useState } from "react";
+import AdminNavagation from "./AdminNavigation";
 
 function AdminFixHeader () {
     const [ openMenu, setOpenMenu ] = useState(false);
@@ -25,9 +26,7 @@ function AdminFixHeader () {
                 </div>
             </div>
 
-            <div id="admin-menu" className={ openMenu === true ? 'show' : '' }>
-                
-            </div>
+            <AdminNavagation openMenu={openMenu}/>
         </>
     )
 }
