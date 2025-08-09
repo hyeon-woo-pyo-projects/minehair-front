@@ -18,6 +18,20 @@ import AdminLogo from './admin/components/common/AdminLogo';
 import AdminPreview from './admin/components/common/AdminPreview';
 
 function App() {
+  // 토큰 체크
+  const checkLoginExpiry = () => {
+    const expiryTime = localStorage.getItem('loginExpiry');
+    if (expiryTime && new Date().getTime() > Number(expiryTime)) {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('roleCode');
+        localStorage.removeItem('loginExpiry');
+        console.log("로그인 정보가 만료되어 초기화되었습니다.");
+    }
+  };
+  
+  checkLoginExpiry();
+
   return (
     <div className="App">
       <HashRouter>

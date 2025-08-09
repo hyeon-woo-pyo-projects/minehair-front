@@ -31,25 +31,30 @@ function Login () {
 
     const getLogin = () => {
         axiosInstance
-        .post('/auth/login', { userId : login.userId.trim(), password : login.password.trim() })
-        .then((response) => {
-            if ( response.data.success === true ) {
-                const { accessToken, refreshToken, roleCode } = response.data.data;
+            .post('/auth/login', { userId: login.userId.trim(), password: login.password.trim() })
+            .then((response) => {
+                if (response.data.success === true) {
+                    const { accessToken, refreshToken, roleCode } = response.data.data;
 
-                localStorage.setItem('accessToken', accessToken);
-                localStorage.setItem('refreshToken', refreshToken);
-                localStorage.setItem('roleCode', roleCode);
-                setErrMsg(false);
+                    const now = new Date().getTime();
+                    const expiryTime = now + 24 * 60 * 60 * 1000;
 
-                navigate('/');
-                window.location.reload();
-            }
-        })
-        .catch((error) => {
-            console.log('error');
-            setErrMsg(true);
-        })
-    }
+                    localStorage.setItem('accessToken', accessToken);
+                    localStorage.setItem('refreshToken', refreshToken);
+                    localStorage.setItem('roleCode', roleCode);
+                    localStorage.setItem('loginExpiry', String(expiryTime));
+
+                    setErrMsg(false);
+
+                    navigate('/');
+                    window.location.reload();
+                }
+            })
+            .catch((error) => {
+                console.log('error');
+                setErrMsg(true);
+            });
+    };
 
     return (
         <div id="page-login" className='membersComponents'>
