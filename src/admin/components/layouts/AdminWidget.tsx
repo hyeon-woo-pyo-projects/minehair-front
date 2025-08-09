@@ -79,7 +79,7 @@ function AdminWidget<T extends SaveOptions>({
                 disabled={!canSave || loading}
                 onClick={handleSave}
             >
-                {loading ? "저장 중..." : "저장하기"}
+                저장하기
             </button>
         </div>
     );
