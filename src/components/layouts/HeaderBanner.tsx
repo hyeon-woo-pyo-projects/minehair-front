@@ -28,7 +28,6 @@ function HeaderBanner() {
         .then((response) => {
             if ( response.data.success === true ) {
                 setBannerData(response.data.data[0]);
-                console.log(response.data.data[0])
             }
         })
         .catch((error) => {

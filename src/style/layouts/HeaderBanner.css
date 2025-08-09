@@ -8,6 +8,9 @@
     position: relative;
     transition: all 0.25s;
     height: 40px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
 }
 
 #headerBanner:hover {

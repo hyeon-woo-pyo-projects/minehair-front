@@ -4,56 +4,85 @@ import IconArrowLeft from "../../../icons/IconArrowLeft";
 import { useState, useEffect } from "react";
 
 interface WidgetProps<T extends SaveOptions> {
-  title: string;
-  status?: boolean;
-  saveData?: T | null;
+    title: string;
+    status?: boolean;
+    saveData?: T | null;
+    imageFile?: File | null;
+    uploadImageFile?: (file: File) => Promise<string | null>;
+    onUploadSuccess?: (uploadedUrl: string) => void;
+    onClearImageFile?: () => void;
+    setSave?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function AdminWidget<T extends SaveOptions>({ title, status = false, saveData }: WidgetProps<T>) {
-  const navigate = useNavigate();
-  const { save, loading } = useSave<T>();
+function AdminWidget<T extends SaveOptions>({
+    title,
+    status = false,
+    saveData,
+    imageFile,
+    uploadImageFile,
+    onUploadSuccess,
+    onClearImageFile,
+    setSave,
+}: WidgetProps<T>) {
+    const navigate = useNavigate();
+    const { save, loading } = useSave<T>();
 
-  const [canSave, setCanSave] = useState(status && !!saveData);
+    const [canSave, setCanSave] = useState(status && !!saveData);
 
-  useEffect(() => {
-    setCanSave(status && !!saveData);
-  }, [status, saveData]);
+    useEffect(() => {
+        setCanSave(status && !!saveData);
+    }, [status, saveData]);
 
-  const handleSave = async () => {
-    if (!saveData) return;
-    if (!window.confirm("저장 하시겠습니까?")) return;
+    const handleSave = async () => {
+        if (!saveData) return;
+        if (!window.confirm("저장 하시겠습니까?")) return;
 
-    const payload = { ...saveData };
-    const dataToSave = {
-      ...payload,
-      payload,
+        let finalImageUrl = (saveData as any).imageUrl;
+
+        if (imageFile && uploadImageFile) {
+            const uploadedUrl = await uploadImageFile(imageFile);
+        if (!uploadedUrl) return;
+            finalImageUrl = uploadedUrl;
+            onUploadSuccess?.(uploadedUrl);
+        }
+
+        const payload = {
+            ...saveData,
+            imageUrl: finalImageUrl,
+        };
+
+        const dataToSave = {
+            ...payload,
+            payload,
+        };
+
+        const success = await save(dataToSave);
+        if (success) {
+            setCanSave(false);
+            setSave?.(false);
+            onClearImageFile?.();
+            alert("저장되었습니다");
+        }
     };
 
-    const success = await save(dataToSave);
-    if (success) {
-      setCanSave(false);
-      alert("저장되었습니다");
-    }
-  };
+    return (
+        <div className="admin-widget">
+            <button className="back-btn" onClick={() => navigate(-1)}>
+                <IconArrowLeft color="var(--color-black)" width={30} />
+            </button>
 
-  return (
-    <div className="admin-widget">
-      <button className="back-btn" onClick={() => navigate(-1)}>
-        <IconArrowLeft color="var(--color-black)" width={30} />
-      </button>
+            <h3>{title}</h3>
 
-      <h3>{title}</h3>
-
-      <button
-        type="button"
-        className="save-btn"
-        disabled={!canSave || loading}
-        onClick={handleSave}
-      >
-        저장하기
-      </button>
-    </div>
-  );
+            <button
+                type="button"
+                className="save-btn"
+                disabled={!canSave || loading}
+                onClick={handleSave}
+            >
+                {loading ? "저장 중..." : "저장하기"}
+            </button>
+        </div>
+    );
 }
 
 export default AdminWidget;
