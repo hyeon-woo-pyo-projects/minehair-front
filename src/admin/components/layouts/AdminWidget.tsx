@@ -9,7 +9,7 @@ interface BannerProps {
     textColor: string;
     color: string;
     link: string;
-    imgUrl: string;
+    imageUrl: string;
     isPost: boolean;
 }
 
@@ -37,7 +37,6 @@ function AdminWidget({ title, status = false, saveData }: WidgetProps) {
         if (!saveData) return;
         if (!window.confirm("저장 하시겠습니까?")) return;
 
-        
         const payload = { ...saveData };
         const dataToSave: BannerSaveData = {
             ...payload,

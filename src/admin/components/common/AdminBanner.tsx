@@ -10,7 +10,7 @@ interface BannerProps {
     textColor : string,
     color: string,
     link : string,
-    imgUrl : string,
+    imageUrl : string,
     isPost : boolean,
     apiUrl : string,
     call : string,
@@ -37,7 +37,7 @@ function AdminBanner () {
         setTextColor(bannerData?.textColor ?? "#000000");
         setColor(bannerData?.color ?? "#ffffff");
         setUrl(bannerData?.link ?? "#");
-        setImgUrl(bannerData?.imgUrl ?? '')
+        setImgUrl(bannerData?.imageUrl ?? '')
     }, [bannerData]);
 
     // 서버에서 배너 호출
@@ -67,7 +67,7 @@ function AdminBanner () {
             isPost: bannerData?.isPost ?? false,
             apiUrl : '/banner/1',
             call : 'patch',
-            imgUrl : imgUrl,
+            imageUrl : imgUrl,
         };
 
         setSaveForm(form);

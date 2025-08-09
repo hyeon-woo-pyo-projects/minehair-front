@@ -9,7 +9,7 @@ interface getBannerData {
     link? : string,
     isPost? : Boolean,
     textColor? : string,
-    imgUrl? : string
+    imageUrl? : string
 }
 
 function HeaderBanner() {
@@ -28,6 +28,7 @@ function HeaderBanner() {
         .then((response) => {
             if ( response.data.success === true ) {
                 setBannerData(response.data.data[0]);
+                console.log(response.data.data[0])
             }
         })
         .catch((error) => {
@@ -53,7 +54,7 @@ function HeaderBanner() {
                     style={{ 
                         backgroundColor: bannerData?.color ?? 'var(--color-gray)', 
                         color : bannerData?.textColor ?? '#fff', 
-                        backgroundImage : bannerData?.imgUrl ?? '' 
+                        backgroundImage: bannerData?.imageUrl ? `url(${bannerData.imageUrl})` : ''
                     }}>
                         {bannerData?.content}
                 </Link> : null }

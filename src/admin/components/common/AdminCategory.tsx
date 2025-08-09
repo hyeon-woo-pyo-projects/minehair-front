@@ -33,6 +33,19 @@ interface MenuProps {
     authority : string
 }
 
+interface MenuProps2 {
+    id : number,
+    imageUrl : string,
+    menuId : number,
+    menuName : string,
+    menuOrderNo : number,
+    menuPath : string,
+    menuType : string,
+    menuVisible : boolean,
+    parentId : number,
+    status : string
+}
+
 interface SubMenuProps {
     parent: string;
     menuId: string;
