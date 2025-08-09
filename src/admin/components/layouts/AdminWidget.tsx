@@ -37,6 +37,7 @@ function AdminWidget({ title, status = false, saveData }: WidgetProps) {
         if (!saveData) return;
         if (!window.confirm("저장 하시겠습니까?")) return;
 
+        
         const payload = { ...saveData };
         const dataToSave: BannerSaveData = {
             ...payload,
@@ -46,6 +47,7 @@ function AdminWidget({ title, status = false, saveData }: WidgetProps) {
         const success = await save(dataToSave);
         if (success) {
             setCanSave(false); // 성공 시에만 버튼 비활성화
+            alert('저장되었습니다')
         }
     };
 

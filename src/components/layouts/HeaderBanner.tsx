@@ -8,6 +8,8 @@ interface getBannerData {
     color? : string,
     link? : string,
     isPost? : Boolean,
+    textColor? : string,
+    imgUrl? : string
 }
 
 function HeaderBanner() {
@@ -44,7 +46,17 @@ function HeaderBanner() {
     return (
         <>
             { admin === true ? <Link to="/admin/index" id="adminBanner">관리자 페이지 바로가기</Link> : '' }
-            { bannerData?.isPost === true ? <Link to={bannerData?.link ?? '#'} id="headerBanner" style={{ backgroundColor: bannerData?.color ?? 'var(--color-gray)' }}>{bannerData?.content}</Link> : null }
+            { bannerData?.isPost === true ?
+                <Link 
+                    to={bannerData?.link ?? '#'} 
+                    id="headerBanner" 
+                    style={{ 
+                        backgroundColor: bannerData?.color ?? 'var(--color-gray)', 
+                        color : bannerData?.textColor ?? '#fff', 
+                        backgroundImage : bannerData?.imgUrl ?? '' 
+                    }}>
+                        {bannerData?.content}
+                </Link> : null }
         </>
     )
 }

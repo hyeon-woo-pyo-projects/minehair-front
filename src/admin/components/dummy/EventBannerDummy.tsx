@@ -5,13 +5,28 @@ interface bannerProps {
     textColor : string,
     color : string,
     link : string,
-    isPost? : boolean
+    isPost? : boolean,
+    imgUrl? : string
 }
 
-function EventBannerDummy ({content, textColor, color, link, isPost}:bannerProps) {
+function EventBannerDummy({ content, textColor, color, imgUrl, isPost }: bannerProps) {
+    const backgroundStyle = {
+        backgroundColor: color ?? "var(--color-gray)",
+        backgroundImage: imgUrl ? `url(${imgUrl})` : undefined,
+        color: textColor ?? "var(--color-white)",
+        backgroundSize: "cover",
+        backgroundPosition: "center"
+    };
+
     return (
-        <div className={isPost === true ? 'active' : ''} id="header-banner-dummy" style={{ backgroundColor: color ?? 'var(--color-gray)'}}><p style={{ color: textColor ?? 'var(--color-black)' }}>{content}</p></div>
-    )
+        <div
+            className={isPost === true ? "active" : ""}
+            id="header-banner-dummy"
+            style={backgroundStyle}
+        >
+            {content}
+        </div>
+    );
 }
 
 export default EventBannerDummy;

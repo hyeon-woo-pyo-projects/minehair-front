@@ -3,13 +3,14 @@ import AdminWidget from "../layouts/AdminWidget";
 import axiosInstance from "../../../api/axiosInstance";
 import EventBannerDummy from "../dummy/EventBannerDummy";
 import IconUpload from "../../../icons/IconUpload";
+import IconTrash from "../../../icons/IconTrash";
 
 interface BannerProps {
     content : string,
     textColor : string,
     color: string,
     link : string,
-    imgUrl : string,      // 기존 서버의 이미지 URL
+    imgUrl : string,
     isPost : boolean,
     apiUrl : string,
     call : string,
@@ -24,6 +25,7 @@ function AdminBanner () {
     const [ textColor, setTextColor ] = useState<string>("#000000");
     const [ color, setColor ] = useState<string>("#ffffff");
     const [ url, setUrl ] = useState<string>("#");
+    const [ imgUrl, setImgUrl ] = useState<string>("");
     const [ save, setSave ] = useState(false);
 
     // saveForm: 폼 전체를 담는 객체
@@ -35,6 +37,7 @@ function AdminBanner () {
         setTextColor(bannerData?.textColor ?? "#000000");
         setColor(bannerData?.color ?? "#ffffff");
         setUrl(bannerData?.link ?? "#");
+        setImgUrl(bannerData?.imgUrl ?? '')
     }, [bannerData]);
 
     // 서버에서 배너 호출
@@ -61,20 +64,30 @@ function AdminBanner () {
             textColor,
             color,
             link: url,
-            imgUrl: bannerData?.imgUrl ?? "",
             isPost: bannerData?.isPost ?? false,
             apiUrl : '/banner/1',
-            call : 'patch'
+            call : 'patch',
+            imgUrl : imgUrl,
         };
 
         setSaveForm(form);
-    }, [content, textColor, color, url, bannerData?.imgUrl, bannerData?.isPost]);
+    }, [content, textColor, color, url, imgUrl, bannerData?.isPost]);
 
     // 파일 입력 핸들러
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files && e.target.files[0] ? e.target.files[0] : null;
-        setSave(true); // 변경 감지
-    }
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        if (!file.type.includes("image")) {
+            alert("이미지 형식만 업로드 가능합니다.");
+            return;
+        }
+
+        // 미리보기용 URL 생성
+        const previewUrl = URL.createObjectURL(file);
+        setImgUrl(previewUrl);
+        setSave(true);
+    };
 
     return (
         <div className="admin-page event-banner">
@@ -101,7 +114,13 @@ function AdminBanner () {
                     </div>
                 </div>
 
-                <EventBannerDummy isPost={bannerData?.isPost} content={content} color={color} textColor={textColor} link=""/>
+                <EventBannerDummy
+                    isPost={bannerData?.isPost}
+                    content={content} color={color}
+                    textColor={textColor}
+                    link={bannerData?.link ?? '#'}
+                    imgUrl={imgUrl ?? ""}
+                />
 
                 <form className="admin-form" id="event-banner-form">
                     <ul>
@@ -142,9 +161,21 @@ function AdminBanner () {
 
                         <li>
                             <span className="admin-form-title">이미지 업로드</span>
+
                             <div className="input-area">
-                                <input type="file" id="event-banner-upload" onChange={handleFileChange}/>
-                                <label htmlFor="event-banner-upload"><IconUpload color="var(--color-white)" width={17} height={17}/>이미지 업로드</label>
+                                <div className="seperate-item">
+                                    <input type="file" id="event-banner-upload" onChange={handleFileChange}/>
+                                    <label htmlFor="event-banner-upload"><IconUpload color="var(--color-white)" width={17} height={17}/>이미지 업로드</label>
+                                </div>
+                                
+                                { imgUrl !== '' ? 
+                                    <div className="seperate-item">
+                                        <button type="button" className="red-btn" onClick={()=>{ if (!window.confirm("이미지를 삭제하시겠습니까?")) return; setImgUrl('')}}>
+                                            <IconTrash color="var(--color-white)"/>
+                                            이미지 삭제
+                                        </button>
+                                    </div>
+                                : null }
                             </div>
                         </li>
                     </ul>

@@ -106,6 +106,8 @@ button.primaryBtn:hover { background-color: var(--brand-color-hover); }
 button.disabledBtn { background-color: var(--color-gray); color: var(--color-white); cursor: no-drop; }
 button.blackBtn { background-color: var(--default-background); color: var(--color-white); }
 button.blackBtn:hover { background-color: var(--color-black); }
+button.red-btn { background-color: var(--color-red); color: var(--color-white); }
+button.red-btn:hover { background-color: #c14d4d }
 button.whiteBtn { background-color: var(--color-white); color: var(--color-black); }
 
 .noticeText { font-size: 14px; color: var(--color-red); font-weight: 500; }
