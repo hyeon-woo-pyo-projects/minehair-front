@@ -59,7 +59,7 @@ function SortableItem({
     onDeleteClick: (id: string) => void;
 }) {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
-        id: `top:${item.menuId}`,
+        id: `MAJOR:${item.menuId}`,
     });
 
     const [hovered, setHovered] = useState(false);
@@ -106,7 +106,7 @@ function SubMenuItem({
     onDeleteClick: (id: string) => void;
 }) {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
-        id: `middle:${item.menuId}`,
+        id: `MINOR:${item.menuId}`,
     });
 
     const [hovered, setHovered] = useState(false);
@@ -195,7 +195,7 @@ function AdminCategory() {
     const [activeId, setActiveId] = useState<string | null>(null);
     const [dragEnabled, setDragEnabled] = useState<boolean>(false);
     const [selectedMenuData, setSelectedMenuData] = useState<{
-        menuType: "top" | "middle" | "bottom" | null;
+        menuType: "MAJOR" | "MINOR" | "SUB" | null;
         data: MenuProps | SubMenuProps | GrandChildProps | null;
     }>({ menuType: null, data: null });
 
@@ -252,30 +252,30 @@ function AdminCategory() {
     const activePrefix = active.id.split(":")[0];
     const overPrefix = over.id.split(":")[0];
 
-    if (activePrefix !== overPrefix) return; // 그룹 다르면 이동 금지
+    if (activePrefix !== overPrefix) return;
 
-    if (activePrefix === "top") {
-        const oldIndex = menus.findIndex(m => `top:${m.menuId}` === active.id);
-        const newIndex = menus.findIndex(m => `top:${m.menuId}` === over.id);
+    if (activePrefix === "MAJOR") {
+        const oldIndex = menus.findIndex(m => `MAJOR:${m.menuId}` === active.id);
+        const newIndex = menus.findIndex(m => `MAJOR:${m.menuId}` === over.id);
         setMenus(arrayMove(menus, oldIndex, newIndex));
     }
 
-    if (activePrefix === "middle") {
-        const oldIndex = subMenus.findIndex(m => `middle:${m.menuId}` === active.id);
-        const newIndex = subMenus.findIndex(m => `middle:${m.menuId}` === over.id);
+    if (activePrefix === "MINOR") {
+        const oldIndex = subMenus.findIndex(m => `MINOR:${m.menuId}` === active.id);
+        const newIndex = subMenus.findIndex(m => `MINOR:${m.menuId}` === over.id);
         setSubMenus(arrayMove(subMenus, oldIndex, newIndex));
     }
 
-    if (activePrefix === "bottom") {
-        const oldIndex = grandChildMenus.findIndex(m => `bottom:${m.menuId}` === active.id);
-        const newIndex = grandChildMenus.findIndex(m => `bottom:${m.menuId}` === over.id);
+    if (activePrefix === "SUB") {
+        const oldIndex = grandChildMenus.findIndex(m => `SUB:${m.menuId}` === active.id);
+        const newIndex = grandChildMenus.findIndex(m => `SUB:${m.menuId}` === over.id);
         setGrandChildMenus(arrayMove(grandChildMenus, oldIndex, newIndex));
     }
 
     setActiveId(null);
     };
 
-    const handleEditClick = (item: MenuProps | SubMenuProps | GrandChildProps, menuType: "top" | "middle" | "bottom") => {
+    const handleEditClick = (item: MenuProps | SubMenuProps | GrandChildProps, menuType: "MAJOR" | "MINOR" | "SUB") => {
         if (!dragEnabled) {
             setSelectedMenuData({ menuType, data: item });
         }
@@ -306,7 +306,7 @@ function AdminCategory() {
             authority : '',
         };
 
-        setSelectedMenuData({ menuType: "top", data: newMenu });
+        setSelectedMenuData({ menuType: "MAJOR", data: newMenu });
     };
 
     const onFormChange = (field: string, value: any) => {
@@ -317,19 +317,19 @@ function AdminCategory() {
         const normalizedValue =
             field === "menuVisible" ? (value === "true" || value === true) : value;
 
-        if (menuType === "top") {
+        if (menuType === "MAJOR") {
             const updated = { ...(data as MenuProps), [field]: normalizedValue };
             setMenus((prev) =>
                 prev.map((m) => (m.menuId === updated.menuId ? updated : m))
             );
             setSelectedMenuData({ menuType, data: updated });
-        } else if (menuType === "middle") {
+        } else if (menuType === "MINOR") {
             const updated = { ...(data as SubMenuProps), [field]: normalizedValue };
             setSubMenus((prev) =>
                 prev.map((m) => (m.menuId === updated.menuId ? updated : m))
             );
             setSelectedMenuData({ menuType, data: updated });
-        } else if (menuType === "bottom") {
+        } else if (menuType === "SUB") {
             const updated = { ...(data as GrandChildProps), [field]: normalizedValue };
             setGrandChildMenus((prev) =>
                 prev.map((m) => (m.menuId === updated.menuId ? updated : m))
@@ -350,7 +350,7 @@ function AdminCategory() {
     };
 
     // 링크에서 영어만 가져오기
-    type MenuDivision = "top" | "middle" | "bottom";
+    type MenuDivision = "MAJOR" | "MINOR" | "SUB";
 
     function getEnglishNameByType(
         path: string | undefined,
@@ -359,11 +359,11 @@ function AdminCategory() {
         if (!path) return "";
         const parts = path.split("/").filter(Boolean);
         switch (type) {
-            case "top":
+            case "MAJOR":
                 return parts[0] ?? "";
-            case "middle":
+            case "MINOR":
                 return parts[1] ?? "";
-            case "bottom":
+            case "SUB":
                 return parts[2] ?? "";
             default:
                 return "";
@@ -378,9 +378,9 @@ function AdminCategory() {
     const getOverlayLabel = () => {
         if (!activeId) return "";
         const [lvl, id] = activeId.split(":");
-        if (lvl === "top") return menus.find((m) => m.menuId === id)?.menuName ?? "";
-        if (lvl === "middle") return subMenus.find((s) => s.menuId === id)?.title ?? "";
-        if (lvl === "bottom") return grandChildMenus.find((g) => g.menuId === id)?.title ?? "";
+        if (lvl === "MAJOR") return menus.find((m) => m.menuId === id)?.menuName ?? "";
+        if (lvl === "MINOR") return subMenus.find((s) => s.menuId === id)?.title ?? "";
+        if (lvl === "SUB") return grandChildMenus.find((g) => g.menuId === id)?.title ?? "";
         return "";
     };
 
@@ -411,9 +411,9 @@ function AdminCategory() {
                     onDragStart={handleDragStart}
                     onDragEnd={handleDragEnd}
                 >
-                    {/* top 메뉴 SortableContext: top들만 */}
+                    {/* top 메뉴 SortableContext: MAJOR들만 */}
                     <SortableContext
-                        items={menus.map((item) => `top:${item.menuId}`)}
+                        items={menus.map((item) => `MAJOR:${item.menuId}`)}
                         strategy={horizontalListSortingStrategy}
                     >
                         <div className="menu-bar">
@@ -424,7 +424,7 @@ function AdminCategory() {
                                         <SortableItem
                                             item={item}
                                             dragEnabled={dragEnabled}
-                                            onEditClick={(it) => handleEditClick(it, "top")}
+                                            onEditClick={(it) => handleEditClick(it, "MAJOR")}
                                             onDeleteClick={handleDeleteClick}
                                         />
                                     </li>
@@ -433,7 +433,7 @@ function AdminCategory() {
                                     <SortableContext
                                         items={subMenus
                                             .filter((sub) => sub.parent === item.menuId)
-                                            .map((s) => `middle:${s.menuId}`)}
+                                            .map((s) => `MINOR:${s.menuId}`)}
                                         strategy={horizontalListSortingStrategy}
                                     >
                                         {subMenus
@@ -443,7 +443,7 @@ function AdminCategory() {
                                                     <SubMenuItem
                                                         item={sub}
                                                         dragEnabled={dragEnabled}
-                                                        onEditClick={(it) => handleEditClick(it, "middle")}
+                                                        onEditClick={(it) => handleEditClick(it, "MINOR")}
                                                         onDeleteClick={handleDeleteClick}
                                                     />
 
@@ -464,7 +464,7 @@ function AdminCategory() {
                                                                     <GrandChildItem
                                                                         item={gc}
                                                                         dragEnabled={dragEnabled}
-                                                                        onEditClick={(it) => handleEditClick(it, "bottom")}
+                                                                        onEditClick={(it) => handleEditClick(it, "SUB")}
                                                                         onDeleteClick={handleDeleteClick}
                                                                     />
                                                                 </li>
@@ -483,9 +483,9 @@ function AdminCategory() {
                             <div className="moving">
                                 <p>
                                     <span>
-                                        {menus.find((item) => Number(item.menuId) === Number(activeId.replaceAll('top:', '')))?.menuName ||
-                                        subMenus.find((item) => Number(item.menuId) === Number(activeId.replaceAll('middle:', '')))?.title ||
-                                        grandChildMenus.find((item) => Number(item.menuId) === Number(activeId.replaceAll('bottom:', '')))?.title}
+                                        {menus.find((item) => Number(item.menuId) === Number(activeId.replaceAll('MAJOR:', '')))?.menuName ||
+                                        subMenus.find((item) => Number(item.menuId) === Number(activeId.replaceAll('MINOR:', '')))?.title ||
+                                        grandChildMenus.find((item) => Number(item.menuId) === Number(activeId.replaceAll('SUB:', '')))?.title}
                                     </span>
                                 </p>
                             </div>
@@ -545,7 +545,7 @@ function AdminCategory() {
                                                 "menuPath" in selectedMenuData.data
                                                     ? (selectedMenuData.data as MenuProps).menuPath
                                                     : (selectedMenuData.data as SubMenuProps).link,
-                                                selectedMenuData.menuType ?? "top"
+                                                selectedMenuData.menuType ?? "MAJOR"
                                             )
                                             : ""
                                     }
@@ -592,7 +592,7 @@ function AdminCategory() {
                                                 "authority" in selectedMenuData.data
                                                     ? (selectedMenuData.data as MenuProps).menuPath
                                                     : (selectedMenuData.data as SubMenuProps).link,
-                                                selectedMenuData.menuType ?? "top"
+                                                selectedMenuData.menuType ?? "MAJOR"
                                             )
                                             : ""
                                     }
@@ -617,7 +617,7 @@ function AdminCategory() {
                                                 "menuPath" in selectedMenuData.data
                                                     ? (selectedMenuData.data as MenuProps).menuPath
                                                     : (selectedMenuData.data as SubMenuProps).link,
-                                                selectedMenuData.menuType ?? "top"
+                                                selectedMenuData.menuType ?? "MAJOR"
                                             )
                                             : ""
                                     }
@@ -634,14 +634,14 @@ function AdminCategory() {
                                     disabled={!selectedMenuData.data}
                                 >
                                     <option value={''}>선택</option>
-                                    <option value={'top'}>대메뉴</option>
-                                    <option value={'middle'}>중메뉴</option>
-                                    <option value={'bottom'}>소메뉴</option>
+                                    <option value={'MAJOR'}>대메뉴</option>
+                                    <option value={'MINOR'}>중메뉴</option>
+                                    <option value={'SUB'}>소메뉴</option>
                                 </select>
                             </div>
                         </li>
                         
-                        { categoryChoose === 'middle' || categoryChoose === 'bottom' ?
+                        { categoryChoose === 'MINOR' || categoryChoose === 'SUB' ?
                             <li>
                                 <span className="admin-form-title">최상위 메뉴</span>
 
@@ -653,7 +653,7 @@ function AdminCategory() {
                                                     "menuPath" in selectedMenuData.data
                                                         ? (selectedMenuData.data as MenuProps).menuPath
                                                         : (selectedMenuData.data as SubMenuProps).link,
-                                                    selectedMenuData.menuType ?? "top"
+                                                    selectedMenuData.menuType ?? "MAJOR"
                                                 )
                                                 : ""
                                         }
@@ -679,7 +679,7 @@ function AdminCategory() {
                         : null}
                         
 
-                        { categoryChoose === 'bottom' ? 
+                        { categoryChoose === 'SUB' ? 
                             <li>
                                 <span className="admin-form-title">상위 메뉴</span>
                                 <div className="input-area">
@@ -690,7 +690,7 @@ function AdminCategory() {
                                                     "menuPath" in selectedMenuData.data
                                                         ? (selectedMenuData.data as MenuProps).menuPath
                                                         : (selectedMenuData.data as SubMenuProps).link,
-                                                    selectedMenuData.menuType ?? "top"
+                                                    selectedMenuData.menuType ?? "MAJOR"
                                                 )
                                                 : ""
                                         }
