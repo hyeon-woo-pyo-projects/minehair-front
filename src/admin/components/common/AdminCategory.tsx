@@ -202,7 +202,6 @@ function AdminCategory() {
     const getMenu = () => {
         axiosInstance.get("/role-menus").then((response) => {
             if (response.data.success === true) {
-                console.log(response.data.data)
                 const rawMenu: MenuProps[] = response.data.data;
 
                 const mainMenus = rawMenu.filter((el) => el.parentId === null);
@@ -314,6 +313,11 @@ function AdminCategory() {
 
         const { menuType, data } = selectedMenuData;
 
+        if (field === "menuType") {
+            setSelectedMenuData({ menuType: value, data });
+            return;
+        }
+
         const normalizedValue =
             field === "menuVisible" ? (value === "true" || value === true) : value;
 
@@ -371,18 +375,11 @@ function AdminCategory() {
     }
 
     // 메뉴 구분 선택
-    const [ categoryChoose, setCategoryChoose ] = useState('')
-    const [ middleChoose, setMiddleChoose ] = useState('')
+    const [ categoryChoose, setCategoryChoose ] = useState('');
+    const [ middleChoose, setMiddleChoose ] = useState('');
 
-    // DragOverlay label 결정
-    const getOverlayLabel = () => {
-        if (!activeId) return "";
-        const [lvl, id] = activeId.split(":");
-        if (lvl === "MAJOR") return menus.find((m) => m.menuId === id)?.menuName ?? "";
-        if (lvl === "MINOR") return subMenus.find((s) => s.menuId === id)?.title ?? "";
-        if (lvl === "SUB") return grandChildMenus.find((g) => g.menuId === id)?.title ?? "";
-        return "";
-    };
+    // 링크명 부분
+    
 
     return (
         <div className="admin-page menu-category">
@@ -451,7 +448,7 @@ function AdminCategory() {
                                                     <SortableContext
                                                         items={grandChildMenus
                                                             .filter((gc) => gc.parent === sub.menuId)
-                                                            .map((g) => `bottom:${g.menuId}`)}
+                                                            .map((g) => `SUB:${g.menuId}`)}
                                                         strategy={horizontalListSortingStrategy}
                                                     >
                                                         {grandChildMenus
@@ -539,24 +536,6 @@ function AdminCategory() {
                                 <input
                                     type="text"
                                     placeholder="링크명"
-                                    value={
-                                        selectedMenuData.data
-                                            ? getEnglishNameByType(
-                                                "menuPath" in selectedMenuData.data
-                                                    ? (selectedMenuData.data as MenuProps).menuPath
-                                                    : (selectedMenuData.data as SubMenuProps).link,
-                                                selectedMenuData.menuType ?? "MAJOR"
-                                            )
-                                            : ""
-                                    }
-                                    onChange={(e) =>
-                                        onFormChange(
-                                            "menuPath" in (selectedMenuData.data ?? {})
-                                                ? "menuPath"
-                                                : "link",
-                                            e.target.value
-                                        )
-                                    }
                                     disabled={!selectedMenuData.data}
                                 />
                             </div>
@@ -611,26 +590,8 @@ function AdminCategory() {
                             <div className="input-area">
                                 <select
                                     id="menu-division"
-                                    value={
-                                        selectedMenuData.data
-                                            ? getEnglishNameByType(
-                                                "menuPath" in selectedMenuData.data
-                                                    ? (selectedMenuData.data as MenuProps).menuPath
-                                                    : (selectedMenuData.data as SubMenuProps).link,
-                                                selectedMenuData.menuType ?? "MAJOR"
-                                            )
-                                            : ""
-                                    }
-                                    onChange={(e) => {
-                                        onFormChange(
-                                            "menuPath" in (selectedMenuData.data ?? {})
-                                                ? "menuPath"
-                                                : "link",
-                                            e.target.value
-                                        );
-                                        setCategoryChoose(e.target.value);
-                                    }}
-
+                                    value={ selectedMenuData.menuType ?? '' }
+                                    onChange={(e) => onFormChange("menuType", e.target.value)}
                                     disabled={!selectedMenuData.data}
                                 >
                                     <option value={''}>선택</option>
