@@ -63,7 +63,7 @@ function AdminBanner () {
             link: url,
             imgUrl: bannerData?.imgUrl ?? "",
             isPost: bannerData?.isPost ?? false,
-            apiUrl : '/banner/0',
+            apiUrl : '/banner/1',
             call : 'patch'
         };
 
