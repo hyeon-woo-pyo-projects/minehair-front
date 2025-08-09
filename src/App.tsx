@@ -15,6 +15,7 @@ import AdminRouter from './admin/AdminRouter';
 import AdminBanner from './admin/components/common/AdminBanner';
 import AdminCategory from './admin/components/common/AdminCategory';
 import AdminLogo from './admin/components/common/AdminLogo';
+import AdminPreview from './admin/components/common/AdminPreview';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="admin-banner" element={<AdminBanner />} />
             <Route path="admin-category" element={<AdminCategory />} />
             <Route path="admin-logo" element={<AdminLogo />} />
+            <Route path="admin-preview" element={<AdminPreview />} />
           </Route>
 
           {/* 일반 사용자 레이아웃: 모든 비-관리자 경로 처리 */}

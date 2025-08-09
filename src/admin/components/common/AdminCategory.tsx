@@ -202,6 +202,7 @@ function AdminCategory() {
     const getMenu = () => {
         axiosInstance.get("/role-menus").then((response) => {
             if (response.data.success === true) {
+                console.log(response.data.data)
                 const rawMenu: MenuProps[] = response.data.data;
 
                 const mainMenus = rawMenu.filter((el) => el.parentId === null);
