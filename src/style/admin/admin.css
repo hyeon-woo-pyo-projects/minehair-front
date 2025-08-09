@@ -233,6 +233,10 @@
 }
 
 .menu-category .add-btn:hover { background-color: var(--color-gray); }
+.menu-category .checkboxs { display: flex; gap: 20px; }
+.menu-category .image-upload { width: 100%; }
+.menu-category .image-upload input[type="file"] + label { background-color: var(--brand-color); }
+.menu-category .image-upload input[type="file"] + label:hover { background-color: var(--brand-color-hover); }
 
 
 

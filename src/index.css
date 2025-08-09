@@ -88,6 +88,8 @@ select {
   border: 1px solid var(--color-gray);
   font-size: 16px;
   color: var(--color-black);
+  appearance: none;
+  background: url('./img/arrow-down.svg') no-repeat center right 12px;
 }
 
 input:focus {

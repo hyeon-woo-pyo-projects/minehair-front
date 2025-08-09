@@ -330,7 +330,7 @@ function AdminCategory() {
             setSelectedMenuData({ menuType: value, data });
             return;
         }
-
+        
         const normalizedValue =
             field === "menuVisible" ? (value === "true" || value === true) : value;
 
@@ -340,19 +340,23 @@ function AdminCategory() {
                 prev.map((m) => (m.menuId === updated.menuId ? updated : m))
             );
             setSelectedMenuData({ menuType, data: updated });
+            setCategoryChoose('MAJOR');
         } else if (menuType === "MINOR") {
             const updated = { ...(data as SubMenuProps), [field]: normalizedValue };
             setSubMenus((prev) =>
                 prev.map((m) => (m.menuId === updated.menuId ? updated : m))
             );
             setSelectedMenuData({ menuType, data: updated });
+            setCategoryChoose('MINOR');
         } else if (menuType === "SUB") {
             const updated = { ...(data as GrandChildProps), [field]: normalizedValue };
             setGrandChildMenus((prev) =>
                 prev.map((m) => (m.menuId === updated.menuId ? updated : m))
             );
             setSelectedMenuData({ menuType, data: updated });
+            setCategoryChoose('SUB');
         }
+        
     };
 
     const handleDeleteFromForm = () => {
