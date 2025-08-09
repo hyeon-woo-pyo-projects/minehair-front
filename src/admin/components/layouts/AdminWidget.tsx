@@ -40,8 +40,6 @@ function AdminWidget({ title, status = false, saveData }: WidgetProps) {
         const payload = { ...saveData };
         const dataToSave: BannerSaveData = {
             ...payload,
-            call: "patch",
-            apiUrl: `/api/banner/0`,
             payload,
         };
 

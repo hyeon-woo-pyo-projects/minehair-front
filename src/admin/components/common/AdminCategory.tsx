@@ -245,99 +245,33 @@ function AdminCategory() {
         setActiveId(String(event.active.id));
     };
 
-    const handleDragEnd = (event: DragEndEvent) => {
-        const { active, over } = event;
-        if (!over) {
-            setActiveId(null);
-            return;
-        }
-        if (String(active.id) === String(over.id)) {
-            setActiveId(null);
-            return;
-        }
+    const handleDragEnd = ({ active, over }) => {
+    if (!over || active.id === over.id) return;
 
-        const [levelA, idA] = String(active.id).split(":");
-        const [levelB, idB] = String(over.id).split(":");
+    const activePrefix = active.id.split(":")[0];
+    const overPrefix = over.id.split(":")[0];
 
-        // 서로 다른 레벨이면 아무 동작도 하지 않음
-        if (levelA !== levelB) {
-            setActiveId(null);
-            return;
-        }
+    if (activePrefix !== overPrefix) return; // 그룹 다르면 이동 금지
 
-        if (levelA === "top") {
-            setMenus((prev) => {
-                const oldIndex = prev.findIndex((m) => m.menuId === idA);
-                const newIndex = prev.findIndex((m) => m.menuId === idB);
-                if (oldIndex === -1 || newIndex === -1) return prev;
-                return arrayMove(prev, oldIndex, newIndex);
-            });
-        } else if (levelA === "middle") {
-            // 같은 parent 내에서만
-            const parentId = subMenus.find((m) => m.menuId === idA)?.parent;
-            const parentIdB = subMenus.find((m) => m.menuId === idB)?.parent;
-            if (!parentId || parentId !== parentIdB) {
-                setActiveId(null);
-                return;
-            }
+    if (activePrefix === "top") {
+        const oldIndex = menus.findIndex(m => `top:${m.menuId}` === active.id);
+        const newIndex = menus.findIndex(m => `top:${m.menuId}` === over.id);
+        setMenus(arrayMove(menus, oldIndex, newIndex));
+    }
 
-            setSubMenus((prev) => {
-                const prevCopy = [...prev];
-                const siblingIndices: number[] = [];
-                const siblings: SubMenuProps[] = [];
+    if (activePrefix === "middle") {
+        const oldIndex = subMenus.findIndex(m => `middle:${m.menuId}` === active.id);
+        const newIndex = subMenus.findIndex(m => `middle:${m.menuId}` === over.id);
+        setSubMenus(arrayMove(subMenus, oldIndex, newIndex));
+    }
 
-                prevCopy.forEach((it, idx) => {
-                    if (it.parent === parentId) {
-                        siblingIndices.push(idx);
-                        siblings.push(it);
-                    }
-                });
+    if (activePrefix === "bottom") {
+        const oldIndex = grandChildMenus.findIndex(m => `bottom:${m.menuId}` === active.id);
+        const newIndex = grandChildMenus.findIndex(m => `bottom:${m.menuId}` === over.id);
+        setGrandChildMenus(arrayMove(grandChildMenus, oldIndex, newIndex));
+    }
 
-                const oldLocalIndex = siblings.findIndex((s) => s.menuId === idA);
-                const newLocalIndex = siblings.findIndex((s) => s.menuId === idB);
-                if (oldLocalIndex === -1 || newLocalIndex === -1) return prev;
-
-                const reordered = arrayMove(siblings, oldLocalIndex, newLocalIndex);
-                const result = [...prevCopy];
-                siblingIndices.forEach((origIdx, i) => {
-                    result[origIdx] = reordered[i];
-                });
-                return result;
-            });
-        } else if (levelA === "bottom") {
-            const parentId = grandChildMenus.find((m) => m.menuId === idA)?.parent;
-            const parentIdB = grandChildMenus.find((m) => m.menuId === idB)?.parent;
-            if (!parentId || parentId !== parentIdB) {
-                setActiveId(null);
-                return;
-            }
-
-            setGrandChildMenus((prev) => {
-                const prevCopy = [...prev];
-                const siblingIndices: number[] = [];
-                const siblings: GrandChildProps[] = [];
-
-                prevCopy.forEach((it, idx) => {
-                    if (it.parent === parentId) {
-                        siblingIndices.push(idx);
-                        siblings.push(it);
-                    }
-                });
-
-                const oldLocalIndex = siblings.findIndex((s) => s.menuId === idA);
-                const newLocalIndex = siblings.findIndex((s) => s.menuId === idB);
-                if (oldLocalIndex === -1 || newLocalIndex === -1) return prev;
-
-                const reordered = arrayMove(siblings, oldLocalIndex, newLocalIndex);
-                const result = [...prevCopy];
-                siblingIndices.forEach((origIdx, i) => {
-                    result[origIdx] = reordered[i];
-                });
-                return result;
-            });
-        }
-
-        setActiveId(null);
+    setActiveId(null);
     };
 
     const handleEditClick = (item: MenuProps | SubMenuProps | GrandChildProps, menuType: "top" | "middle" | "bottom") => {
@@ -547,7 +481,11 @@ function AdminCategory() {
                         {activeId !== null && (
                             <div className="moving">
                                 <p>
-                                    <span>{getOverlayLabel()}</span>
+                                    <span>
+                                        {menus.find((item) => Number(item.menuId) === Number(activeId.replaceAll('top:', '')))?.menuName ||
+                                        subMenus.find((item) => Number(item.menuId) === Number(activeId.replaceAll('middle:', '')))?.title ||
+                                        grandChildMenus.find((item) => Number(item.menuId) === Number(activeId.replaceAll('bottom:', '')))?.title}
+                                    </span>
                                 </p>
                             </div>
                         )}
