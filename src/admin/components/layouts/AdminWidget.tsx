@@ -1,73 +1,59 @@
-
 import { useNavigate } from "react-router-dom";
 import { useSave, SaveOptions } from "../../../components/common/UseSave";
 import IconArrowLeft from "../../../icons/IconArrowLeft";
 import { useState, useEffect } from "react";
 
-interface BannerProps {
-    content: string;
-    textColor: string;
-    color: string;
-    link: string;
-    imageUrl: string;
-    isPost: boolean;
+interface WidgetProps<T extends SaveOptions> {
+  title: string;
+  status?: boolean;
+  saveData?: T | null;
 }
 
-interface WidgetProps {
-    title: string;
-    status?: boolean;
-    saveData?: BannerProps | null;
-}
+function AdminWidget<T extends SaveOptions>({ title, status = false, saveData }: WidgetProps<T>) {
+  const navigate = useNavigate();
+  const { save, loading } = useSave<T>();
 
-function AdminWidget({ title, status = false, saveData }: WidgetProps) {
-    const navigate = useNavigate();
+  const [canSave, setCanSave] = useState(status && !!saveData);
 
-    type BannerSaveData = BannerProps & SaveOptions;
-    const { save } = useSave<BannerSaveData>();
+  useEffect(() => {
+    setCanSave(status && !!saveData);
+  }, [status, saveData]);
 
-    // 버튼 활성/비활성 관리
-    const [canSave, setCanSave] = useState(status && !!saveData);
+  const handleSave = async () => {
+    if (!saveData) return;
+    if (!window.confirm("저장 하시겠습니까?")) return;
 
-    // 외부 status 변경 시 내부 동기화
-    useEffect(() => {
-        setCanSave(status && !!saveData);
-    }, [status, saveData]);
-
-    const handleSave = async () => {
-        if (!saveData) return;
-        if (!window.confirm("저장 하시겠습니까?")) return;
-
-        const payload = { ...saveData };
-        const dataToSave: BannerSaveData = {
-            ...payload,
-            payload,
-        };
-
-        const success = await save(dataToSave);
-        if (success) {
-            setCanSave(false); // 성공 시에만 버튼 비활성화
-            alert('저장되었습니다')
-        }
+    const payload = { ...saveData };
+    const dataToSave = {
+      ...payload,
+      payload,
     };
 
-    return (
-        <div className="admin-widget">
-            <button className="back-btn" onClick={() => navigate(-1)}>
-                <IconArrowLeft color="var(--color-black)" width={30} />
-            </button>
+    const success = await save(dataToSave);
+    if (success) {
+      setCanSave(false);
+      alert("저장되었습니다");
+    }
+  };
 
-            <h3>{title}</h3>
+  return (
+    <div className="admin-widget">
+      <button className="back-btn" onClick={() => navigate(-1)}>
+        <IconArrowLeft color="var(--color-black)" width={30} />
+      </button>
 
-            <button
-                type="button"
-                className="save-btn"
-                disabled={!canSave}
-                onClick={handleSave}
-            >
-                저장하기
-            </button>
-        </div>
-    );
+      <h3>{title}</h3>
+
+      <button
+        type="button"
+        className="save-btn"
+        disabled={!canSave || loading}
+        onClick={handleSave}
+      >
+        저장하기
+      </button>
+    </div>
+  );
 }
 
 export default AdminWidget;

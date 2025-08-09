@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import axiosInstance from "../../api/axiosInstance";
 
@@ -10,7 +9,7 @@ export interface SaveOptions {
 
 export function useSave<T extends SaveOptions = SaveOptions>() {
     const [loading, setLoading] = useState(false);
-    
+
     const save = async (data?: T): Promise<boolean> => {
         if (!data) return false;
         setLoading(true);
@@ -19,6 +18,7 @@ export function useSave<T extends SaveOptions = SaveOptions>() {
             if (data.call === "patch" && data.apiUrl) {
                 await axiosInstance.patch(data.apiUrl, data.payload);
             }
+            // 필요시 post, put 등도 처리 가능
             return true;
         } catch (error) {
             console.error("Save failed:", error);

@@ -94,7 +94,7 @@ function AdminBanner () {
 
     return (
         <div className="admin-page event-banner">
-            <AdminWidget title={'이벤트 배너'} status={save} saveData={saveForm}/>
+            <AdminWidget<BannerProps> title={'이벤트 배너'} status={save} saveData={saveForm}/>
 
             <div className="admin-body wrapper">
                 <div className="admin-body-header">
@@ -173,7 +173,7 @@ function AdminBanner () {
                                 
                                 { imgUrl !== '' ? 
                                     <div className="seperate-item">
-                                        <button type="button" className="red-btn" onClick={()=>{ if (!window.confirm("이미지를 삭제하시겠습니까?")) return; setImgUrl('')}}>
+                                        <button type="button" className="red-btn" onClick={()=>{ if (!window.confirm("이미지를 삭제하시겠습니까?")) return; setImgUrl(''); setSave(true);}}>
                                             <IconTrash color="var(--color-white)"/>
                                             이미지 삭제
                                         </button>
