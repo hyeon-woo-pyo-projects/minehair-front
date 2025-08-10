@@ -73,7 +73,7 @@ function SortableItem({ id, children, changeMenu }: { id: number | string; child
     );
 }
 
-function AdminCategory2() {
+function AdminCategory() {
     const [wholeMenu, setWholeMenu] = useState<MenuProps[]>([]);
     const [majorMenu, setMajorMenu] = useState<MenuProps[]>([]);
     const [minorMenu, setMinorMenu] = useState<MenuProps[]>([]);
@@ -504,4 +504,4 @@ function AdminCategory2() {
     );
 }
 
-export default AdminCategory2;
+export default AdminCategory;
