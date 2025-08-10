@@ -10,7 +10,7 @@ function AdminIndex () {
 
                 <ul className="admin-contents">
                     <li><Link to={'/admin/admin-banner'}>이벤트 배너</Link></li>
-                    <li><Link to={'/admin/admin-category2'}>헤더 메뉴</Link></li>
+                    <li><Link to={'/admin/admin-category'}>헤더 메뉴</Link></li>
                     <li><Link to={'/admin/admin-logo'}>로고 관리</Link></li>
                     <li><Link to={'/admin/admin-preview'}>미리보기 링크</Link></li>
                 </ul>

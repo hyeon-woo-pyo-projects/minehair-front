@@ -13,7 +13,7 @@ import AdminIndex from './admin/AdminIndex';
 import './App.css';
 import AdminRouter from './admin/AdminRouter';
 import AdminBanner from './admin/components/common/AdminBanner';
-import AdminCategory from './admin/components/common/AdminCategory2';
+import AdminCategory from './admin/components/common/AdminCategory';
 import AdminLogo from './admin/components/common/AdminLogo';
 import AdminPreview from './admin/components/common/AdminPreview';
 
@@ -40,7 +40,7 @@ function App() {
           <Route path="admin" element={<AdminRouter />}>
             <Route path="index" element={<AdminIndex />} />
             <Route path="admin-banner" element={<AdminBanner />} />
-            <Route path="admin-category2" element={<AdminCategory />} />
+            <Route path="admin-category" element={<AdminCategory />} />
             <Route path="admin-logo" element={<AdminLogo />} />
             <Route path="admin-preview" element={<AdminPreview />} />
           </Route>
