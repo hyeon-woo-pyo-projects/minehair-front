@@ -237,6 +237,7 @@
 .menu-category .image-upload { width: 100%; }
 .menu-category .image-upload input[type="file"] + label { background-color: var(--brand-color); }
 .menu-category .image-upload input[type="file"] + label:hover { background-color: var(--brand-color-hover); }
+.menu-category input[type="checkbox"] + label { font-size: 14px; }
 
 
 

@@ -64,7 +64,7 @@ interface BannerProps {
     }, []);
 
     useEffect(() => {
-            const form: BannerProps = {
+        const form: BannerProps = {
             content,
             textColor,
             color,
@@ -74,6 +74,7 @@ interface BannerProps {
             call: "patch",
             imageUrl: imgUrl,
         };
+        
         setSaveForm(form);
     }, [content, textColor, color, url, imgUrl, bannerData?.isPost]);
 

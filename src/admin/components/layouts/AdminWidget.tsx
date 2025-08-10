@@ -37,6 +37,8 @@ function AdminWidget<T extends SaveOptions>({
         if (!saveData) return;
         if (!window.confirm("저장 하시겠습니까?")) return;
 
+        console.log(saveData)
+
         let finalImageUrl = (saveData as any).imageUrl;
 
         if (imageFile && uploadImageFile) {

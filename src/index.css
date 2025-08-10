@@ -63,6 +63,8 @@ select:disabled { background-color: var(--color-lightGray); cursor: no-drop; }
 
 input[type="checkbox"] { display: none; }
 input[type="checkbox"] + label { cursor: pointer; display: flex; align-items: center; gap: 6px; }
+input[type="checkbox"]:disabled + label { cursor: no-drop; }
+input[type="checkbox"]:disabled + label::before { background-color: var(--color-lightGray); background-image: none; }
 input[type="checkbox"] + label::before {
   content: '';
   display: block;

@@ -32,9 +32,26 @@ interface MenuProps {
     menuOrderNo : number,
     menuPath : string,
     menuType : string,
-    menuVisible : boolean,
+    menuVisible : string,
     parentId : number,
-    status : string
+    status : string,
+    apiUrl : string,
+    call : string,
+}
+
+interface SaveProps {
+    parentId : number,
+    menuName : string,
+    menuPath : string,
+    imageUrl : string,
+    isVisible : true,
+    menuType : string,
+    orderNo : 0,
+    roles : [
+        0
+    ],
+    apiUrl : string,
+    call : string
 }
 
 function AdminCategory2 () {
@@ -55,7 +72,6 @@ function AdminCategory2 () {
                 const minorMenu = wholeMenu.filter((data) => data.menuType === 'MINOR' && data.parentId !== null );
                 const subMenu = wholeMenu.filter((data) => data.menuType === 'SUB' && data.parentId !== null );
 
-                console.log(wholeMenu)
                 // 데이터 담기
                 setWholeMenu(wholeMenu);
                 setMajorMenu(majorMenu);
@@ -79,21 +95,24 @@ function AdminCategory2 () {
 
     function menuClicked (menu : MenuProps) {
         setSelectedMenu(menu);
+        setDisabled(false)
     }
 
     // 폼 값
-    const [ form, setForm ] = useState({
+    const initialForm = {
+        id : 0,
         menuName : '새 메뉴',
         menuPath : '',
         newPath : '',
-        menuVisible : true,
+        menuVisible : 'true',
         menuType : '',
         selection01 : '',
         selection02 : '',
         selection03 : '',
         imageUrl : ''
-    });
-
+    }
+    const [ form, setForm ] = useState(initialForm);
+    
     useEffect(() => {
         if (selectedMenu) {
             const getPath = selectedMenu.menuPath.split('/');
@@ -119,10 +138,11 @@ function AdminCategory2 () {
             }
 
             setForm({
+                id : selectedMenu.id ?? '',
                 menuName: selectedMenu.menuName ?? '',
                 menuPath: selectedMenu.menuPath ?? '',
                 newPath: newPath,
-                menuVisible: selectedMenu.menuVisible ?? true,
+                menuVisible: selectedMenu.menuVisible ?? 'true',
                 menuType: selectedMenu.menuType ?? '',
                 selection01: selectedMenu.menuType ?? '',
                 selection02: selection02,
@@ -132,14 +152,44 @@ function AdminCategory2 () {
         }
     }, [selectedMenu, minorMenu]);
 
+    // 상태 변경
+    const [ save, setSave ] = useState(false);
+    const [ saveForm, setSaveForm ] = useState<SaveProps | null>(null);
+    const [ disabled, setDisabled ] = useState(true);
+    
+    function handleFormChange(changes: Partial<typeof form>) {
+        setSave(true);
+        
+        setForm((prev) => {
+            const updatedForm = { ...prev, ...changes };
+
+            // 메뉴 이름이 바뀌면 wholeMenu도 업데이트
+            if (changes.menuName && selectedMenu) {
+                setWholeMenu((prevWholeMenu) =>
+                    prevWholeMenu.map((menu) =>
+                    menu.menuId === selectedMenu.menuId
+                        ? { ...menu, menuName: changes.menuName! }
+                        : menu
+                    )
+                );
+
+                // selectedMenu도 같이 업데이트
+                setSelectedMenu((prev) =>
+                    prev ? { ...prev, menuName: changes.menuName! } : prev
+                );
+            }
+
+            return updatedForm;
+        });
+    }
 
     useEffect(()=>{
         getMenu();
-    }, [])
+    }, []);
 
     return (
         <div className="admin-page menu-category">
-            <AdminWidget title="헤더 메뉴" />
+            <AdminWidget<SaveProps> title="헤더 메뉴" status={save} saveData={saveForm} />
 
             <div className="admin-body wrapper">
                 <div className="admin-body-header">
@@ -198,6 +248,11 @@ function AdminCategory2 () {
                         <button
                             type="button"
                             className="add-btn"
+                            onClick={() => {
+                                setForm(initialForm);
+                                setSelectedMenu(null);
+                                setDisabled(false);
+                            }}
                         >
                             <IconCirclePlus color="var(--color-black)" />
                             메뉴 생성
@@ -213,12 +268,8 @@ function AdminCategory2 () {
                                     type="text"
                                     placeholder="메뉴 이름"
                                     value={ form.menuName }
-                                    onChange={(e) => {
-                                        setForm((prev) => ({
-                                            ...prev,
-                                            menuName : e.target.value
-                                        }));
-                                    }}
+                                    onChange={(e) => handleFormChange({ menuName: e.target.value })}
+                                    disabled={disabled}
                                 />
                             </div>
                         </li>
@@ -231,12 +282,8 @@ function AdminCategory2 () {
                                     type="text"
                                     placeholder="링크명"
                                     value={ form.newPath }
-                                    onChange={(e) => {
-                                        setForm((prev) => ({
-                                            ...prev,
-                                            newPath : e.target.value
-                                        }));
-                                    }}
+                                    onChange={(e) => handleFormChange({ newPath: e.target.value })}
+                                    disabled={disabled}
                                 />
                             </div>
                         </li>
@@ -244,9 +291,14 @@ function AdminCategory2 () {
                         <li>
                             <span className="admin-form-title">노출 설정</span>
                             <div className="input-area">
-                                <select name="category-form" id="menuVisible">
-                                    <option value="">노출</option>
-                                    <option value="">숨김</option>
+                                <select
+                                    name="category-form"
+                                    id="menuVisible"
+                                    onChange={(e) => handleFormChange({ menuVisible: e.target.value })}
+                                    disabled={disabled}
+                                >
+                                    <option value="true">노출</option>
+                                    <option value="false">숨김</option>
                                 </select>
                             </div>
                         </li>
@@ -256,17 +308,17 @@ function AdminCategory2 () {
                             <div className="input-area">
                                 <div className="checkboxs">
                                     <div className="checkbox-child">
-                                        <input type="checkbox" id="all"/>
+                                        <input type="checkbox" id="all" disabled={disabled}/>
                                         <label htmlFor="all">전체</label>
                                     </div>
 
                                     <div className="checkbox-child">
-                                        <input type="checkbox" id="member"/>
+                                        <input type="checkbox" id="member" disabled={disabled}/>
                                         <label htmlFor="member">회원</label>
                                     </div>
 
                                     <div className="checkbox-child">
-                                        <input type="checkbox" id="admin"/>
+                                        <input type="checkbox" id="admin" disabled={disabled}/>
                                         <label htmlFor="admin">관리자</label>
                                     </div>
                                 </div>
@@ -280,12 +332,8 @@ function AdminCategory2 () {
                                     name="category-form"
                                     id="menu-division"
                                     value={form.selection01}
-                                    onChange={(e)=>{
-                                        setForm((prev) => ({
-                                            ...prev,
-                                            selection01 : e.target.value
-                                        }));
-                                    }}
+                                    onChange={(e) => handleFormChange({ selection01: e.target.value })}
+                                    disabled={disabled}
                                 >
                                     <option value="">선택</option>
                                     <option value="MAJOR">대메뉴</option>
@@ -303,12 +351,7 @@ function AdminCategory2 () {
                                         name="category-form"
                                         id="menu-major"
                                         value={form.selection02}
-                                        onChange={(e)=>{
-                                            setForm((prev) => ({
-                                                ...prev,
-                                                selection02 : e.target.value
-                                            }));
-                                        }}
+                                        onChange={(e) => handleFormChange({ selection02: e.target.value })}
                                     >
                                         { majorMenu.map((data) => (
                                             <option value={data.menuId}>{data.menuName}</option>
@@ -326,12 +369,7 @@ function AdminCategory2 () {
                                         name="category-form" 
                                         id="menu-minor"
                                         value={form.selection03}
-                                        onChange={(e)=>{
-                                            setForm((prev) => ({
-                                                ...prev,
-                                                selection03 : e.target.value
-                                            }));
-                                        }}
+                                        onChange={(e) => handleFormChange({ selection03: e.target.value })}
                                     >
                                         { minorMenu.map((data) => (
                                             Number(form.selection02) === data.parentId ?
