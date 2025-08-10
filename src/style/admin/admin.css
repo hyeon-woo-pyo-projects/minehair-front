@@ -166,7 +166,6 @@
     transition: all 0.25s;
 }
 .menu-category .admin-body .menu-bar ul li.top-menu button { background-color: var(--color-black); }
-.menu-category .admin-body .menu-bar ul li.middle-menu { background-color: rgba(0, 0, 0, 0.8); }
 .menu-category .admin-body .menu-bar ul li.bottom-menu { background-color: rgba(0, 0, 0, 0.3); }
 .menu-category .admin-body .menu-bar .bar-contents { position: relative; }
 .menu-category .admin-body .menu-bar .bar-contents.children button { background-color: rgba(0, 0, 0, 0.5);}

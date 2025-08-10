@@ -55,14 +55,15 @@ interface SaveProps {
 function SortableItem({ id, children, changeMenu }: { id: number | string; children: React.ReactNode; changeMenu: boolean }) {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id, disabled: !changeMenu });
 
-    const style = {
+    const style: React.CSSProperties = {
         transform: CSS.Transform.toString(transform),
         transition,
         cursor: changeMenu ? "grab" : "default",
-        zIndex: isDragging ? 999 : undefined,
+        zIndex: isDragging ? 9999 : undefined,
         boxShadow: isDragging ? "0 10px 20px rgba(0,0,0,0.2)" : undefined,
         borderRadius: isDragging ? 4 : undefined,
         backgroundColor: isDragging ? "white" : undefined,
+        position: isDragging ? ('relative' as React.CSSProperties['position']) : undefined,
     };
 
     return (
@@ -72,13 +73,12 @@ function SortableItem({ id, children, changeMenu }: { id: number | string; child
     );
 }
 
-function AdminCategory() {
+function AdminCategory2() {
     const [wholeMenu, setWholeMenu] = useState<MenuProps[]>([]);
     const [majorMenu, setMajorMenu] = useState<MenuProps[]>([]);
     const [minorMenu, setMinorMenu] = useState<MenuProps[]>([]);
     const [subMenu, setSubMenu] = useState<MenuProps[]>([]);
 
-    // 드래그 중 실시간 정렬 상태
     const [majorMenuSorted, setMajorMenuSorted] = useState<MenuProps[]>([]);
     const [minorMenuSorted, setMinorMenuSorted] = useState<MenuProps[]>([]);
     const [subMenuSorted, setSubMenuSorted] = useState<MenuProps[]>([]);
@@ -184,7 +184,6 @@ function AdminCategory() {
         setForm((prev) => ({ ...prev, ...changes }));
     }
 
-    // 드래그 중 실시간 순서 변경
     function handleDragOver(event: DragOverEvent, level: "major" | "minor" | "sub", parentId?: number) {
         const { active, over } = event;
         if (!over || active.id === over.id) return;
@@ -220,10 +219,9 @@ function AdminCategory() {
         }
     }
 
-    // 드래그 종료 시 최종 반영
     function handleDragEnd(event: DragEndEvent, level: "major" | "minor" | "sub", parentId?: number) {
         handleDragOver(event, level, parentId);
-        // 여기서 API 호출 혹은 상태 저장 로직 추가 가능
+        // API 호출 또는 저장 처리 여기에 추가 가능
     }
 
     return (
@@ -248,7 +246,6 @@ function AdminCategory() {
                 </div>
 
                 <div className="menu-bar">
-                    {/* MAJOR 메뉴 */}
                     <DndContext
                         collisionDetection={closestCenter}
                         onDragOver={(event) => handleDragOver(event, "major")}
@@ -267,7 +264,6 @@ function AdminCategory() {
                                         </li>
                                     </SortableItem>
 
-                                    {/* MINOR 메뉴 */}
                                     <DndContext
                                         collisionDetection={closestCenter}
                                         onDragOver={(event) => handleDragOver(event, "minor", major.menuId)}
@@ -280,41 +276,46 @@ function AdminCategory() {
                                             {minorMenuSorted
                                                 .filter((minor) => minor.parentId === major.menuId)
                                                 .map((minor) => (
-                                                    <SortableItem id={minor.id} key={minor.id} changeMenu={changeMenu}>
-                                                        <div className="middle-menu">
-                                                            <div className="bar-contents children">
-                                                                <button type="button" onClick={() => { menuClicked(minor); }} disabled={changeMenu}>
-                                                                    {minor.menuName}
-                                                                </button>
-                                                            </div>
+                                                    <div key={minor.id}>
+                                                        <SortableItem id={minor.id} changeMenu={changeMenu}>
+                                                            <li className="middle-menu">
+                                                                <div className="bar-contents children">
+                                                                    <button type="button" onClick={() => { menuClicked(minor); }} disabled={changeMenu}>
+                                                                        {minor.menuName}
+                                                                    </button>
+                                                                </div>
+                                                            </li>
+                                                        </SortableItem>
 
-                                                            {/* SUB 메뉴 */}
-                                                            <DndContext
-                                                                collisionDetection={closestCenter}
-                                                                onDragOver={(event) => handleDragOver(event, "sub", minor.menuId)}
-                                                                onDragEnd={(event) => handleDragEnd(event, "sub", minor.menuId)}
+                                                        <DndContext
+                                                            collisionDetection={closestCenter}
+                                                            onDragOver={(event) => handleDragOver(event, "sub", minor.menuId)}
+                                                            onDragEnd={(event) => handleDragEnd(event, "sub", minor.menuId)}
+                                                        >
+                                                            <SortableContext
+                                                                items={subMenuSorted.filter((s) => s.parentId === minor.menuId).map((s) => s.id)}
+                                                                strategy={verticalListSortingStrategy}
                                                             >
-                                                                <SortableContext
-                                                                    items={subMenuSorted.filter((s) => s.parentId === minor.menuId).map((s) => s.id)}
-                                                                    strategy={verticalListSortingStrategy}
-                                                                >
-                                                                    {subMenuSorted
-                                                                        .filter((sub) => sub.parentId === minor.menuId)
-                                                                        .map((sub) => (
-                                                                            <SortableItem id={sub.id} key={sub.id} changeMenu={changeMenu}>
-                                                                                <li className="bottom-menu">
-                                                                                    <div className="bar-contents grandChild">
-                                                                                        <button type="button" onClick={() => { menuClicked(sub); }} disabled={changeMenu}>
-                                                                                            {sub.menuName}
-                                                                                        </button>
-                                                                                    </div>
-                                                                                </li>
-                                                                            </SortableItem>
-                                                                        ))}
-                                                                </SortableContext>
-                                                            </DndContext>
-                                                        </div>
-                                                    </SortableItem>
+                                                                {subMenuSorted
+                                                                    .filter((sub) => sub.parentId === minor.menuId)
+                                                                    .map((sub) => (
+                                                                        <SortableItem id={sub.id} key={sub.id} changeMenu={changeMenu}>
+                                                                            <li className="bottom-menu">
+                                                                                <div className="bar-contents grandChild">
+                                                                                    <button
+                                                                                        type="button"
+                                                                                        onClick={() => { menuClicked(sub); }}
+                                                                                        disabled={changeMenu}
+                                                                                    >
+                                                                                        {sub.menuName}
+                                                                                    </button>
+                                                                                </div>
+                                                                            </li>
+                                                                        </SortableItem>
+                                                                    ))}
+                                                            </SortableContext>
+                                                        </DndContext>
+                                                    </div>
                                                 ))}
                                         </SortableContext>
                                     </DndContext>
@@ -324,14 +325,24 @@ function AdminCategory() {
                     </DndContext>
                 </div>
 
-                {/* 폼 영역 */}
                 <form className="admin-form" id="menu-category-form">
                     <div className="center-menu">
                         <button
                             type="button"
                             className="add-btn"
                             onClick={() => {
-                                setForm(initialForm);
+                                setForm({
+                                    id: 0,
+                                    menuName: "새 메뉴",
+                                    menuPath: "",
+                                    newPath: "",
+                                    menuVisible: "true",
+                                    menuType: "",
+                                    selection01: "",
+                                    selection02: "",
+                                    selection03: "",
+                                    imageUrl: ""
+                                });
                                 setSelectedMenu(null);
                                 setDisabled(false);
                             }}
@@ -493,4 +504,4 @@ function AdminCategory() {
     );
 }
 
-export default AdminCategory;
+export default AdminCategory2;
