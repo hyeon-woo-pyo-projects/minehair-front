@@ -31,13 +31,12 @@ function AdminWidget<T extends SaveOptions>({
 
     useEffect(() => {
         setCanSave(status && !!saveData);
+        console.log(status, saveData)
     }, [status, saveData]);
 
     const handleSave = async () => {
         if (!saveData) return;
         if (!window.confirm("저장 하시겠습니까?")) return;
-
-        console.log(saveData)
 
         let finalImageUrl = (saveData as any).imageUrl;
 

@@ -116,7 +116,7 @@
 }
 .admin-index section ul.admin-contents li a:hover { background-color: var(--default-background); }
 
-.admin-body { padding: 30px 0; }
+.admin-body { padding: 30px 0 120px; }
 
 /* ADMIN-WIDGET 어드민 위젯 */
 .admin-widget {
@@ -128,6 +128,7 @@
     padding: 12px 30px;
     border-bottom: 1px solid var(--color-gray);
     z-index: 10;
+    background-color: var(--color-white);
 }
 .admin-widget button.back-btn { cursor: pointer; }
 .admin-widget button.save-btn {

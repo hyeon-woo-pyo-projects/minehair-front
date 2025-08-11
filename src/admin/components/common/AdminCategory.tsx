@@ -103,9 +103,10 @@ function AdminCategory() {
 
     function getMenu() {
         axiosInstance
-            .get("/role-menus")
+            .get("/role-menus/admin")
             .then((response) => {
                 if (response.data.success) {
+                    console.log(response)
                     const wholeMenu = response.data.data;
                     const majorMenu = wholeMenu.filter(
                         (d: MenuProps) => d.menuType === "MAJOR" && d.parentId === null
