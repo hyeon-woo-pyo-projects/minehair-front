@@ -165,7 +165,7 @@ function Header () {
                                     }
                                 }}
                             >
-                                <Link to={el.menuPath}>{el.menuName}</Link>
+                                <Link to={`/pages${el.menuPath}`}>{el.menuName}</Link>
                                 
                                 {subMenu.map((data) => {
                                     if (el.menuId === data.parent) {

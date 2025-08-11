@@ -16,6 +16,7 @@ import AdminBanner from './admin/components/common/AdminBanner';
 import AdminCategory from './admin/components/common/AdminCategory';
 import AdminLogo from './admin/components/common/AdminLogo';
 import AdminPreview from './admin/components/common/AdminPreview';
+import DefaultPages from './components/pages/DefaultPages';
 
 function App() {
   // 토큰 체크
@@ -53,6 +54,7 @@ function App() {
                 <Header />
                 <Routes>
                   <Route path="/" element={<Landing />} />
+                  <Route path="/pages/*" element={<DefaultPages />} />
                   <Route path="/member/login" element={<Login />} />
                   <Route path="/member/register" element={<Register />} />
                   <Route path="/member/forgot" element={<Forgot />} />
