@@ -58,6 +58,15 @@ function FixBanner () {
             return;
         }
 
+        console.log(consultForm);
+
+        axiosInstance
+        .post('/consulation/reception', {
+            name : consultForm.name,
+            phoneNumber : consultForm.phone,
+            consultationCategorieId : Number(consultForm.category)
+        })
+
         setBalloonChk(0);
     }
 
@@ -93,9 +102,9 @@ function FixBanner () {
                     <div>
                         { balloonChk === 3 && <Balloon text={'카테고리를 선택해주세요.'} status={'notice'} /> }
                         <select defaultValue='' value={consultForm.category} onChange={ e => setConsultForm({...consultForm, category : e.target.value})}>
-                            <option value='' hidden>선택</option>
+                            <option value=''>선택</option>
                             { selectValue.map((data)=>{
-                                return <option key={data.code} value={data.id}>{data.name}</option>
+                                return  <option key={data.code} value={data.id}>{data.name}</option>
                             }) }
                         </select>
                     </div>
