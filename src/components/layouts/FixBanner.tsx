@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import '../../style/layouts/fixBanner.css'
 import Balloon from "../system/Balloon";
+import axiosInstance from "../../api/axiosInstance";
 
 type Consulting = {
     name: string;
@@ -9,24 +10,28 @@ type Consulting = {
     agree : boolean;
 }
 
+interface selectionProps {
+    code : string,
+    description : string,
+    id : number,
+    name : string,
+}
+
 function FixBanner () {
     // 하단 간편상담신청 show/hide
     const [showFixBanner, setShowFixBanner] = useState(false);
-
-    useEffect(()=>{
-        const handleScroll = () => {
-            const scrollY = window.scrollY;
-
-            if ( scrollY > 100 ) {setShowFixBanner(true)} else {setShowFixBanner(false)}
-        }
-
-        handleScroll();
-        
-        window.addEventListener('scroll', handleScroll);
-    }, []);
-
+    
     // 카테고리 선택
-    const [selectValue, setSelectValue] = useState('');
+    const [selectValue, setSelectValue] = useState<selectionProps[]>([]);
+    function getSelect () {
+        axiosInstance
+        .get('/consultation/categories')
+        .then((response)=>{
+            if ( response.data.success === true ) {
+                setSelectValue(response.data.data)
+            }
+        })
+    }
 
     // 유효성 검사
     const [consultForm, setConsultForm] = useState<Consulting>({
@@ -56,6 +61,19 @@ function FixBanner () {
         setBalloonChk(0);
     }
 
+    useEffect(()=>{
+        const handleScroll = () => {
+            const scrollY = window.scrollY;
+
+            if ( scrollY > 100 ) {setShowFixBanner(true)} else {setShowFixBanner(false)}
+        }
+
+        handleScroll();
+        getSelect();
+        
+        window.addEventListener('scroll', handleScroll);
+    }, []);
+
     return (
         <div id="fixedBanner" className={showFixBanner ? 'show' : ''}>
             <div className="wrapper">
@@ -76,10 +94,9 @@ function FixBanner () {
                         { balloonChk === 3 && <Balloon text={'카테고리를 선택해주세요.'} status={'notice'} /> }
                         <select defaultValue='' value={consultForm.category} onChange={ e => setConsultForm({...consultForm, category : e.target.value})}>
                             <option value='' hidden>선택</option>
-                            <option value="1">뿌리 탈색</option>
-                            <option value="2">전체 탈색</option>
-                            <option value="3">뿌리 염색</option>
-                            <option value="4">전체 염색</option>
+                            { selectValue.map((data)=>{
+                                return <option key={data.code} value={data.id}>{data.name}</option>
+                            }) }
                         </select>
                     </div>
 
