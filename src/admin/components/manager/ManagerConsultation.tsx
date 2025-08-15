@@ -60,6 +60,12 @@ function ManagerConsultation() {
 
             <div className="admin-body inner">
                 <table id="consultation-table">
+                    <colgroup>
+                        <col width={'33%'}></col>
+                        <col width={'33%'}></col>
+                        <col width={'33%'}></col>
+                    </colgroup>
+
                     <thead>
                         <tr>
                             <th>이름</th>
@@ -71,6 +77,12 @@ function ManagerConsultation() {
                 
                 <div className="table-body">
                     <table>
+                        <colgroup>
+                            <col width={'33%'}></col>
+                            <col width={'33%'}></col>
+                            <col width={'33%'}></col>
+                        </colgroup>
+
                         <tbody>
                             {data.map((el, index) => {
                                 const matchedCategory = getCategory.find(
