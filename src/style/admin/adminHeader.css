@@ -71,3 +71,11 @@
 #admin-menu .main-switch { background-color: var(--color-black); border-top: 1px solid var(--color-white); }
 #admin-menu .main-switch p { color: var(--color-white); }
 #admin-menu .sub-switch { background-color: var(--color-darkGray); }
+
+@media screen and (max-width: 720px) {
+    #admin-header { padding: 12px 20px; }
+    #admin-header h5 { position: absolute; left: 50%; transform: translate(-50%); }
+    #admin-header .btns button { width: 80px; }
+
+    #admin-menu { width: 80%; }
+}
