@@ -17,6 +17,7 @@ import AdminCategory from './admin/components/common/AdminCategory';
 import AdminLogo from './admin/components/common/AdminLogo';
 import AdminPreview from './admin/components/common/AdminPreview';
 import DefaultPages from './components/pages/DefaultPages';
+import AdminConsulation from './admin/components/common/AdminConsulation';
 
 function App() {
   // 토큰 체크
@@ -44,6 +45,7 @@ function App() {
             <Route path="admin-category" element={<AdminCategory />} />
             <Route path="admin-logo" element={<AdminLogo />} />
             <Route path="admin-preview" element={<AdminPreview />} />
+            <Route path="admin-consulation" element={<AdminConsulation />} />
           </Route>
 
           {/* 일반 사용자 레이아웃: 모든 비-관리자 경로 처리 */}
