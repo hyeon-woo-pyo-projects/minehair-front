@@ -123,3 +123,10 @@ header .perMenu .category ul.grandChildMenu li {
 }
 header .perMenu .category ul.grandChildMenu li a { color: var(--color-placeholder); font-size: 14px; margin-left: 12px; }
 header .perMenu .category ul.grandChildMenu li a:hover { color: var(--brand-color); }
+
+@media screen and (max-width : 720px) {
+    header #headerLine .wrapper .empty { display: none; }
+    header #headerLine #member { display: none; }
+    header #headerLine .wrapper { justify-content: center; }
+    header #headerLine .wrapper #headerLogo { width: 40%; }
+}
