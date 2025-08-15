@@ -1,7 +1,13 @@
+import axiosInstance from "../../../api/axiosInstance";
 import IconUpload from "../../../icons/IconUpload";
 import AdminWidget from "../layouts/AdminWidget";
 
 function AdminLogo () {
+
+    function uploadImg () {
+        // axiosInstance.post('/image/upload/')
+    }
+    
     return (
         <div className="admin-page" id="admin-logo">
             <AdminWidget title={'로고 관리'}/>
@@ -19,12 +25,6 @@ function AdminLogo () {
                             <div className="input-area">
                                 <input type="file" id="logo-upload"/>
                                 <label htmlFor="logo-upload" className="blackBtn"><IconUpload color="var(--color-white)"/>이미지 업로드</label>
-                            </div>
-
-                            <div className="input-area size-input">
-                                <label htmlFor="logo-size">사이즈</label>
-                                <input type="text" id="logo-size" maxLength={4}/>
-                                <span className="appendix">px</span>
                             </div>
                         </li>
                         

@@ -61,10 +61,20 @@ function FixBanner () {
         console.log(consultForm);
 
         axiosInstance
-        .post('/consulation/reception', {
+        .post('/consultation/reception', {
             name : consultForm.name,
             phoneNumber : consultForm.phone,
-            consultationCategorieId : Number(consultForm.category)
+            consultationCategoryId : Number(consultForm.category)
+        })
+        .then ((result) => {
+            if ( result.data.success === true ) {
+                alert('상담 신청이 완료되었습니다.');
+                window.location.reload();
+            }
+        })
+        .catch ((err)=>{
+            alert('신청란을 다시 확인해주세요');
+            console.log(err);
         })
 
         setBalloonChk(0);
