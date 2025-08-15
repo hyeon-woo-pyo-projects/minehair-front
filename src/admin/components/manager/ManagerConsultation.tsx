@@ -1,0 +1,97 @@
+import { useEffect, useState } from "react";
+import axiosInstance from "../../../api/axiosInstance";
+import AdminWidget from "../layouts/AdminWidget";
+
+interface DataProps {
+    id: number;
+    name: string;
+    phone: string;
+}
+
+interface CategoryProps {
+    id: number;
+    code: string;
+    description: string;
+    name: string;
+}
+
+function ManagerConsultation() {
+    const [data, setData] = useState<DataProps[]>([]);
+    const [getCategory, setGetCategory] = useState<CategoryProps[]>([]);
+
+    // 카테고리 목록 가져오기
+    function category() {
+        return axiosInstance
+            .get("/consultation/categories")
+            .then((result) => {
+                if (result.data.success === true) {
+                    setGetCategory(result.data.data);
+                }
+            })
+            .catch((err) => {
+                console.error("카테고리 불러오기 오류:", err);
+            });
+    }
+
+    // 상담 접수 데이터 가져오기
+    function getData() {
+        return axiosInstance
+            .get("/consultation/reception")
+            .then((result) => {
+                if (result.data.success === true) {
+                    setData(result.data.data);
+                }
+            })
+            .catch((err) => {
+                console.error("상담 데이터 불러오기 오류:", err);
+            });
+    }
+
+    // 순서 보장: 카테고리 먼저, 데이터 나중
+    useEffect(() => {
+        category().then(() => {
+            getData();
+        });
+    }, []);
+
+    return (
+        <div className="admin-page" id="manager-consultation">
+            <AdminWidget title={"상담 신청자 조회"} />
+
+            <div className="admin-body inner">
+                <table id="consultation-table">
+                    <thead>
+                        <tr>
+                            <th>이름</th>
+                            <th>전화번호</th>
+                            <th>상담시술</th>
+                        </tr>
+                    </thead>
+                </table>
+                
+                <div className="table-body">
+                    <table>
+                        <tbody>
+                            {data.map((el, index) => {
+                                const matchedCategory = getCategory.find(
+                                    (item) => item.id === el.id
+                                );
+                                return (
+                                    <tr key={index}>
+                                        <td>{el.name}</td>
+                                        <td>
+                                            <a href={`tel:${el.phone}`}>{el.phone}</a>
+                                        </td>
+                                        <td>{matchedCategory?.name || "카테고리 없음"}</td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default ManagerConsultation;

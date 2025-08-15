@@ -22,6 +22,7 @@
   --color-placeholder : #797979;
   --brand-color: #ff9933;
   --brand-color-hover: #fbb46d;
+  --brand-lightColor : #f7dec6;
   --default-background: #111;
 }
 
@@ -114,6 +115,23 @@ button.blackBtn:hover { background-color: var(--color-black); }
 button.red-btn { background-color: var(--color-red); color: var(--color-white); }
 button.red-btn:hover { background-color: #c14d4d }
 button.whiteBtn { background-color: var(--color-white); color: var(--color-black); }
+
+.table-body { max-height: 500px; overflow: auto; }
+table { width: 100%; border-collapse: collapse; border: 1px solid var(--color-gray); }
+table tr:nth-child(even) { background-color: var(--brand-lightColor); }
+table tr th {
+  font-size: 14px;
+  font-weight: 500;
+  background-color: var(--color-gray);
+  padding: 10px 0;
+}
+table tr td {
+  font-weight: 400;
+  font-size: 14px;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--color-gray);
+}
+table tr:last-child td { border-bottom: 0; } 
 
 .noticeText { font-size: 14px; color: var(--color-red); font-weight: 500; }
 .noticeText::before { content: '※'; color: var(--color-red); font-size: 16px; margin-right: 5px; }

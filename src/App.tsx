@@ -17,7 +17,8 @@ import AdminCategory from './admin/components/common/AdminCategory';
 import AdminLogo from './admin/components/common/AdminLogo';
 import AdminPreview from './admin/components/common/AdminPreview';
 import DefaultPages from './components/pages/DefaultPages';
-import AdminConsulation from './admin/components/common/AdminConsulation';
+import AdminConsulation from './admin/components/common/AdminConsultation';
+import ManagerConsultation from './admin/components/manager/ManagerConsultation';
 
 function App() {
   // 토큰 체크
@@ -40,12 +41,16 @@ function App() {
         <Routes>
           {/* Admin 전용 라우트: parent 경로는 "admin", children은 상대경로로 정의 */}
           <Route path="admin" element={<AdminRouter />}>
+            {/* 공통 레이아웃 */}
             <Route path="index" element={<AdminIndex />} />
             <Route path="admin-banner" element={<AdminBanner />} />
             <Route path="admin-category" element={<AdminCategory />} />
             <Route path="admin-logo" element={<AdminLogo />} />
             <Route path="admin-preview" element={<AdminPreview />} />
-            <Route path="admin-consulation" element={<AdminConsulation />} />
+            <Route path="admin-consultation" element={<AdminConsulation />} />
+
+            {/* 관리자 */}
+            <Route path="manager-consultation" element={<ManagerConsultation />} />
           </Route>
 
           {/* 일반 사용자 레이아웃: 모든 비-관리자 경로 처리 */}

@@ -9,7 +9,7 @@ interface getDataProps {
     name : string,
 }
 
-function AdminConsulation () {
+function AdminConsultation () {
     const [ current , setCurrent ] = useState<getDataProps[]>([]);
 
     function getData () {
@@ -51,4 +51,4 @@ function AdminConsulation () {
     )
 }
 
-export default AdminConsulation;
+export default AdminConsultation;

@@ -138,7 +138,7 @@ function AdminCategory() {
             const res = await axiosInstance.get("/role-menus/admin");
             if (res.data && res.data.success) {
                 const data: MenuProps[] = res.data.data;
-
+                console.log(res)
                 // 분류
                 const majors = data.filter((d) => d.menuType === "MAJOR" && d.parentId === null);
                 const minors = data.filter((d) => d.menuType === "MINOR" && d.parentId !== null);
