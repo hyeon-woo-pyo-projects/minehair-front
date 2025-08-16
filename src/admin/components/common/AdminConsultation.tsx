@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../../api/axiosInstance";
 import AdminWidget from "../layouts/AdminWidget";
+import { useNavigate } from "react-router-dom";
 
 interface getDataProps {
     id : number,
@@ -10,6 +11,8 @@ interface getDataProps {
 }
 
 function AdminConsultation () {
+    const [ save, setSave ] = useState(false);
+    const navigate = useNavigate();
     const [ current , setCurrent ] = useState<getDataProps[]>([]);
 
     function getData () {
@@ -28,9 +31,9 @@ function AdminConsultation () {
 
     return (
         <div className="admin-page" id="admin-consulation">
-            <AdminWidget title={'상담 카테고리'}/>
-
             <div className="admin-body inner">
+                <h1 className="admin-title">상담 카테고리</h1>
+
                 <form className="admin-form" id="admin-consulation-form">
                     <ul>
                         <li>
@@ -46,6 +49,11 @@ function AdminConsultation () {
                         </li>
                     </ul>
                 </form>
+
+                <div className="admin-btns">
+                    <button className="blackBtn" type="button" onClick={() => navigate(-1)}>뒤로가기</button>
+                    <button className="primaryBtn" type="button" disabled={save ? false : true}>저장하기</button>
+                </div>
             </div>
         </div>
     )
