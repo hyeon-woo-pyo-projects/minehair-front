@@ -105,7 +105,6 @@ function AdminCategory() {
     const [selectedMenu, setSelectedMenu] = useState<MenuProps | null>(null);
 
     const initialForm = {
-        id: 0,
         menuName: "새 메뉴",
         menuPath: "",
         newPath: "",
@@ -205,17 +204,17 @@ function AdminCategory() {
                 selection02 = parentMinor?.parentId?.toString() ?? "";
             }
 
-            // setForm({
-            //     menuName: selectedMenu.menuName ?? "",
-            //     menuPath: selectedMenu.menuPath ?? "",
-            //     newPath,
-            //     menuVisible: selectedMenu.menuVisible ?? "true",
-            //     menuType: selectedMenu.menuType ?? "",
-            //     selection01: selectedMenu.menuType ?? "",
-            //     selection02,
-            //     selection03,
-            //     imageUrl: selectedMenu.imageUrl ?? "",
-            // });
+            setForm({
+                menuName: selectedMenu.menuName ?? "",
+                menuPath: selectedMenu.menuPath ?? "",
+                newPath,
+                menuVisible: selectedMenu.menuVisible ?? "true",
+                menuType: selectedMenu.menuType ?? "",
+                selection01: selectedMenu.menuType ?? "",
+                selection02,
+                selection03,
+                imageUrl: selectedMenu.imageUrl ?? "",
+            });
         } else {
             setForm(initialForm);
         }
@@ -280,53 +279,9 @@ function AdminCategory() {
         }
     }
 
-    /** 드래그 끝났을 때 실제 reorder 반영 (드래그모드일 때만) */
+    /** 드래그 끝났을 때 */
     function handleDragEnd(event: DragEndEvent, level: "major" | "minor" | "sub", parentMenuId?: number) {
-        const { active, over } = event;
-        if (!over || active.id === over.id) return;
-
-        let changed = false;
-
-        if (level === "major") {
-            const oldIndex = majorMenuSorted.findIndex((item) => item.menuId === active.id);
-            const newIndex = majorMenuSorted.findIndex((item) => item.menuId === over.id);
-            if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
-                setMajorMenuSorted((prev) => {
-                    const next = arrayMove(prev, oldIndex, newIndex);
-                    return next;
-                });
-                changed = true;
-            }
-        }
-
-        if (level === "minor") {
-            const filtered = minorMenuSorted.filter((m) => m.parentId === parentMenuId);
-            const other = minorMenuSorted.filter((m) => m.parentId !== parentMenuId);
-            const oldIndex = filtered.findIndex((item) => item.menuId === active.id);
-            const newIndex = filtered.findIndex((item) => item.menuId === over.id);
-            if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
-                const newFiltered = arrayMove(filtered, oldIndex, newIndex);
-                setMinorMenuSorted([...other, ...newFiltered]);
-                changed = true;
-            }
-        }
-
-        if (level === "sub") {
-            const filtered = subMenuSorted.filter((m) => m.parentId === parentMenuId);
-            const other = subMenuSorted.filter((m) => m.parentId !== parentMenuId);
-            const oldIndex = filtered.findIndex((item) => item.menuId === active.id);
-            const newIndex = filtered.findIndex((item) => item.menuId === over.id);
-            if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
-                const newFiltered = arrayMove(filtered, oldIndex, newIndex);
-                setSubMenuSorted([...other, ...newFiltered]);
-                changed = true;
-            }
-        }
-
-        if (changed) {
-            // 순서 변경은 saveFlag로 표시 -> 저장 버튼 활성화
-            setSaveFlag(true);
-        }
+        setSave(true);
     }
     
     const saveOrderChanges = async (): Promise<boolean> => {
