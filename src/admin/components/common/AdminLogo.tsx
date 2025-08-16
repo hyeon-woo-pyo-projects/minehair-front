@@ -1,7 +1,12 @@
+import { useState } from "react";
 import axiosInstance from "../../../api/axiosInstance";
 import IconUpload from "../../../icons/IconUpload";
+import { useNavigate } from "react-router-dom";
 
 function AdminLogo () {
+    const [ save, setSave ] = useState(false);
+    const navigate = useNavigate();
+    
     function uploadLogo (e) {
         const file = e.target.files?.[0];
 
@@ -58,6 +63,11 @@ function AdminLogo () {
                         </li>
                     </ul>
                 </form>
+
+                <div className="admin-btns">
+                    <button className="blackBtn" type="button" onClick={() => navigate(-1)}>뒤로가기</button>
+                    <button className="primaryBtn" type="button" disabled={save ? false : true}>저장하기</button>
+                </div>
             </div>
         </div>
     )
