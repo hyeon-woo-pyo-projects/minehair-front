@@ -9,7 +9,7 @@
     min-height: 60px;
 }
 #admin-header svg { cursor: pointer; }
-#admin-header h5 { font-size: 18px; font-weight: 400; letter-spacing: -1px;}
+#admin-header h5 { font-size: 18px; font-weight: 400; letter-spacing: -1px; position: absolute; left: 50%; transform: translate(-50%); }
 #admin-header .btns { display: flex; gap: 12px; }
 #admin-header .btns button {
     color: #fff;
@@ -74,7 +74,6 @@
 
 @media screen and (max-width: 720px) {
     #admin-header { padding: 12px 20px; }
-    #admin-header h5 { position: absolute; left: 50%; transform: translate(-50%); }
     #admin-header .btns button { width: 80px; }
 
     #admin-menu { width: 80%; }

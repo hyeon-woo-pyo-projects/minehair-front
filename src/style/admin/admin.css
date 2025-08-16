@@ -117,6 +117,7 @@
 .admin-index section ul.admin-contents li a:hover { background-color: var(--default-background); }
 
 .admin-body { padding: 30px 0 120px; }
+.admin-body h1.admin-title { font-size: 24px; font-weight: 600; margin-bottom: 30px; }
 
 /* ADMIN-WIDGET 어드민 위젯 */
 .admin-widget {
@@ -250,6 +251,10 @@
 .admin-page .admin-form#admin-logo-form ul li .input-area.size-input { gap: 6px; }
 .admin-page .admin-form#admin-logo-form ul li .input-area.size-input label { flex: none; font-size: 14px; margin-right: 30px; }
 
+
+/* ADMIN-BUTTONS 어드민 버튼 */
+.admin-page .admin-btns { margin-top: 60px; display: flex; align-items: center; gap: 30px; justify-content: center; }
+.admin-page .admin-btns button { min-width: 300px; height: 42px; font-size: 16px; font-weight: 500; border-radius: 5px; }
 
 
 /* ADMIN-PREVIEW 어드민 미리보기 링크 */

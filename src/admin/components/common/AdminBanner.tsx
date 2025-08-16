@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import AdminWidget from "../layouts/AdminWidget";
 import axiosInstance from "../../../api/axiosInstance";
 import EventBannerDummy from "../dummy/EventBannerDummy";
 import IconUpload from "../../../icons/IconUpload";
 import IconTrash from "../../../icons/IconTrash";
+import { useNavigate } from "react-router-dom";
 
 interface BannerProps {
     content: string;
@@ -14,9 +14,11 @@ interface BannerProps {
     isPost: boolean;
     apiUrl: string;
     call: string;
-    }
+}
 
-    function AdminBanner() {
+function AdminBanner() {
+    const navigate = useNavigate();
+
     // 배너 데이터 받아오기
     const [bannerData, setBannerData] = useState<BannerProps | null>(null);
 
@@ -31,9 +33,6 @@ interface BannerProps {
     const [imageFile, setImageFile] = useState<File | null>(null);
 
     const [save, setSave] = useState(false);
-
-    // saveForm: 폼 전체를 담는 객체
-    const [saveForm, setSaveForm] = useState<BannerProps | null>(null);
 
     useEffect(() => {
         // bannerData가 바뀌면 폼 초기값 세팅
@@ -51,7 +50,7 @@ interface BannerProps {
         .get("/banner")
         .then((response) => {
             if (response.data.success === true) {
-            setBannerData(response.data.data[0]);
+                setBannerData(response.data.data[0]);
             }
         })
         .catch((error) => {
@@ -62,21 +61,6 @@ interface BannerProps {
     useEffect(() => {
         getBanner();
     }, []);
-
-    useEffect(() => {
-        const form: BannerProps = {
-            content,
-            textColor,
-            color,
-            link: url,
-            isPost: bannerData?.isPost ?? false,
-            apiUrl: "/banner/1",
-            call: "patch",
-            imageUrl: imgUrl,
-        };
-        
-        setSaveForm(form);
-    }, [content, textColor, color, url, imgUrl, bannerData?.isPost]);
 
     // 파일 입력 핸들러
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -102,43 +86,34 @@ interface BannerProps {
         };
     };
 
-    // 이미지 서버 업로드 함수
-    const uploadImageFile = async (file: File): Promise<string | null> => {
-        try {
-        const formData = new FormData();
-        formData.append("file", file);
-
-        const res = await axiosInstance.post("/upload/image", formData, {
-            headers: { "Content-Type": "multipart/form-data" },
-        });
-
-        if (res.data.success && res.data.url) {
-            return res.data.url;
-        } else {
-            alert("이미지 업로드 실패");
-            return null;
-        }
-        } catch (error) {
-            console.error(error);
-            alert("이미지 업로드 중 오류가 발생했습니다.");
-            return null;
-        }
-    };
+    function saveData () {
+        if (!window.confirm("저장 하시겠습니까?")) return;
+        
+        axiosInstance
+        .patch('/banner/1', {
+            content : content,
+            color : color,
+            textColor : textColor,
+            link : url,
+            imageUrl : imgUrl,
+            isPost : bannerData?.isPost
+        })
+        .then((result)=>{
+            if ( result.data.success === true ) {
+                alert('저장되었습니다!');
+            }
+        })
+        .catch((err)=>{
+            alert('저장 중 오류가 발생했습니다');
+            console.log(err)
+        })
+    }
 
     return (
         <div className="admin-page event-banner">
-            <AdminWidget
-                title={"이벤트 배너"}
-                status={save}
-                saveData={saveForm}
-                imageFile={imageFile}
-                uploadImageFile={uploadImageFile}
-                onUploadSuccess={(url) => setImgUrl(url)}
-                onClearImageFile={() => setImageFile(null)}
-                setSave={setSave}
-            />
-
             <div className="admin-body wrapper">
+                <h1 className="admin-title">이벤트 배너</h1>
+
                 <div className="admin-body-header">
                 {bannerData?.isPost === true ? (
                     <p className="pulblish-status active">노출 중</p>
@@ -287,6 +262,11 @@ interface BannerProps {
                         </li>
                     </ul>
                 </form>
+
+                <div className="admin-btns">
+                    <button className="blackBtn" type="button" onClick={() => navigate(-1)}>뒤로가기</button>
+                    <button className="primaryBtn" type="button" onClick={ saveData } disabled={save ? false : true}>저장하기</button>
+                </div>
             </div>
         </div>
     );

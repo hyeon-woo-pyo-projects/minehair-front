@@ -106,7 +106,7 @@ button {
   border: 0;
   cursor: pointer;
 }
-
+button:disabled { opacity: 0.5; cursor: no-drop; }
 button.primaryBtn { background-color: var(--brand-color); color: var(--color-white); }
 button.primaryBtn:hover { background-color: var(--brand-color-hover); }
 button.disabledBtn { background-color: var(--color-gray); color: var(--color-white); cursor: no-drop; }
