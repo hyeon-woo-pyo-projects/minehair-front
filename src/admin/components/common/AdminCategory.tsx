@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { SaveOptions } from "../../../components/common/UseSave";
-import AdminWidget from "../layouts/AdminWidget";
 import {
     DndContext,
     closestCenter,
@@ -24,20 +23,19 @@ import IconUpload from "../../../icons/IconUpload";
 import IconTrash from "../../../icons/IconTrash";
 
 import "../../../style/admin/admin.css";
+import { useNavigate } from "react-router-dom";
 
 /** --- 타입 정의 --- */
 interface MenuProps {
-    id: number; // DB PK (component 내부에서 사용하는 id)
-    menuId: number; // 실제 메뉴 식별자 (서버 ID)
+    menuId: number;
     menuName: string;
-    newPath: string; // 링크 이름 (short)
-    menuPath: string; // full path like /parent/child/slug
+    newPath: string;
+    menuPath: string; 
     menuOrderNo: number; // 순서
     menuType: "MAJOR" | "MINOR" | "SUB" | string;
     menuVisible: "true" | "false" | string;
-    parentId: number | null; // parent menuId
+    parentId: number | null;
     imageUrl?: string;
-    // 기타 필드 존재 시 확장 가능
 }
 
 /** saveData 타입 (AdminWidget에 전달할 형태) */
@@ -87,6 +85,9 @@ function SortableItem({
 
 /** --- 컴포넌트 --- */
 function AdminCategory() {
+    const [ save, setSave ] = useState(false);
+    const navigate = useNavigate();
+
     // 전체 raw 메뉴 (서버에서 받은)
     const [wholeMenu, setWholeMenu] = useState<MenuProps[]>([]);
 
@@ -127,22 +128,21 @@ function AdminCategory() {
     // DnD sensors
     const sensors = useSensors(useSensor(PointerSensor));
 
-    // 초기 로드: 메뉴 불러오기
+    // 메뉴 불러오기
     useEffect(() => {
         fetchMenu();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    async function fetchMenu() {
-        try {
-            const res = await axiosInstance.get("/role-menus/admin");
-            if (res.data && res.data.success) {
-                const data: MenuProps[] = res.data.data;
-                console.log(res)
-                // 분류
-                const majors = data.filter((d) => d.menuType === "MAJOR" && d.parentId === null);
-                const minors = data.filter((d) => d.menuType === "MINOR" && d.parentId !== null);
-                const subs = data.filter((d) => d.menuType === "SUB" && d.parentId !== null);
+    function fetchMenu() {
+        axiosInstance
+        .get('role-menus/admin')
+        .then((result)=>{
+            if ( result.data.success === true ) {
+                const data = result.data.data;
+
+                const majors = data.filter((el) => el.menuType === 'MAJOR' );
+                const minors = data.filter((el) => el.menuType === 'MINOR' );
+                const subs = data.filter((el) => el.menuType === 'SUB' );
 
                 setWholeMenu(data);
                 setMajorMenu(majors);
@@ -152,12 +152,36 @@ function AdminCategory() {
                 setMajorMenuSorted(majors);
                 setMinorMenuSorted(minors);
                 setSubMenuSorted(subs);
-            } else {
-                console.error("role-menus/admin 응답이 성공이 아닙니다.", res.data);
             }
-        } catch (err) {
-            console.error(err);
-        }
+        })
+        .catch((err)=>{
+            alert('오류가 발생했습니다');
+            console.log(err);
+        })
+        // try {
+        //     const res = await axiosInstance.get("/role-menus/admin");
+        //     if (res.data && res.data.success) {
+        //         // const data: MenuProps[] = res.data.data;
+
+        //         // // 분류
+        //         // const majors = data.filter((d) => d.menuType === "MAJOR" && d.parentId === null);
+        //         // const minors = data.filter((d) => d.menuType === "MINOR" && d.parentId !== null);
+        //         // const subs = data.filter((d) => d.menuType === "SUB" && d.parentId !== null);
+
+        //         // setWholeMenu(data);
+        //         // setMajorMenu(majors);
+        //         // setMinorMenu(minors);
+        //         // setSubMenu(subs);
+
+        //         // setMajorMenuSorted(majors);
+        //         // setMinorMenuSorted(minors);
+        //         // setSubMenuSorted(subs);
+        //     } else {
+        //         console.error("role-menus/admin 응답이 성공이 아닙니다.", res.data);
+        //     }
+        // } catch (err) {
+        //     console.error(err);
+        // }
     }
 
     // selectedMenu가 변경되면 form 초기화
@@ -181,18 +205,17 @@ function AdminCategory() {
                 selection02 = parentMinor?.parentId?.toString() ?? "";
             }
 
-            setForm({
-                id: selectedMenu.id ?? 0,
-                menuName: selectedMenu.menuName ?? "",
-                menuPath: selectedMenu.menuPath ?? "",
-                newPath,
-                menuVisible: selectedMenu.menuVisible ?? "true",
-                menuType: selectedMenu.menuType ?? "",
-                selection01: selectedMenu.menuType ?? "",
-                selection02,
-                selection03,
-                imageUrl: selectedMenu.imageUrl ?? "",
-            });
+            // setForm({
+            //     menuName: selectedMenu.menuName ?? "",
+            //     menuPath: selectedMenu.menuPath ?? "",
+            //     newPath,
+            //     menuVisible: selectedMenu.menuVisible ?? "true",
+            //     menuType: selectedMenu.menuType ?? "",
+            //     selection01: selectedMenu.menuType ?? "",
+            //     selection02,
+            //     selection03,
+            //     imageUrl: selectedMenu.imageUrl ?? "",
+            // });
         } else {
             setForm(initialForm);
         }
@@ -227,8 +250,8 @@ function AdminCategory() {
         if (!over || active.id === over.id) return;
 
         if (level === "major") {
-            const oldIndex = majorMenuSorted.findIndex((item) => item.id === active.id);
-            const newIndex = majorMenuSorted.findIndex((item) => item.id === over.id);
+            const oldIndex = majorMenuSorted.findIndex((item) => item.menuId === active.id);
+            const newIndex = majorMenuSorted.findIndex((item) => item.menuId === over.id);
             if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
                 setMajorMenuSorted(arrayMove(majorMenuSorted, oldIndex, newIndex));
             }
@@ -237,8 +260,8 @@ function AdminCategory() {
         if (level === "minor") {
             const filtered = minorMenuSorted.filter((m) => m.parentId === parentMenuId);
             const other = minorMenuSorted.filter((m) => m.parentId !== parentMenuId);
-            const oldIndex = filtered.findIndex((item) => item.id === active.id);
-            const newIndex = filtered.findIndex((item) => item.id === over.id);
+            const oldIndex = filtered.findIndex((item) => item.menuId === active.id);
+            const newIndex = filtered.findIndex((item) => item.menuId === over.id);
             if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
                 const newFiltered = arrayMove(filtered, oldIndex, newIndex);
                 setMinorMenuSorted([...other, ...newFiltered]);
@@ -248,8 +271,8 @@ function AdminCategory() {
         if (level === "sub") {
             const filtered = subMenuSorted.filter((m) => m.parentId === parentMenuId);
             const other = subMenuSorted.filter((m) => m.parentId !== parentMenuId);
-            const oldIndex = filtered.findIndex((item) => item.id === active.id);
-            const newIndex = filtered.findIndex((item) => item.id === over.id);
+            const oldIndex = filtered.findIndex((item) => item.menuId === active.id);
+            const newIndex = filtered.findIndex((item) => item.menuId === over.id);
             if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
                 const newFiltered = arrayMove(filtered, oldIndex, newIndex);
                 setSubMenuSorted([...other, ...newFiltered]);
@@ -265,8 +288,8 @@ function AdminCategory() {
         let changed = false;
 
         if (level === "major") {
-            const oldIndex = majorMenuSorted.findIndex((item) => item.id === active.id);
-            const newIndex = majorMenuSorted.findIndex((item) => item.id === over.id);
+            const oldIndex = majorMenuSorted.findIndex((item) => item.menuId === active.id);
+            const newIndex = majorMenuSorted.findIndex((item) => item.menuId === over.id);
             if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
                 setMajorMenuSorted((prev) => {
                     const next = arrayMove(prev, oldIndex, newIndex);
@@ -279,8 +302,8 @@ function AdminCategory() {
         if (level === "minor") {
             const filtered = minorMenuSorted.filter((m) => m.parentId === parentMenuId);
             const other = minorMenuSorted.filter((m) => m.parentId !== parentMenuId);
-            const oldIndex = filtered.findIndex((item) => item.id === active.id);
-            const newIndex = filtered.findIndex((item) => item.id === over.id);
+            const oldIndex = filtered.findIndex((item) => item.menuId === active.id);
+            const newIndex = filtered.findIndex((item) => item.menuId === over.id);
             if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
                 const newFiltered = arrayMove(filtered, oldIndex, newIndex);
                 setMinorMenuSorted([...other, ...newFiltered]);
@@ -291,8 +314,8 @@ function AdminCategory() {
         if (level === "sub") {
             const filtered = subMenuSorted.filter((m) => m.parentId === parentMenuId);
             const other = subMenuSorted.filter((m) => m.parentId !== parentMenuId);
-            const oldIndex = filtered.findIndex((item) => item.id === active.id);
-            const newIndex = filtered.findIndex((item) => item.id === over.id);
+            const oldIndex = filtered.findIndex((item) => item.menuId === active.id);
+            const newIndex = filtered.findIndex((item) => item.menuId === over.id);
             if (oldIndex !== -1 && newIndex !== -1 && oldIndex !== newIndex) {
                 const newFiltered = arrayMove(filtered, oldIndex, newIndex);
                 setSubMenuSorted([...other, ...newFiltered]);
@@ -305,23 +328,6 @@ function AdminCategory() {
             setSaveFlag(true);
         }
     }
-
-    /** image upload helper (AdminWidget에 전달할 것) */
-    const uploadImageFile = async (file: File): Promise<string | null> => {
-        try {
-            const fd = new FormData();
-            fd.append("file", file);
-            const res = await axiosInstance.post("/upload", fd, {
-                headers: { "Content-Type": "multipart/form-data" },
-            });
-
-            // 서버 응답에서 URL 경로가 달라질 수 있으니 확인 필요
-            return res.data?.url ?? res.data?.data?.url ?? null;
-        } catch (err) {
-            console.error("이미지 업로드 실패", err);
-            return null;
-        }
-    };
     
     const saveOrderChanges = async (): Promise<boolean> => {
         try {
@@ -385,31 +391,31 @@ function AdminCategory() {
     /** AdminWidget에 전달할 saveData (선택 메뉴에 기반) */
     const saveData: SaveProps | null = selectedMenu
         ? {
-              menuId: selectedMenu.menuId,
-              parentId:
-                  form.selection01 === "MAJOR"
-                      ? null
-                      : form.selection01 === "MINOR"
-                      ? Number(form.selection02 || null)
-                      : Number(form.selection03 || null),
-              menuName: form.menuName,
-              menuPath:
-                  form.selection01 === "MAJOR"
-                      ? `/${form.newPath}`
-                      : form.selection01 === "MINOR"
-                      ? `/${majorMenu.find((m) => m.menuId === Number(form.selection02))?.newPath ?? ""}/${form.newPath}`
-                      : `/${majorMenu.find((m) => m.menuId === Number(form.selection02))?.newPath ?? ""}/${
+            menuId: selectedMenu.menuId,
+            parentId:
+                form.selection01 === "MAJOR"
+                    ? null
+                    : form.selection01 === "MINOR"
+                    ? Number(form.selection02 || null)
+                    : Number(form.selection03 || null),
+            menuName: form.menuName,
+            menuPath:
+                form.selection01 === "MAJOR"
+                    ? `/${form.newPath}`
+                    : form.selection01 === "MINOR"
+                    ? `/${majorMenu.find((m) => m.menuId === Number(form.selection02))?.newPath ?? ""}/${form.newPath}`
+                    : `/${majorMenu.find((m) => m.menuId === Number(form.selection02))?.newPath ?? ""}/${
                             minorMenu.find((m) => m.menuId === Number(form.selection03))?.newPath ?? ""
                         }/${form.newPath}`,
-              imageUrl: form.imageUrl ?? "",
-              menuVisible: form.menuVisible,
-              menuType: form.selection01,
-              orderNo: selectedMenu.menuOrderNo,
-              roles: [],
-              // orderChanges는 별도 엔드포인트 없는 경우에도 포함시켜서 서버가 처리하게 할 수 있음
-              orderChanges: [], // 주된 순서 저장은 saveOrderChanges에서 따로 처리
-          }
-        : null;
+            imageUrl: form.imageUrl ?? "",
+            menuVisible: form.menuVisible,
+            menuType: form.selection01,
+            orderNo: selectedMenu.menuOrderNo,
+            roles: [],
+            // orderChanges는 별도 엔드포인트 없는 경우에도 포함시켜서 서버가 처리하게 할 수 있음
+            orderChanges: [], // 주된 순서 저장은 saveOrderChanges에서 따로 처리
+        }
+    : null;
 
     /** AdminWidget이 Save 버튼 눌렀을 때 먼저 호출될 콜백
      * (AdminWidget은 이 콜백을 호출하고 true를 반환 받을 때 계속 진행한다고 가정)
@@ -438,19 +444,9 @@ function AdminCategory() {
 
     return (
         <div className="admin-page menu-category">
-            <AdminWidget<SaveProps>
-                title="헤더 메뉴"
-                status={saveFlag}
-                saveData={saveData}
-                imageFile={imageFile}
-                uploadImageFile={uploadImageFile}
-                onUploadSuccess={(uploadedUrl) => setForm((prev) => (prev ? { ...prev, imageUrl: uploadedUrl } : prev))}
-                onClearImageFile={() => setImageFile(null)}
-                setSave={setSaveFlag}
-                onSave={handleBeforeSave} // AdminWidget이 저장 전 콜백으로 호출해야 함
-            />
-
             <div className="admin-body wrapper">
+                <h1 className="admin-title">헤더 메뉴</h1>
+
                 <div className="admin-body-header">
                     <p className="pulblish-status active">
                         {changeMenu ? "순서 변경 모드 (메뉴를 드래그 해주세요)" : "메뉴 입력 모드 (메뉴를 클릭해주세요)"}
@@ -470,10 +466,10 @@ function AdminCategory() {
                 <div className="menu-bar">
                     {/* 대메뉴 DnD 컨텍스트 */}
                     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragOver={(e) => handleDragOver(e, "major")} onDragEnd={(e) => handleDragEnd(e, "major")}>
-                        <SortableContext items={majorMenuSorted.map((m) => m.id)} strategy={verticalListSortingStrategy}>
+                        <SortableContext items={majorMenuSorted.map((m) => m.menuId)} strategy={verticalListSortingStrategy}>
                             {majorMenuSorted.map((major) => (
-                                <ul key={major.id}>
-                                    <SortableItem id={major.id} disabled={!changeMenu}>
+                                <ul key={major.menuId}>
+                                    <SortableItem id={major.menuId} disabled={!changeMenu}>
                                         <li className="top-menu">
                                             <div className="bar-contents">
                                                 <button type="button" onClick={() => menuClicked(major)} disabled={changeMenu}>
@@ -490,12 +486,12 @@ function AdminCategory() {
                                         onDragOver={(e) => handleDragOver(e, "minor", major.menuId)}
                                         onDragEnd={(e) => handleDragEnd(e, "minor", major.menuId)}
                                     >
-                                        <SortableContext items={minorMenuSorted.filter((m) => m.parentId === major.menuId).map((m) => m.id)} strategy={verticalListSortingStrategy}>
+                                        <SortableContext items={minorMenuSorted.filter((m) => m.parentId === major.menuId).map((m) => m.menuId)} strategy={verticalListSortingStrategy}>
                                             {minorMenuSorted
                                                 .filter((minor) => minor.parentId === major.menuId)
                                                 .map((minor) => (
-                                                    <div key={minor.id}>
-                                                        <SortableItem id={minor.id} disabled={!changeMenu}>
+                                                    <div key={minor.menuId}>
+                                                        <SortableItem id={minor.menuId} disabled={!changeMenu}>
                                                             <li className="middle-menu">
                                                                 <div className="bar-contents children">
                                                                     <button type="button" onClick={() => menuClicked(minor)} disabled={changeMenu}>
@@ -512,11 +508,11 @@ function AdminCategory() {
                                                             onDragOver={(e) => handleDragOver(e, "sub", minor.menuId)}
                                                             onDragEnd={(e) => handleDragEnd(e, "sub", minor.menuId)}
                                                         >
-                                                            <SortableContext items={subMenuSorted.filter((s) => s.parentId === minor.menuId).map((s) => s.id)} strategy={verticalListSortingStrategy}>
+                                                            <SortableContext items={subMenuSorted.filter((s) => s.parentId === minor.menuId).map((s) => s.menuId)} strategy={verticalListSortingStrategy}>
                                                                 {subMenuSorted
                                                                     .filter((sub) => sub.parentId === minor.menuId)
                                                                     .map((sub) => (
-                                                                        <SortableItem id={sub.id} key={sub.id} disabled={!changeMenu}>
+                                                                        <SortableItem id={sub.menuId} key={sub.menuId} disabled={!changeMenu}>
                                                                             <li className="bottom-menu">
                                                                                 <div className="bar-contents grandChild">
                                                                                     <button type="button" onClick={() => menuClicked(sub)} disabled={changeMenu}>
@@ -662,6 +658,11 @@ function AdminCategory() {
                         </li>
                     </ul>
                 </form>
+
+                <div className="admin-btns">
+                    <button className="blackBtn" type="button" onClick={() => navigate(-1)}>뒤로가기</button>
+                    <button className="primaryBtn" type="button" disabled={save ? false : true}>저장하기</button>
+                </div>
             </div>
         </div>
     );
