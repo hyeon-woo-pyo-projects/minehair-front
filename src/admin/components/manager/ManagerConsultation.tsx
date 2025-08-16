@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../../api/axiosInstance";
-import AdminWidget from "../layouts/AdminWidget";
+import { useNavigate } from "react-router-dom";
 
 interface DataProps {
     id: number;
@@ -54,11 +54,13 @@ function ManagerConsultation() {
         });
     }, []);
 
+    const navigate = useNavigate();
+
     return (
         <div className="admin-page" id="manager-consultation">
-            <AdminWidget title={"상담 신청자 조회"} />
-
             <div className="admin-body inner">
+                <h1 className="admin-title">상담 신청자 조회</h1>
+
                 <table id="consultation-table">
                     <colgroup>
                         <col width={'33%'}></col>
@@ -78,28 +80,44 @@ function ManagerConsultation() {
                 <div className="table-body">
                     <table>
                         <colgroup>
-                            <col width={'33%'}></col>
-                            <col width={'33%'}></col>
-                            <col width={'33%'}></col>
+                        { data.length !== 0 ?
+                            <>
+                                <col width={'33%'}></col>
+                                <col width={'33%'}></col>
+                                <col width={'33%'}></col>
+                            </>
+                        :
+                            <col width={'100%'}></col>
+                        }
                         </colgroup>
 
                         <tbody>
-                            {data.map((el, index) => {
-                                const matchedCategory = getCategory.find(
-                                    (item) => item.id === el.id
-                                );
-                                return (
-                                    <tr key={index}>
-                                        <td>{el.name}</td>
-                                        <td>
-                                            <a href={`tel:${el.phone}`}>{el.phone}</a>
-                                        </td>
-                                        <td>{matchedCategory?.name || "카테고리 없음"}</td>
-                                    </tr>
-                                );
-                            })}
+                            { data.length !== 0 ? 
+                                ( data.map((el, index) => {
+                                    const matchedCategory = getCategory.find(
+                                        (item) => item.id === el.id
+                                    );
+                                    return (
+                                        <tr key={index}>
+                                            <td>{el.name}</td>
+                                            <td>
+                                                <a href={`tel:${el.phone}`}>{el.phone}</a>
+                                            </td>
+                                            <td>{matchedCategory?.name || "카테고리 없음"}</td>
+                                        </tr>
+                                    );
+                                }))    
+                            : 
+                                <tr>
+                                    <td>데이터가 없습니다.</td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
+                </div>
+
+                <div className="admin-btns">
+                    <button className="blackBtn" type="button" onClick={() => navigate(-1)}>뒤로가기</button>
                 </div>
             </div>
         </div>
