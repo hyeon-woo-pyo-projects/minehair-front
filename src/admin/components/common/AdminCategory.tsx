@@ -25,7 +25,6 @@ import IconTrash from "../../../icons/IconTrash";
 import "../../../style/admin/admin.css";
 import { useNavigate } from "react-router-dom";
 
-/** --- 타입 정의 --- */
 interface MenuProps {
     menuId: number;
     menuName: string;
@@ -36,21 +35,18 @@ interface MenuProps {
     menuVisible: "true" | "false" | string;
     parentId: number | null;
     imageUrl?: string;
+    roles : []
 }
 
-/** saveData 타입 (AdminWidget에 전달할 형태) */
 interface SaveProps extends SaveOptions {
-    menuId: number;
-    parentId: number | null;
+    parentId: number;
     menuName: string;
     menuPath: string;
     imageUrl?: string;
-    menuVisible: string;
+    menuVisible: boolean;
     menuType: string;
     orderNo: number;
-    roles?: number[]; // 필요 시
-    // 순서 변경이 있을 경우 서버에 전달할 batch 정보도 포함할 수 있음
-    orderChanges?: { menuId: number; menuOrderNo: number }[];
+    roles?: number[];
 }
 
 /** Sortable wrapper */
@@ -114,12 +110,10 @@ function AdminCategory() {
         selection02: "",
         selection03: "",
         imageUrl: "",
+        roles: []
     };
     const [form, setForm] = useState<typeof initialForm>(initialForm);
     const [disabled, setDisabled] = useState(true);
-
-    // 저장 버튼 활성화 상태: AdminWidget에 전달
-    const [saveFlag, setSaveFlag] = useState(false);
 
     // 이미지 파일을 임시로 가지고 있을 경우 (업로드용)
     const [imageFile, setImageFile] = useState<File | null>(null);
@@ -157,30 +151,6 @@ function AdminCategory() {
             alert('오류가 발생했습니다');
             console.log(err);
         })
-        // try {
-        //     const res = await axiosInstance.get("/role-menus/admin");
-        //     if (res.data && res.data.success) {
-        //         // const data: MenuProps[] = res.data.data;
-
-        //         // // 분류
-        //         // const majors = data.filter((d) => d.menuType === "MAJOR" && d.parentId === null);
-        //         // const minors = data.filter((d) => d.menuType === "MINOR" && d.parentId !== null);
-        //         // const subs = data.filter((d) => d.menuType === "SUB" && d.parentId !== null);
-
-        //         // setWholeMenu(data);
-        //         // setMajorMenu(majors);
-        //         // setMinorMenu(minors);
-        //         // setSubMenu(subs);
-
-        //         // setMajorMenuSorted(majors);
-        //         // setMinorMenuSorted(minors);
-        //         // setSubMenuSorted(subs);
-        //     } else {
-        //         console.error("role-menus/admin 응답이 성공이 아닙니다.", res.data);
-        //     }
-        // } catch (err) {
-        //     console.error(err);
-        // }
     }
 
     // selectedMenu가 변경되면 form 초기화
@@ -214,11 +184,11 @@ function AdminCategory() {
                 selection02,
                 selection03,
                 imageUrl: selectedMenu.imageUrl ?? "",
+                roles : selectedMenu.roles
             });
         } else {
             setForm(initialForm);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedMenu, minorMenu]);
 
     function handleMenuChangeMode() {
@@ -228,19 +198,19 @@ function AdminCategory() {
     function menuClicked(menu: MenuProps) {
         setSelectedMenu(menu);
         setDisabled(false);
-        setSaveFlag(false);
+        setSave(false);
         setImageFile(null);
     }
 
     function handleFormChange(changes: Partial<typeof form>) {
         setForm((prev) => ({ ...prev, ...changes }));
-        setSaveFlag(true); // 변경 시 저장 활성화
+        setSave(true);
     }
 
     /** 이미지 파일 선택 */
     function handleImageSelect(file: File | null) {
         setImageFile(file);
-        setSaveFlag(true);
+        setSave(true);
     }
 
     /** 드래그 오버 (중간에 위치 변경 보이기 용) */
@@ -342,39 +312,6 @@ function AdminCategory() {
             return false;
         }
     };
-
-    /** AdminWidget에 전달할 saveData (선택 메뉴에 기반) */
-    const saveData: SaveProps | null = selectedMenu
-        ? {
-            menuId: selectedMenu.menuId,
-            parentId:
-                form.selection01 === "MAJOR"
-                    ? null
-                    : form.selection01 === "MINOR"
-                    ? Number(form.selection02 || null)
-                    : Number(form.selection03 || null),
-            menuName: form.menuName,
-            menuPath:
-                form.selection01 === "MAJOR"
-                    ? `/${form.newPath}`
-                    : form.selection01 === "MINOR"
-                    ? `/${majorMenu.find((m) => m.menuId === Number(form.selection02))?.newPath ?? ""}/${form.newPath}`
-                    : `/${majorMenu.find((m) => m.menuId === Number(form.selection02))?.newPath ?? ""}/${
-                            minorMenu.find((m) => m.menuId === Number(form.selection03))?.newPath ?? ""
-                        }/${form.newPath}`,
-            imageUrl: form.imageUrl ?? "",
-            menuVisible: form.menuVisible,
-            menuType: form.selection01,
-            orderNo: selectedMenu.menuOrderNo,
-            roles: [],
-            // orderChanges는 별도 엔드포인트 없는 경우에도 포함시켜서 서버가 처리하게 할 수 있음
-            orderChanges: [], // 주된 순서 저장은 saveOrderChanges에서 따로 처리
-        }
-    : null;
-
-    /** AdminWidget이 Save 버튼 눌렀을 때 먼저 호출될 콜백
-     * (AdminWidget은 이 콜백을 호출하고 true를 반환 받을 때 계속 진행한다고 가정)
-     */
     const handleBeforeSave = async (): Promise<boolean> => {
         // 1) 순서 변경이 있는지 판단: saveFlag가 true이고, 순서 관련 상태가 변경되었으면 서버에 반영
         // 여기서는 단순히 항상 saveOrderChanges를 호출해서 변경이 있으면 반영하도록 함.
@@ -387,15 +324,50 @@ function AdminCategory() {
         setForm(initialForm);
         setSelectedMenu(null);
         setDisabled(false);
-        setSaveFlag(true);
+        setSave(true);
     };
 
     /** 이미지 삭제 (폼의 imageUrl 제거) */
     const handleDeleteImageFromForm = () => {
         setForm((prev) => ({ ...prev, imageUrl: "" }));
         setImageFile(null);
-        setSaveFlag(true);
+        setSave(true);
     };
+
+    // 전체 선택
+    const [ checkers, setCheckers ] = useState({
+        selector01 : false,
+        selector02 : false,
+        selector03 : false,
+    })
+
+    const allCheck = (chk : boolean) => {
+        setCheckers({
+            selector01: chk,
+            selector02: chk,
+            selector03: chk,
+        })
+    }
+
+    function saveHandle () {
+        console.log(form)
+        // if ( saveData !== null ) {
+        //     const menuId = saveData.menuId;
+
+        //     console.log(saveData);
+
+        //     axiosInstance
+        //     .patch(`/role-menus/${menuId}`)
+        //     .then((result)=>{
+        //         alert('저장이 완료되었습니다!');
+        //         setSave(false);
+        //     })
+        //     .catch((err)=>{
+        //         alert('오류가 발생했습니다.');
+        //         console.log(err);
+        //     })
+        // }
+    }
 
     return (
         <div className="admin-page menu-category">
@@ -505,14 +477,28 @@ function AdminCategory() {
                         <li>
                             <span className="admin-form-title">메뉴 이름</span>
                             <div className="input-area">
-                                <input id="menuName" type="text" placeholder="메뉴 이름" value={form.menuName} onChange={(e) => handleFormChange({ menuName: e.target.value })} disabled={disabled} />
+                                <input
+                                    id="menuName"
+                                    type="text"
+                                    placeholder="메뉴 이름"
+                                    value={form.menuName}
+                                    disabled={disabled}
+                                    onChange={(e) => { handleFormChange({ menuName: e.target.value }); }}
+                                />
                             </div>
                         </li>
 
                         <li>
                             <span className="admin-form-title">링크명</span>
                             <div className="input-area">
-                                <input id="menuPath" type="text" placeholder="링크명" value={form.newPath} onChange={(e) => handleFormChange({ newPath: e.target.value })} disabled={disabled} />
+                                <input 
+                                    id="menuPath" 
+                                    type="text" 
+                                    placeholder="링크명" 
+                                    value={form.menuPath} 
+                                    disabled={disabled} 
+                                    onChange={(e) => { handleFormChange({ menuPath: e.target.value }); }} 
+                                />
                             </div>
                         </li>
 
@@ -531,17 +517,22 @@ function AdminCategory() {
                             <div className="input-area">
                                 <div className="checkboxs">
                                     <div className="checkbox-child">
-                                        <input type="checkbox" id="all" disabled={disabled} />
+                                        <input type="checkbox" id="all"  onChange={(e) => allCheck(e.target.checked)} disabled={disabled}/>
                                         <label htmlFor="all">전체</label>
                                     </div>
 
                                     <div className="checkbox-child">
-                                        <input type="checkbox" id="member" disabled={disabled} />
+                                        <input type="checkbox" id="visit" disabled={disabled} checked={checkers.selector01} onChange={(e) => setCheckers(prev => ({...prev, selector01: e.target.checked}))}/>
+                                        <label htmlFor="visit">비회원</label>
+                                    </div>
+
+                                    <div className="checkbox-child">
+                                        <input type="checkbox" id="member" disabled={disabled}  checked={checkers.selector02} onChange={(e) => setCheckers(prev => ({...prev, selector02: e.target.checked}))}/>
                                         <label htmlFor="member">회원</label>
                                     </div>
 
                                     <div className="checkbox-child">
-                                        <input type="checkbox" id="admin" disabled={disabled} />
+                                        <input type="checkbox" id="admin" disabled={disabled}  checked={checkers.selector03} onChange={(e) => setCheckers(prev => ({...prev, selector03: e.target.checked}))}/>
                                         <label htmlFor="admin">관리자</label>
                                     </div>
                                 </div>
@@ -594,29 +585,31 @@ function AdminCategory() {
                             </li>
                         )}
 
-                        <li>
-                            <span className="admin-form-title">메뉴 이미지</span>
-                            <div className="input-area">
-                                <div className="image-upload">
-                                    <input type="file" id="image-upload" disabled={disabled} onChange={(e) => { if (e.target.files && e.target.files[0]) handleImageSelect(e.target.files[0]); }} />
-                                    <label htmlFor="image-upload">
-                                        <IconUpload color="var(--color-white)" />
-                                        이미지 업로드
-                                    </label>
+                        { form.selection01 === 'MAJOR' ? 
+                            <li>
+                                <span className="admin-form-title">메뉴 이미지</span>
+                                <div className="input-area">
+                                    <div className="image-upload">
+                                        <input type="file" id="image-upload" disabled={disabled} onChange={(e) => { if (e.target.files && e.target.files[0]) handleImageSelect(e.target.files[0]); }} />
+                                        <label htmlFor="image-upload">
+                                            <IconUpload color="var(--color-white)" />
+                                            이미지 업로드
+                                        </label>
+                                    </div>
+                                    <button type="button" className="blackBtn" disabled={disabled} onClick={handleDeleteImageFromForm}>
+                                        <IconTrash color="var(--color-white)" />
+                                        삭제하기
+                                    </button>
+                                    {form.imageUrl && <div style={{ marginTop: 8 }}><img src={form.imageUrl} alt="menu" style={{ maxWidth: 120 }} /></div>}
                                 </div>
-                                <button type="button" className="blackBtn" disabled={disabled} onClick={handleDeleteImageFromForm}>
-                                    <IconTrash color="var(--color-white)" />
-                                    삭제하기
-                                </button>
-                                {form.imageUrl && <div style={{ marginTop: 8 }}><img src={form.imageUrl} alt="menu" style={{ maxWidth: 120 }} /></div>}
-                            </div>
-                        </li>
+                            </li>
+                        : null}
                     </ul>
                 </form>
 
                 <div className="admin-btns">
                     <button className="blackBtn" type="button" onClick={() => navigate(-1)}>뒤로가기</button>
-                    <button className="primaryBtn" type="button" disabled={save ? false : true}>저장하기</button>
+                    <button className="primaryBtn" type="button" onClick={saveHandle} disabled={save ? false : true}>저장하기</button>
                 </div>
             </div>
         </div>

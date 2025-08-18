@@ -274,6 +274,30 @@
 #admin-preview .admin-body .preview .text-line p.url { margin-top: 12px; font-size: 12px; color: var(--color-darkGray); }
 #admin-preview .admin-form ul li { width: calc(50% - 15px); }
 
+
+
+/* ADMIN-CONSULTATION 상담 카테고리 */
+#admin-consulation #admin-consulation-form ul li { width: 100%; }
+#admin-consulation #admin-consulation-form .consultation-items {
+    width: 100%;
+}
+#admin-consulation #admin-consulation-form .consultation-items p:first-child { border-top: 1px solid var(--color-gray); }
+
+#admin-consulation #admin-consulation-form .consultation-items p {
+    width: 100%;
+    padding: 12px 30px;
+    border-bottom: 1px solid var(--color-gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#admin-consulation #admin-consulation-form .consultation-items p i {
+    position: absolute;
+    right: 30px;
+    cursor: pointer;
+}
+#admin-consulation #admin-consulation-form .consultation-items p input { width: 200px; text-align: center; }
+
 @media screen and (max-width: 720px) {
     .admin-index section { padding: 30px 20px; }
     .admin-index section ul.admin-contents { gap: 12px; }
@@ -293,3 +317,4 @@
     .admin-page .admin-form ul { gap: 12px; }
     .admin-page .admin-form ul li { width: calc((100% / 2) - 6px); }
 }
+
