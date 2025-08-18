@@ -56,25 +56,32 @@ function AdminConsultation() {
     }
 
     async function handleSave() {
+        if (!window.confirm("저장 하시겠습니까?")) return;
+
         try {
             // 삭제 처리
             if (deleteItems.length > 0) {
-                const res = await axiosInstance.delete("/consultation/categories/delete", {
-                    data: { ids: deleteItems },
-                });
-                if (res.data.success) {
-                    setDeleteItems([]);
-                }
+
+                deleteItems.forEach((el)=>{
+                    axiosInstance
+                    .delete(`/consultation/categories/${el}`);
+                })
+
+                alert('삭제되었습니다');
+                setDeleteItems([]);
+                window.location.reload();
             }
 
             // 추가 처리
             if (newItems.length > 0) {
-                const res = await axiosInstance.post("/consultation/categories", {
-                    names: newItems,
-                });
-                if (res.data.success) {
-                    setNewItems([]);
-                }
+                newItems.forEach((el)=>{
+                    axiosInstance
+                    .post(`consultation/categories`, { code: '', name : el });
+                })
+
+                alert('저장되었습니다');
+                setNewItems([]);
+                window.location.reload();
             }
 
             alert("저장이 완료되었습니다.");
