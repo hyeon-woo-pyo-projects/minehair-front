@@ -20,7 +20,8 @@ function AdminConsultation() {
     const [newItems, setNewItems] = useState<string[]>([]); // 새로 추가할 name 배열
 
     function getData() {
-        axiosInstance.get("/consultation/categories").then((response) => {
+        axiosInstance.get("/consultation/categories")
+        .then((response) => {
             if (response.data.success === true) {
                 setCurrent(response.data.data);
             }
@@ -61,32 +62,32 @@ function AdminConsultation() {
         try {
             // 삭제 처리
             if (deleteItems.length > 0) {
-
-                deleteItems.forEach((el)=>{
-                    axiosInstance
-                    .delete(`/consultation/categories/${el}`);
-                })
-
-                alert('삭제되었습니다');
+                await Promise.all(
+                    deleteItems.map((el) =>
+                        axiosInstance.delete(`/consultation/categories/${el}`)
+                    )
+                );
                 setDeleteItems([]);
-                window.location.reload();
             }
 
             // 추가 처리
             if (newItems.length > 0) {
-                newItems.forEach((el)=>{
-                    axiosInstance
-                    .post(`consultation/categories`, { code: '', name : el });
-                })
-
-                alert('저장되었습니다');
+                await Promise.all(
+                    newItems.map((el) =>
+                        axiosInstance.post(`/consultation/categories`, {
+                            code: el,
+                            name: el,
+                        })
+                    )
+                );
                 setNewItems([]);
-                window.location.reload();
             }
 
             alert("저장이 완료되었습니다.");
             setSave(false);
-            getData();
+
+            // 저장 끝난 뒤 데이터 갱신
+            await getData();
         } catch (err) {
             alert("저장 중 오류가 발생했습니다.");
         }
