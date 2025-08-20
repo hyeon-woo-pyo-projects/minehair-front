@@ -38,17 +38,6 @@ interface MenuProps {
     roles : []
 }
 
-interface SaveProps extends SaveOptions {
-    parentId: number;
-    menuName: string;
-    menuPath: string;
-    imageUrl?: string;
-    menuVisible: boolean;
-    menuType: string;
-    orderNo: number;
-    roles?: number[];
-}
-
 /** Sortable wrapper */
 function SortableItem({
     id,
@@ -79,7 +68,6 @@ function SortableItem({
     );
 }
 
-/** --- 컴포넌트 --- */
 function AdminCategory() {
     const [ save, setSave ] = useState(false);
     const navigate = useNavigate();
@@ -132,6 +120,7 @@ function AdminCategory() {
         .then((result)=>{
             if ( result.data.success === true ) {
                 const data = result.data.data;
+                console.log(data)
 
                 const majors = data.filter((el) => el.menuType === 'MAJOR' );
                 const minors = data.filter((el) => el.menuType === 'MINOR' );
@@ -517,7 +506,7 @@ function AdminCategory() {
                             <div className="input-area">
                                 <div className="checkboxs">
                                     <div className="checkbox-child">
-                                        <input type="checkbox" id="all"  onChange={(e) => allCheck(e.target.checked)} disabled={disabled}/>
+                                        <input type="checkbox" id="all" checked={checkers.selector01 && checkers.selector02 && checkers.selector03} onChange={(e) => allCheck(e.target.checked)} disabled={disabled}/>
                                         <label htmlFor="all">전체</label>
                                     </div>
 
