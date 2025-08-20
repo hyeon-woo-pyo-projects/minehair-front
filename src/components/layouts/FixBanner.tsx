@@ -58,8 +58,6 @@ function FixBanner () {
             return;
         }
 
-        console.log(consultForm);
-
         axiosInstance
         .post('/consultation/reception', {
             name : consultForm.name,

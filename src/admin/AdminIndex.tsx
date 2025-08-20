@@ -14,6 +14,7 @@ function AdminIndex () {
                     <li><Link to={'/admin/admin-logo'}>로고 관리</Link></li>
                     <li><Link to={'/admin/admin-preview'}>미리보기 링크</Link></li>
                     <li><Link to={'/admin/admin-consultation'}>상담 카테고리</Link></li>
+                    <li><Link to={'/admin/admin-slide'}>홈 슬라이드</Link></li>
                 </ul>
             </section>
 

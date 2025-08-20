@@ -298,6 +298,20 @@
 }
 #admin-consulation #admin-consulation-form .consultation-items p input { width: 200px; text-align: center; }
 
+
+
+/* ADMIN-SLIDER 어드민 홈 슬라이드 */
+#admin-slider .sliderChild {
+    background-color: var(--color-lightGray);
+    border: 1px dashed var(--color-gray);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 @media screen and (max-width: 720px) {
     .admin-index section { padding: 30px 20px; }
     .admin-index section ul.admin-contents { gap: 12px; }

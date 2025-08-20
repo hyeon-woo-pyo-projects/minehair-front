@@ -162,10 +162,11 @@ function AdminBanner() {
                                 }}
                                 />
                             </div>
-                            </li>
+                        </li>
 
-                            <li>
+                        <li>
                             <span className="admin-form-title">텍스트색</span>
+                            
                             <div className="input-area">
                                 <input
                                 type="text"

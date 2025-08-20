@@ -6,8 +6,15 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import IconArrowRight from '../../icons/IconArrowRight';
 import IconArrowLeft from '../../icons/IconArrowLeft';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Swiper as SwiperCore } from 'swiper';
+import axiosInstance from '../../api/axiosInstance';
+import { Link } from 'react-router-dom';
+
+interface slideProps {
+    imageUrl : string,
+    link : string
+}
 
 function MainSlider () {
     // 일시정지 버튼 "my-button-pause"
@@ -27,6 +34,23 @@ function MainSlider () {
 
         setPaused(prev => !prev);
     };
+
+    const [ slide, setSlide ] = useState<slideProps[]>([]);
+
+    function getSlide () {
+        axiosInstance
+        .get('/home/slide')
+        .then((result)=>{
+            if ( result.data.success === true ) {
+                const resultData = result.data.data;
+                setSlide(resultData);
+            }
+        })
+    }
+
+    useEffect(()=>{
+        getSlide();
+    },[])
 
     return (
         <>
@@ -52,10 +76,13 @@ function MainSlider () {
                 }}
                 className='mainSlider'
             >
-                <SwiperSlide>Slide 1</SwiperSlide>
-                <SwiperSlide>Slide 2</SwiperSlide>
-                <SwiperSlide>Slide 3</SwiperSlide>
-                <SwiperSlide>Slide 4</SwiperSlide>
+                { slide.map((el)=>{
+                    return(
+                        <SwiperSlide>
+                            <Link to={el.link} style={{backgroundImage : el.imageUrl}}></Link>
+                        </SwiperSlide>
+                    )
+                })}
             </Swiper>
         
             <div className="my-navigation-buttons">

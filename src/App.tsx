@@ -19,6 +19,7 @@ import AdminPreview from './admin/components/common/AdminPreview';
 import DefaultPages from './components/pages/DefaultPages';
 import AdminConsulation from './admin/components/common/AdminConsultation';
 import ManagerConsultation from './admin/components/manager/ManagerConsultation';
+import AdminSlider from './admin/components/common/AdminSlider';
 
 function App() {
   // 토큰 체크
@@ -48,6 +49,7 @@ function App() {
             <Route path="admin-logo" element={<AdminLogo />} />
             <Route path="admin-preview" element={<AdminPreview />} />
             <Route path="admin-consultation" element={<AdminConsulation />} />
+            <Route path="admin-slide" element={<AdminSlider />} />
 
             {/* 관리자 */}
             <Route path="manager-consultation" element={<ManagerConsultation />} />
