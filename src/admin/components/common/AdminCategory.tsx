@@ -35,7 +35,7 @@ interface MenuProps {
     menuVisible: "true" | "false" | string;
     parentId: number | null;
     imageUrl?: string;
-    roles : []
+    roleIdList : number[]
 }
 
 /** Sortable wrapper */
@@ -98,7 +98,7 @@ function AdminCategory() {
         selection02: "",
         selection03: "",
         imageUrl: "",
-        roles: []
+        roleIdList: []
     };
     const [form, setForm] = useState<typeof initialForm>(initialForm);
     const [disabled, setDisabled] = useState(true);
@@ -116,7 +116,7 @@ function AdminCategory() {
 
     function fetchMenu() {
         axiosInstance
-        .get('role-menus/admin')
+        .get('/role-menus/admin')
         .then((result)=>{
             if ( result.data.success === true ) {
                 const data = result.data.data;
@@ -147,6 +147,7 @@ function AdminCategory() {
         if (selectedMenu) {
             const getPath = selectedMenu.menuPath ? selectedMenu.menuPath.split("/") : [];
             let newPath = "";
+
             if (selectedMenu.menuType === "MAJOR") newPath = getPath[1] ?? "";
             else if (selectedMenu.menuType === "MINOR") newPath = getPath[2] ?? "";
             else if (selectedMenu.menuType === "SUB") newPath = getPath[3] ?? "";
@@ -163,6 +164,14 @@ function AdminCategory() {
                 selection02 = parentMinor?.parentId?.toString() ?? "";
             }
 
+            // 🟢 roleIdList → checkers 변환
+            const roleList = selectedMenu.roleIdList ?? [];
+            setCheckers({
+                selector1: roleList.includes(1), // 비회원
+                selector2: roleList.includes(2), // 회원
+                selector3: roleList.includes(3), // 관리자
+            });
+
             setForm({
                 menuName: selectedMenu.menuName ?? "",
                 menuPath: selectedMenu.menuPath ?? "",
@@ -173,10 +182,15 @@ function AdminCategory() {
                 selection02,
                 selection03,
                 imageUrl: selectedMenu.imageUrl ?? "",
-                roles : selectedMenu.roles
+                roleIdList: [],
             });
         } else {
             setForm(initialForm);
+            setCheckers({
+                selector1: false,
+                selector2: false,
+                selector3: false,
+            });
         }
     }, [selectedMenu, minorMenu]);
 
@@ -242,71 +256,6 @@ function AdminCategory() {
     function handleDragEnd(event: DragEndEvent, level: "major" | "minor" | "sub", parentMenuId?: number) {
         setSave(true);
     }
-    
-    const saveOrderChanges = async (): Promise<boolean> => {
-        try {
-            const updates: { 
-                menuId: number; 
-                menuOrderNo: number;
-            }[] = [];
-            
-            majorMenuSorted.forEach((m, idx) => {
-                const newOrder = idx + 1;
-                if (m.menuOrderNo !== newOrder) updates.push({ menuId: m.menuId, menuOrderNo: newOrder });
-            });
-            
-            const minorByParent = new Map<number, MenuProps[]>();
-            minorMenuSorted.forEach((m) => {
-                if (m.parentId == null) return;
-                const arr = minorByParent.get(m.parentId) ?? [];
-                arr.push(m);
-                minorByParent.set(m.parentId, arr);
-            });
-            minorByParent.forEach((list) => {
-                list.forEach((m, idx) => {
-                    const newOrder = idx + 1;
-                    if (m.menuOrderNo !== newOrder) updates.push({ menuId: m.menuId, menuOrderNo: newOrder });
-                });
-            });
-            
-            const subByParent = new Map<number, MenuProps[]>();
-            subMenuSorted.forEach((m) => {
-                if (m.parentId == null) return;
-                const arr = subByParent.get(m.parentId) ?? [];
-                arr.push(m);
-                subByParent.set(m.parentId, arr);
-            });
-            subByParent.forEach((list) => {
-                list.forEach((m, idx) => {
-                    const newOrder = idx + 1;
-                    if (m.menuOrderNo !== newOrder) updates.push({ menuId: m.menuId, menuOrderNo: newOrder });
-                });
-            });
-
-            if (updates.length === 0) return true;
-
-            await Promise.all(
-                updates.map((u) =>
-                    axiosInstance.patch(`/role-menus/${u.menuId}`, {
-                        menuOrderNo: u.menuOrderNo,
-                    })
-                )
-            );
-
-            await fetchMenu();
-            return true;
-        } catch (err) {
-            console.error("순서 저장 실패", err);
-            alert("메뉴 순서 저장 중 오류가 발생했습니다.");
-            return false;
-        }
-    };
-    const handleBeforeSave = async (): Promise<boolean> => {
-        // 1) 순서 변경이 있는지 판단: saveFlag가 true이고, 순서 관련 상태가 변경되었으면 서버에 반영
-        // 여기서는 단순히 항상 saveOrderChanges를 호출해서 변경이 있으면 반영하도록 함.
-        const ok = await saveOrderChanges();
-        return ok;
-    };
 
     /** Admin form에서 '메뉴 생성' 버튼 동작 (새 메뉴로 폼 초기화) */
     const handleCreateNew = () => {
@@ -325,18 +274,18 @@ function AdminCategory() {
 
     // 전체 선택
     const [ checkers, setCheckers ] = useState({
-        selector01 : false,
-        selector02 : false,
-        selector03 : false,
+        selector1 : false,
+        selector2 : false,
+        selector3 : false,
     })
 
-    const allCheck = (chk : boolean) => {
+    const allCheck = (checked: boolean) => {
         setCheckers({
-            selector01: chk,
-            selector02: chk,
-            selector03: chk,
-        })
-    }
+            selector1: checked,
+            selector2: checked,
+            selector3: checked,
+        });
+    };
 
     function saveHandle () {
         console.log(form)
@@ -506,22 +455,22 @@ function AdminCategory() {
                             <div className="input-area">
                                 <div className="checkboxs">
                                     <div className="checkbox-child">
-                                        <input type="checkbox" id="all" checked={checkers.selector01 && checkers.selector02 && checkers.selector03} onChange={(e) => allCheck(e.target.checked)} disabled={disabled}/>
+                                        <input type="checkbox" id="all" checked={checkers.selector1 && checkers.selector2 && checkers.selector3} onChange={(e) => allCheck(e.target.checked)} disabled={disabled}/>
                                         <label htmlFor="all">전체</label>
                                     </div>
 
                                     <div className="checkbox-child">
-                                        <input type="checkbox" id="visit" disabled={disabled} checked={checkers.selector01} onChange={(e) => setCheckers(prev => ({...prev, selector01: e.target.checked}))}/>
+                                        <input type="checkbox" id="visit" disabled={disabled} checked={checkers.selector1} onChange={(e) => setCheckers(prev => ({...prev, selector1: e.target.checked}))}/>
                                         <label htmlFor="visit">비회원</label>
                                     </div>
 
                                     <div className="checkbox-child">
-                                        <input type="checkbox" id="member" disabled={disabled}  checked={checkers.selector02} onChange={(e) => setCheckers(prev => ({...prev, selector02: e.target.checked}))}/>
+                                        <input type="checkbox" id="member" disabled={disabled}  checked={checkers.selector2} onChange={(e) => setCheckers(prev => ({...prev, selector2: e.target.checked}))}/>
                                         <label htmlFor="member">회원</label>
                                     </div>
 
                                     <div className="checkbox-child">
-                                        <input type="checkbox" id="admin" disabled={disabled}  checked={checkers.selector03} onChange={(e) => setCheckers(prev => ({...prev, selector03: e.target.checked}))}/>
+                                        <input type="checkbox" id="admin" disabled={disabled}  checked={checkers.selector3} onChange={(e) => setCheckers(prev => ({...prev, selector3: e.target.checked}))}/>
                                         <label htmlFor="admin">관리자</label>
                                     </div>
                                 </div>
@@ -585,7 +534,7 @@ function AdminCategory() {
                                             이미지 업로드
                                         </label>
                                     </div>
-                                    <button type="button" className="blackBtn" disabled={disabled} onClick={handleDeleteImageFromForm}>
+                                    <button type="button" className="red-btn" disabled={disabled} onClick={handleDeleteImageFromForm}>
                                         <IconTrash color="var(--color-white)" />
                                         삭제하기
                                     </button>

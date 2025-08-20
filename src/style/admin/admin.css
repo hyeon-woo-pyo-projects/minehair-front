@@ -237,8 +237,8 @@
 .menu-category .add-btn:hover { background-color: var(--color-gray); }
 .menu-category .checkboxs { display: flex; gap: 20px; }
 .menu-category .image-upload { width: 100%; }
-.menu-category .image-upload input[type="file"] + label { background-color: var(--brand-color); }
-.menu-category .image-upload input[type="file"] + label:hover { background-color: var(--brand-color-hover); }
+.menu-category .image-upload input[type="file"] + label { background-color: var(--default-background); }
+.menu-category .image-upload input[type="file"] + label:hover { background-color: var(--color-black); }
 .menu-category input[type="checkbox"] + label { font-size: 14px; }
 
 
