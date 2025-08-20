@@ -134,6 +134,7 @@ function AdminCategory() {
         .then((result)=>{
             if ( result.data.success === true ) {
                 const data = result.data.data;
+                console.log(data)
                 const majors = data.filter((el) => el.menuType === 'MAJOR' );
                 const minors = data.filter((el) => el.menuType === 'MINOR' );
                 const subs = data.filter((el) => el.menuType === 'SUB' );
@@ -215,13 +216,14 @@ function AdminCategory() {
         menuId : 0,
         menuOrderNo : 0,
         parentId : 0
-    })
+    });
 
     function menuClicked(menu: MenuProps) {
         setSelectedMenu(menu);
         setDisabled(false);
         setSave(false);
         setImageFile(null);
+        setNewMenu(false)
 
         setHiddenValue({
             menuId : menu.menuId,
@@ -282,12 +284,16 @@ function AdminCategory() {
         setSave(true);
     }
 
+    // 새로운 메뉴 생성 상태
+    const [ newMenu, setNewMenu ] = useState(false);
+
     /** Admin form에서 '메뉴 생성' 버튼 동작 (새 메뉴로 폼 초기화) */
     const handleCreateNew = () => {
         setForm(initialForm);
         setSelectedMenu(null);
         setDisabled(false);
         setSave(true);
+        setNewMenu(true);
     };
 
     /** 이미지 삭제 (폼의 imageUrl 제거) */
@@ -337,7 +343,6 @@ const allCheck = (checked: boolean) => {
     const [ balloonChk, setBalloonChk ] = useState(0);
 
     function saveHandle () {
-        
         if ( form.menuName === '') { setBalloonChk(1); return false; }
         if ( form.menuPath === '') { setBalloonChk(2); return false; }
         if ( form.roleIdList.length === 0 ) { setBalloonChk(3); return false; }
@@ -349,25 +354,54 @@ const allCheck = (checked: boolean) => {
 
         console.log(form , hiddenValue)
         
-        axiosInstance
-        .patch(`/role-menus/${hiddenValue.menuId}`, {
-            parentId : hiddenValue.parentId,
-            menuName : form.menuName,
-            menuPath : form.menuPath,
-            imageUrl : form.imageUrl,
-            isVisible : form.menuVisible,
-            menuType : form.selection01,
-            orderNo : hiddenValue.menuOrderNo,
-            roles : form.roleIdList,
-        })
-        .then((result)=>{
-            alert('저장되었습니다');
-            setSave(false);
-        })
-        .catch((err)=>{
-            alert('에러가 발생했습니다');
-            return false;
-        })
+        if ( newMenu === false ) {
+            // 기존 메뉴 변경 시
+            axiosInstance
+            .patch(`/role-menus/${hiddenValue.menuId}`, {
+                parentId : hiddenValue.parentId,
+                menuName : form.menuName,
+                menuPath : form.menuPath,
+                imageUrl : form.imageUrl,
+                isVisible : form.menuVisible,
+                menuType : form.selection01,
+                orderNo : hiddenValue.menuOrderNo,
+                roles : form.roleIdList,
+            })
+            .then((result)=>{
+                alert('저장되었습니다');
+                window.location.reload();
+            })
+            .catch((err)=>{
+                alert('에러가 발생했습니다');
+                return false;
+            });
+        }else {
+            let newParentId = 0;
+
+            if ( form.selection01 === 'MAJOR' ) { newParentId = 0 }
+            else if ( form.selection01 === 'MINOR' ) { newParentId = Number(form.selection02) }
+            else if ( form.selection01 === 'SUB' ) { newParentId = Number(form.selection03) }
+            
+
+            axiosInstance
+            .post('/role-menus', {
+                parentId : newParentId,
+                menuName : form.menuName,
+                menuPath : form.menuPath,
+                imageUrl : form.imageUrl,
+                isVisible : form.menuVisible,
+                menuType : form.selection01,
+                roles : form.roleIdList,
+            })
+            .then((result)=>{
+                alert('저장되었습니다');
+                window.location.reload();
+            })
+            .catch((err)=>{
+                alert('에러가 발생했습니다');
+                return false;
+            });
+        }
 
         
     }
@@ -465,7 +499,7 @@ const allCheck = (checked: boolean) => {
                 </div>
 
                 <form className="admin-form" id="menu-category-form" onSubmit={(e) => e.preventDefault()}>
-                    <input type="text" id="menuIdVal" value={hiddenValue.menuId} disabled/>
+                    <input type="text" id="menuIdVal" value={hiddenValue.menuId} disabled hidden/>
                     <input type="text" id="menuOrderNoVal" value={hiddenValue.menuOrderNo} disabled hidden/>
                     <input type="text" id="parentIdVal" value={hiddenValue.parentId} disabled hidden/>
 
