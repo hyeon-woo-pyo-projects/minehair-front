@@ -24,6 +24,7 @@ import IconTrash from "../../../icons/IconTrash";
 
 import "../../../style/admin/admin.css";
 import { useNavigate } from "react-router-dom";
+import Balloon from "../../../components/system/Balloon";
 
 interface MenuProps {
     menuId: number;
@@ -36,6 +37,19 @@ interface MenuProps {
     parentId: number | null;
     imageUrl?: string;
     roleIdList : number[]
+}
+
+interface FormState {
+    menuName: string;
+    menuPath: string;
+    newPath: string;
+    menuVisible: string;
+    menuType: string;
+    selection01: string;
+    selection02: string;
+    selection03: string;
+    imageUrl: string;
+    roleIdList: number[];   // ✅ number[]로 명확히 지정
 }
 
 /** Sortable wrapper */
@@ -88,7 +102,7 @@ function AdminCategory() {
     const [changeMenu, setChangeMenu] = useState(false); // 모드: 수정 or 순서변경
     const [selectedMenu, setSelectedMenu] = useState<MenuProps | null>(null);
 
-    const initialForm = {
+    const initialForm: FormState = {
         menuName: "새 메뉴",
         menuPath: "",
         newPath: "",
@@ -167,9 +181,9 @@ function AdminCategory() {
             // 🟢 roleIdList → checkers 변환
             const roleList = selectedMenu.roleIdList ?? [];
             setCheckers({
-                selector1: roleList.includes(1), // 비회원
-                selector2: roleList.includes(2), // 회원
-                selector3: roleList.includes(3), // 관리자
+                selector1: roleList.includes(1),
+                selector2: roleList.includes(2),
+                selector3: roleList.includes(3),
             });
 
             setForm({
@@ -182,7 +196,7 @@ function AdminCategory() {
                 selection02,
                 selection03,
                 imageUrl: selectedMenu.imageUrl ?? "",
-                roleIdList: [],
+                roleIdList: roleList,
             });
         } else {
             setForm(initialForm);
@@ -279,16 +293,48 @@ function AdminCategory() {
         selector3 : false,
     })
 
-    const allCheck = (checked: boolean) => {
-        setCheckers({
-            selector1: checked,
-            selector2: checked,
-            selector3: checked,
-        });
+    // 전체 선택
+const allCheck = (checked: boolean) => {
+    setCheckers({
+        selector1: checked,
+        selector2: checked,
+        selector3: checked,
+    });
+
+    const newRoles = checked ? [1, 2, 3] : [];
+        setForm((prev) => ({ ...prev, roleIdList: newRoles }));
+        setSave(true);
     };
+
+    // 개별 선택
+    const handleCheckerChange = (selector: "selector1" | "selector2" | "selector3", roleId: number, checked: boolean) => {
+        setCheckers((prev) => ({ ...prev, [selector]: checked }));
+
+        setForm((prev) => {
+            let newRoles = [...prev.roleIdList];
+            if (checked) {
+                if (!newRoles.includes(roleId)) newRoles.push(roleId);
+            } else {
+                newRoles = newRoles.filter((r) => r !== roleId);
+            }
+            return { ...prev, roleIdList: newRoles };
+        });
+
+        setSave(true);
+    };
+
+    const [ balloonChk, setBalloonChk ] = useState(0);
 
     function saveHandle () {
         console.log(form)
+        if ( form.menuName === '') { setBalloonChk(1); return false; }
+        if ( form.menuPath === '') { setBalloonChk(2); return false; }
+        if ( form.roleIdList.length === 0 ) { setBalloonChk(3); return false; }
+        if ( form.selection01 === '' ) { setBalloonChk(4); return false; }
+        if ( form.selection01 === 'MINOR' && form.selection02 === '' ) { setBalloonChk(5); return false; }
+        if ( form.selection01 === 'SUB' && form.selection03 === '' ) { setBalloonChk(6); return false; }
+        
+        
         // if ( saveData !== null ) {
         //     const menuId = saveData.menuId;
 
@@ -413,7 +459,9 @@ function AdminCategory() {
 
                     <ul>
                         <li>
+                            { balloonChk === 1 && <Balloon text={'메뉴 이름을 확인해주세요.'} status={'notice'} /> }
                             <span className="admin-form-title">메뉴 이름</span>
+
                             <div className="input-area">
                                 <input
                                     id="menuName"
@@ -427,7 +475,9 @@ function AdminCategory() {
                         </li>
 
                         <li>
+                            { balloonChk === 2 && <Balloon text={'링크명을 확인해주세요.'} status={'notice'} /> }
                             <span className="admin-form-title">링크명</span>
+
                             <div className="input-area">
                                 <input 
                                     id="menuPath" 
@@ -451,26 +501,51 @@ function AdminCategory() {
                         </li>
 
                         <li>
+                            { balloonChk === 3 && <Balloon text={'노출 권한을 설정해주세요.'} status={'notice'} /> }
                             <span className="admin-form-title">노출 권한</span>
                             <div className="input-area">
                                 <div className="checkboxs">
                                     <div className="checkbox-child">
-                                        <input type="checkbox" id="all" checked={checkers.selector1 && checkers.selector2 && checkers.selector3} onChange={(e) => allCheck(e.target.checked)} disabled={disabled}/>
+                                        <input
+                                            type="checkbox"
+                                            id="all"
+                                            checked={checkers.selector1 && checkers.selector2 && checkers.selector3}
+                                            onChange={(e) => allCheck(e.target.checked)}
+                                            disabled={disabled}
+                                        />
                                         <label htmlFor="all">전체</label>
                                     </div>
 
                                     <div className="checkbox-child">
-                                        <input type="checkbox" id="visit" disabled={disabled} checked={checkers.selector1} onChange={(e) => setCheckers(prev => ({...prev, selector1: e.target.checked}))}/>
+                                        <input
+                                            type="checkbox"
+                                            id="visit"
+                                            disabled={disabled}
+                                            checked={checkers.selector1}
+                                            onChange={(e) => handleCheckerChange("selector1", 1, e.target.checked)}
+                                        />
                                         <label htmlFor="visit">비회원</label>
                                     </div>
 
                                     <div className="checkbox-child">
-                                        <input type="checkbox" id="member" disabled={disabled}  checked={checkers.selector2} onChange={(e) => setCheckers(prev => ({...prev, selector2: e.target.checked}))}/>
+                                        <input
+                                            type="checkbox"
+                                            id="member"
+                                            disabled={disabled}
+                                            checked={checkers.selector2}
+                                            onChange={(e) => handleCheckerChange("selector2", 2, e.target.checked)}
+                                        />
                                         <label htmlFor="member">회원</label>
                                     </div>
 
                                     <div className="checkbox-child">
-                                        <input type="checkbox" id="admin" disabled={disabled}  checked={checkers.selector3} onChange={(e) => setCheckers(prev => ({...prev, selector3: e.target.checked}))}/>
+                                        <input
+                                            type="checkbox"
+                                            id="admin"
+                                            disabled={disabled}
+                                            checked={checkers.selector3}
+                                            onChange={(e) => handleCheckerChange("selector3", 3, e.target.checked)}
+                                        />
                                         <label htmlFor="admin">관리자</label>
                                     </div>
                                 </div>
@@ -478,6 +553,7 @@ function AdminCategory() {
                         </li>
 
                         <li>
+                            { balloonChk === 4 && <Balloon text={'메뉴를 선택해주세요.'} status={'notice'} /> }
                             <span className="admin-form-title">메뉴 구분</span>
                             <div className="input-area">
                                 <select id="menu-division" value={form.selection01} onChange={(e) => handleFormChange({ selection01: e.target.value })} disabled={disabled}>
@@ -491,6 +567,7 @@ function AdminCategory() {
 
                         {(form.selection01 === "MINOR" || form.selection01 === "SUB") && (
                             <li>
+                                { balloonChk === 5 && <Balloon text={'메뉴를 선택해주세요.'} status={'notice'} /> }
                                 <span className="admin-form-title">최상위 메뉴</span>
                                 <div className="input-area">
                                     <select id="menu-major" value={form.selection02} onChange={(e) => handleFormChange({ selection02: e.target.value })} disabled={disabled}>
@@ -507,6 +584,7 @@ function AdminCategory() {
 
                         {form.selection01 === "SUB" && (
                             <li>
+                                { balloonChk === 6 && <Balloon text={'메뉴를 선택해주세요.'} status={'notice'} /> }
                                 <span className="admin-form-title">상위 메뉴</span>
                                 <div className="input-area">
                                     <select id="menu-minor" value={form.selection03} onChange={(e) => handleFormChange({ selection03: e.target.value })} disabled={disabled}>
