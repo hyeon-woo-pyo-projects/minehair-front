@@ -334,7 +334,7 @@ const allCheck = (checked: boolean) => {
         if ( form.selection01 === 'MINOR' && form.selection02 === '' ) { setBalloonChk(5); return false; }
         if ( form.selection01 === 'SUB' && form.selection03 === '' ) { setBalloonChk(6); return false; }
         
-        
+        setBalloonChk(0);
         // if ( saveData !== null ) {
         //     const menuId = saveData.menuId;
 
