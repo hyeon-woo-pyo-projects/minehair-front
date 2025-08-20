@@ -127,15 +127,13 @@ function AdminCategory() {
     useEffect(() => {
         fetchMenu();
     }, []);
-
+    
     function fetchMenu() {
         axiosInstance
         .get('/role-menus/admin')
         .then((result)=>{
             if ( result.data.success === true ) {
                 const data = result.data.data;
-                console.log(data)
-
                 const majors = data.filter((el) => el.menuType === 'MAJOR' );
                 const minors = data.filter((el) => el.menuType === 'MINOR' );
                 const subs = data.filter((el) => el.menuType === 'SUB' );
@@ -212,11 +210,24 @@ function AdminCategory() {
         setChangeMenu((prev) => !prev);
     }
 
+    // input hidden에 넣을 데이터들
+    const [ hiddenValue, setHiddenValue ] = useState({
+        menuId : 0,
+        menuOrderNo : 0,
+        parentId : 0
+    })
+
     function menuClicked(menu: MenuProps) {
         setSelectedMenu(menu);
         setDisabled(false);
         setSave(false);
         setImageFile(null);
+
+        setHiddenValue({
+            menuId : menu.menuId,
+            menuOrderNo : menu.menuOrderNo,
+            parentId : Number(menu.parentId)
+        })
     }
 
     function handleFormChange(changes: Partial<typeof form>) {
@@ -326,7 +337,7 @@ const allCheck = (checked: boolean) => {
     const [ balloonChk, setBalloonChk ] = useState(0);
 
     function saveHandle () {
-        console.log(form)
+        
         if ( form.menuName === '') { setBalloonChk(1); return false; }
         if ( form.menuPath === '') { setBalloonChk(2); return false; }
         if ( form.roleIdList.length === 0 ) { setBalloonChk(3); return false; }
@@ -335,22 +346,8 @@ const allCheck = (checked: boolean) => {
         if ( form.selection01 === 'SUB' && form.selection03 === '' ) { setBalloonChk(6); return false; }
         
         setBalloonChk(0);
-        // if ( saveData !== null ) {
-        //     const menuId = saveData.menuId;
-
-        //     console.log(saveData);
-
-        //     axiosInstance
-        //     .patch(`/role-menus/${menuId}`)
-        //     .then((result)=>{
-        //         alert('저장이 완료되었습니다!');
-        //         setSave(false);
-        //     })
-        //     .catch((err)=>{
-        //         alert('오류가 발생했습니다.');
-        //         console.log(err);
-        //     })
-        // }
+        console.log(majorMenu, minorMenu, subMenu);
+        console.log(form, "????")
     }
 
     return (
@@ -446,6 +443,10 @@ const allCheck = (checked: boolean) => {
                 </div>
 
                 <form className="admin-form" id="menu-category-form" onSubmit={(e) => e.preventDefault()}>
+                    <input type="text" value={hiddenValue.menuId} disabled hidden/>
+                    <input type="text" value={hiddenValue.menuOrderNo} disabled hidden/>
+                    <input type="text" value={hiddenValue.parentId} disabled hidden/>
+
                     <div className="center-menu">
                         <button
                             type="button"
