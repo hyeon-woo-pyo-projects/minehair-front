@@ -346,8 +346,30 @@ const allCheck = (checked: boolean) => {
         if ( form.selection01 === 'SUB' && form.selection03 === '' ) { setBalloonChk(6); return false; }
         
         setBalloonChk(0);
-        console.log(majorMenu, minorMenu, subMenu);
-        console.log(form, "????")
+
+        console.log(form , hiddenValue)
+        
+        axiosInstance
+        .patch(`/role-menus/${hiddenValue.menuId}`, {
+            parentId : hiddenValue.parentId,
+            menuName : form.menuName,
+            menuPath : form.menuPath,
+            imageUrl : form.imageUrl,
+            isVisible : form.menuVisible,
+            menuType : form.selection01,
+            orderNo : hiddenValue.menuOrderNo,
+            roles : form.roleIdList,
+        })
+        .then((result)=>{
+            alert('저장되었습니다');
+            setSave(false);
+        })
+        .catch((err)=>{
+            alert('에러가 발생했습니다');
+            return false;
+        })
+
+        
     }
 
     return (
@@ -443,9 +465,9 @@ const allCheck = (checked: boolean) => {
                 </div>
 
                 <form className="admin-form" id="menu-category-form" onSubmit={(e) => e.preventDefault()}>
-                    <input type="text" value={hiddenValue.menuId} disabled hidden/>
-                    <input type="text" value={hiddenValue.menuOrderNo} disabled hidden/>
-                    <input type="text" value={hiddenValue.parentId} disabled hidden/>
+                    <input type="text" id="menuIdVal" value={hiddenValue.menuId} disabled/>
+                    <input type="text" id="menuOrderNoVal" value={hiddenValue.menuOrderNo} disabled hidden/>
+                    <input type="text" id="parentIdVal" value={hiddenValue.parentId} disabled hidden/>
 
                     <div className="center-menu">
                         <button
