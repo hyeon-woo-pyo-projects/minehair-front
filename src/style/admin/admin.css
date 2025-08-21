@@ -302,7 +302,6 @@
 
 /* ADMIN-SLIDER 어드민 홈 슬라이드 */
 #admin-slider .sliderChild {
-    background-color: var(--color-lightGray);
     border: 1px dashed var(--color-gray);
     display: flex;
     justify-content: center;
@@ -310,6 +309,8 @@
     min-height: 300px;
     border-radius: 5px;
     cursor: pointer;
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 @media screen and (max-width: 720px) {

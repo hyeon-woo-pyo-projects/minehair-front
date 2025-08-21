@@ -6,11 +6,17 @@ import IconUpload from "../../../icons/IconUpload";
 import IconTrash from "../../../icons/IconTrash";
 import Balloon from "../../../components/system/Balloon";
 
+interface SliderProps {
+    id : number,
+    link : string,
+    imageUrl : string,
+}
+
 function AdminSlider () {
     const navigate = useNavigate();
     const [ save, setSave ] = useState(false);
 
-    const [ getSlider, setGetSlider ] = useState([]);
+    const [ getSlider, setGetSlider ] = useState<SliderProps[]>([]);
     const [ imgUrl, setImgUrl ] = useState('')
     const [ link, setLink ] = useState('')
     const [ imageFile, setImageFile ] = useState<File | ''>('');
@@ -82,9 +88,7 @@ function AdminSlider () {
                     <ul>
                         { getSlider.map((el)=>{
                             return (
-                                <li className="sliderChild">
-                                    
-                                </li>
+                                <li className="sliderChild" key={el.id} style={{backgroundImage : `url(${el.imageUrl})` }}></li>
                             )
                         })}
 
