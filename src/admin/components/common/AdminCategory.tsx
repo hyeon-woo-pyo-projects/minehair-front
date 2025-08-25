@@ -351,8 +351,6 @@ const allCheck = (checked: boolean) => {
         if ( form.selection01 === 'SUB' && form.selection03 === '' ) { setBalloonChk(6); return false; }
         
         setBalloonChk(0);
-
-        console.log(form , hiddenValue)
         
         if ( newMenu === false ) {
             // 기존 메뉴 변경 시
@@ -402,8 +400,17 @@ const allCheck = (checked: boolean) => {
                 return false;
             });
         }
+    }
 
+    function deleteHandle () {
+        if (!window.confirm("메뉴를 삭제하시겠습니까?")) return;
         
+        axiosInstance
+        .delete(`/role-menus/${hiddenValue.menuId}`)
+        .then((res) => {
+            alert('삭제되었습니다.');
+            window.location.reload();
+        })
     }
 
     return (
@@ -677,6 +684,18 @@ const allCheck = (checked: boolean) => {
                                 </div>
                             </li>
                         : null}
+
+                        { newMenu === false ?
+                            <li>
+                                <span className="admin-form-title">메뉴 삭제</span>
+                                <div className="input-area">
+                                    <button type="button" className="red-btn" disabled={disabled} onClick={deleteHandle}>
+                                        <IconTrash color="var(--color-white)" />
+                                        메뉴 삭제하기
+                                    </button>
+                                </div>
+                            </li>
+                        : null }
                     </ul>
                 </form>
 
