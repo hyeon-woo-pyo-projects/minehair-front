@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { act, useEffect, useState } from "react";
 import { SaveOptions } from "../../../components/common/UseSave";
 import {
     DndContext,
@@ -134,7 +134,6 @@ function AdminCategory() {
         .then((result)=>{
             if ( result.data.success === true ) {
                 const data = result.data.data;
-                console.log(data)
                 const majors = data.filter((el) => el.menuType === 'MAJOR' );
                 const minors = data.filter((el) => el.menuType === 'MINOR' );
                 const subs = data.filter((el) => el.menuType === 'SUB' );
@@ -280,10 +279,64 @@ function AdminCategory() {
     }
 
     /** 드래그 끝났을 때 */
-    function handleDragEnd(event: DragEndEvent, level: "major" | "minor" | "sub", parentMenuId?: number) {
-        setSave(true);
+    function handleDragEnd(
+        event: DragEndEvent,
+        level: "major" | "minor" | "sub",
+        parentMenuId?: number
+        ) {
+        const { active, over } = event;
+
+        if (level === "major") {
+            const newOrder = majorMenuSorted.map((item, idx) => ({
+            ...item,
+            menuOrderNo: idx + 1,
+            }));
+            setMajorMenuSorted(newOrder);
+            updateOrderOnServer(newOrder);
+        }
+
+        if (level === "minor") {
+            const filtered = minorMenuSorted.filter((m) => m.parentId === parentMenuId);
+            const other = minorMenuSorted.filter((m) => m.parentId !== parentMenuId);
+
+            const newOrder = filtered.map((item, idx) => ({
+            ...item,
+            menuOrderNo: idx + 1,
+            }));
+            setMinorMenuSorted([...other, ...newOrder]);
+            updateOrderOnServer(newOrder);
+        }
+
+        if (level === "sub") {
+            const filtered = subMenuSorted.filter((m) => m.parentId === parentMenuId);
+            const other = subMenuSorted.filter((m) => m.parentId !== parentMenuId);
+
+            const newOrder = filtered.map((item, idx) => ({
+            ...item,
+            menuOrderNo: idx + 1,
+            }));
+            setSubMenuSorted([...other, ...newOrder]);
+            updateOrderOnServer(newOrder);
+        }
     }
 
+    /** 서버에 순서 업데이트 요청 */
+    function updateOrderOnServer(list: MenuProps[]) {
+        const payload = list.map((item) => ({
+            menuId: item.menuId,
+            orderNo: item.menuOrderNo,
+        }));
+
+        axiosInstance
+        .patch("/menus/change/order-no", payload)
+        .then(() => {
+            alert("순서가 변경되었습니다");
+        })
+        .catch((err) => {
+            console.error("순서 저장 오류", err);
+            alert("순서 변경 저장에 실패했습니다");
+        });
+    }
     // 새로운 메뉴 생성 상태
     const [ newMenu, setNewMenu ] = useState(false);
 
@@ -343,37 +396,14 @@ const allCheck = (checked: boolean) => {
     const [ balloonChk, setBalloonChk ] = useState(0);
 
     function saveHandle () {
-        if ( form.menuName === '') { setBalloonChk(1); return false; }
-        if ( form.menuPath === '') { setBalloonChk(2); return false; }
-        if ( form.roleIdList.length === 0 ) { setBalloonChk(3); return false; }
-        if ( form.selection01 === '' ) { setBalloonChk(4); return false; }
-        if ( form.selection01 === 'MINOR' && form.selection02 === '' ) { setBalloonChk(5); return false; }
-        if ( form.selection01 === 'SUB' && form.selection03 === '' ) { setBalloonChk(6); return false; }
-        
-        setBalloonChk(0);
-        
-        if ( newMenu === false ) {
-            // 기존 메뉴 변경 시
-            axiosInstance
-            .patch(`/role-menus/${hiddenValue.menuId}`, {
-                parentId : hiddenValue.parentId,
-                menuName : form.menuName,
-                menuPath : form.menuPath,
-                imageUrl : form.imageUrl,
-                isVisible : form.menuVisible,
-                menuType : form.selection01,
-                orderNo : hiddenValue.menuOrderNo,
-                roles : form.roleIdList,
-            })
-            .then((result)=>{
-                alert('저장되었습니다');
-                window.location.reload();
-            })
-            .catch((err)=>{
-                alert('에러가 발생했습니다');
-                return false;
-            });
-        }else {
+        if ( newMenu === true ) {
+            if ( form.menuName === '') { setBalloonChk(1); return false; }
+            if ( form.menuPath === '') { setBalloonChk(2); return false; }
+            if ( form.roleIdList.length === 0 ) { setBalloonChk(3); return false; }
+            if ( form.selection01 === '' ) { setBalloonChk(4); return false; }
+            if ( form.selection01 === 'MINOR' && form.selection02 === '' ) { setBalloonChk(5); return false; }
+            if ( form.selection01 === 'SUB' && form.selection03 === '' ) { setBalloonChk(6); return false; }
+
             let newParentId = 0;
 
             if ( form.selection01 === 'MAJOR' ) { newParentId = 0 }
@@ -399,7 +429,30 @@ const allCheck = (checked: boolean) => {
                 alert('에러가 발생했습니다');
                 return false;
             });
+        } else {
+            // 기존 메뉴 변경 시
+            axiosInstance
+            .patch(`/role-menus/${hiddenValue.menuId}`, {
+                parentId : hiddenValue.parentId,
+                menuName : form.menuName,
+                menuPath : form.menuPath,
+                imageUrl : form.imageUrl,
+                isVisible : form.menuVisible,
+                menuType : form.selection01,
+                orderNo : hiddenValue.menuOrderNo,
+                roles : form.roleIdList,
+            })
+            .then((result)=>{
+                alert('저장되었습니다');
+                window.location.reload();
+            })
+            .catch((err)=>{
+                alert('에러가 발생했습니다');
+                return false;
+            });
         }
+        
+        setBalloonChk(0);
     }
 
     function deleteHandle () {
@@ -439,7 +492,7 @@ const allCheck = (checked: boolean) => {
                     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragOver={(e) => handleDragOver(e, "major")} onDragEnd={(e) => handleDragEnd(e, "major")}>
                         <SortableContext items={majorMenuSorted.map((m) => m.menuId)} strategy={verticalListSortingStrategy}>
                             {majorMenuSorted.map((major) => (
-                                <ul key={major.menuId}>
+                                <ul key={major.menuId} data-tab={major.menuOrderNo}>
                                     <SortableItem id={major.menuId} disabled={!changeMenu}>
                                         <li className="top-menu">
                                             <div className="bar-contents">

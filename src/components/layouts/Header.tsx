@@ -1,14 +1,13 @@
 import { Link, useNavigate } from 'react-router-dom';
 
 import { useEffect, useState } from 'react';
-import HeaderMenu from './HeaderMenu';
 import HeaderBanner from './HeaderBanner';
 
 import "../../style/layouts/header.css"
 import axiosInstance from '../../api/axiosInstance';
 
 interface menuProps {
-    menuId : string;
+    menuId : number;
     menuName : string;
     menuOrderNo : number;
     menuPath : string;
@@ -18,16 +17,29 @@ interface menuProps {
 }
 
 type subMenuProps = {
-    parent : string,
-    title: string,
-    link: string,
-    menuId : string,
+    id : number;
+    imageUrl : string,
+    menuId : number;
+    menuName : string;
+    menuOrderNo : number;
+    menuPath : string;
+    menuType : string;
+    menuVisible : boolean;
+    parentId : number;
+    roleIdList : []
 };
 
 type subSubMenuProps = {
-    parent: string;
-    title: string;
-    link: string;
+    id : number;
+    imageUrl : string,
+    menuId : number;
+    menuName : string;
+    menuOrderNo : number;
+    menuPath : string;
+    menuType : string;
+    menuVisible : boolean;
+    parentId : number;
+    roleIdList : []
 };
 
 function Header () {
@@ -35,8 +47,8 @@ function Header () {
     // API 연동 시작
     // 1.메인 메뉴 호출
     const [ mainMenu, setMainMenu ] = useState<menuProps[]>([]);
-    let [ subMenu, setSubMenu ] = useState<subMenuProps[]>([]);
-    const [subSubMenu, setSubSubMenu] = useState<subSubMenuProps[]>([]);
+    const [ subMenu, setSubMenu ] = useState<subMenuProps[]>([]);
+    const [ subSubMenu, setSubSubMenu] = useState<subSubMenuProps[]>([]);
     
     const getMenu = () => {
         axiosInstance
@@ -46,34 +58,15 @@ function Header () {
                     const rawMenu: any[] = response.data.data;
 
                     // 1. 메인 메뉴 추출
-                    const mainMenus = rawMenu.filter((el) => el.parentId === null);
+                    const mainMenus = rawMenu.filter((el) => el.menuType === 'MAJOR');
                     setMainMenu(mainMenus);
 
                     // 2. 서브 메뉴 추출 (메인 메뉴의 자식)
-                    const mainMenuIds = mainMenus.map((menu) => menu.menuId);
-                    const subMenus = rawMenu.filter(
-                        (el) => el.parentId !== null && mainMenuIds.includes(el.parentId)
-                    );
-
-                    const formattedSubMenus = subMenus.map((el) => ({
-                        parent: el.parentId,
-                        menuId : el.menuId,
-                        title: el.menuName,
-                        link: el.menuPath,
-                    }));
-
-                    setSubMenu(formattedSubMenus);
+                    const subMenus = rawMenu.filter((el) => el.menuType === 'MINOR');
+                    setSubMenu(subMenus);
 
                     // 3. 서브서브 메뉴 추출 (서브 메뉴의 자식)
-                    const subMenuIds = subMenus.map((menu) => menu.menuId);
-                    const subSubMenus = rawMenu
-                        .filter((el) => el.parentId !== null && subMenuIds.includes(el.parentId))
-                        .map((el) => ({
-                            parent: el.parentId,
-                            title: el.menuName,
-                            link: el.menuPath,
-                        }));
-
+                    const subSubMenus = rawMenu.filter((el) => el.menuType === 'SUB');
                     setSubSubMenu(subSubMenus);
                 }
             })
@@ -94,7 +87,7 @@ function Header () {
     const toggleMenu = () => { setOpenMenu(!openMenu) }
 
     // 마우스 호버 시, 각각 메뉴
-    const [ isHovered, setIsHovered ] = useState('');
+    const [isHovered, setIsHovered] = useState<number | null>(null);
 
     // 로그인 감지
     const [ userLogin, setUserLogin ] = useState(false);
@@ -151,45 +144,45 @@ function Header () {
                     </button>
 
                     { mainMenu.map((el) => {
+                        const connection = subMenu.filter(ss => ss.parentId === el.menuId);
+                        
                         return (
                             <li
                                 key={el.menuId}
                                 data-tab={`menu${el.menuId}`}
-                                className={`navMenu ${el.menuVisible}`}
+                                className={`navMenu ${el.menuVisible ? 'show' : ''}`}
                                 onMouseEnter={() => setIsHovered(el.menuId)}
-                                onMouseLeave={() => setIsHovered('')}
-                                onClick={() => {
-                                    const firstSub = subMenu.find((data) => data.parent === el.menuId);
-                                    if (firstSub) {
-                                        navigate(firstSub.link);
-                                    }
-                                }}
+                                onMouseLeave={() => setIsHovered(null)}
                             >
                                 <Link to={`/pages${el.menuPath}`}>{el.menuName}</Link>
-                                
-                                {subMenu.map((data) => {
-                                    if (el.menuId === data.parent) {
-                                        const grandchildren = subSubMenu.filter(
-                                            (child) => child.parent === data.menuId
-                                        );
 
-                                        return (
-                                            <HeaderMenu
-                                                key={data.link}
-                                                contents={data}
-                                                imgSrc=""
-                                                isVisible={isHovered === el.menuId}
-                                                childrenMenu={grandchildren}
-                                            />
-                                        );
-                                    }
+                                { connection.length > 0 &&
+                                    <div className={`perMenu ${isHovered === el.menuId ? 'show' : ''}`}>
+                                        <div className="categories">
+                                            {connection.map((data) => {
+                                                const grandchildren = subSubMenu.filter(child => child.parentId === data.menuId);
+                                                return (
+                                                    <div className="category" key={data.menuId}>
+                                                        <Link to={`/pages${data.menuPath}`}>{data.menuName}</Link>
 
-                                    return null;
-                                })}
+                                                        {grandchildren.length > 0 &&
+                                                            <ul>
+                                                                {grandchildren.map((ele, index) => (
+                                                                    <li key={index}>
+                                                                        <Link to={`/pages${ele.menuPath}`}>{ele.menuName}</Link>
+                                                                    </li>
+                                                                ))}
+                                                            </ul>
+                                                        }
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                }
                             </li>
                         );
                     })}
-
                 </ul>
 
                 <div className={`wholeMenu ${openMenu ? "show" : '' }`}></div>
