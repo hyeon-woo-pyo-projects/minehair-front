@@ -104,6 +104,7 @@ header .perMenu {
     overflow: hidden;
     display: flex;
     width: auto;
+    min-width: 150px;
 }
 header .perMenu.show { opacity: 1; visibility: visible; width: auto; }
 header .perMenu.haveImg { min-width: 250px; }
