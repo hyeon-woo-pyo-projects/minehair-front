@@ -35,6 +35,8 @@
     font-size: 14px;
     cursor: pointer;
 }
+.admin-page input[type="file"]:disabled + label { opacity: 0.8; cursor: no-drop; }
+.admin-page input[type="file"]:disabled + label:hover { background-color: var(--color-black); }
 .admin-page input[type="file"] + label:hover { background-color: var(--default-background); }
 .admin-page input[type="file"] + label svg { margin-bottom: 2px; }
 .admin-page .admin-form { text-align: left; margin-top: 50px;}

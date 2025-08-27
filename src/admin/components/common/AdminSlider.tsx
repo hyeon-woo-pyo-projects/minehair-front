@@ -17,10 +17,9 @@ function AdminSlider () {
     const [ save, setSave ] = useState(false);
 
     const [ getSlider, setGetSlider ] = useState<SliderProps[]>([]);
-    const [ imgUrl, setImgUrl ] = useState('')
-    const [ link, setLink ] = useState('')
-    const [ imageFile, setImageFile ] = useState<File | ''>('');
-
+    const [ id, setId ] = useState(0);
+    const [ imgUrl, setImgUrl ] = useState('');
+    const [ link, setLink ] = useState('');
 
     function getSlide () {
         axiosInstance
@@ -72,11 +71,39 @@ function AdminSlider () {
             imageUrl : imgUrl,
             link : link
         })
+        .then((res)=>{
+            if ( res.data.success === true ) {
+                alert('저장되었습니다');
+                window.location.reload();
+            }
+        })
         .catch((err)=>{
             alert('오류가 발생했습니다');
         })
 
-        setBalloonChk(0);
+        
+    }
+
+    function handleDelete () {
+        if (!window.confirm('해당 슬라이드를 삭제하시겠습니까?')) return;
+
+        axiosInstance
+        .delete(`/home/slide/${id}`)
+        .then((result)=>{
+            if ( result.data.success === true ) {
+                alert('삭제되었습니다');
+                window.location.reload();
+            }
+        })
+    }
+    
+    const [ isNew, setIsNew ] = useState(false);
+
+    function newSlide () {
+        setIsNew(true);
+        setId(0);
+        setImgUrl('');
+        setLink('');
     }
 
     return(
@@ -85,53 +112,77 @@ function AdminSlider () {
                 <h1 className="admin-title">홈 슬라이드 편집</h1>
 
                 <form className="admin-form" id="admin-slide">
+                    <input type="number" value={id} hidden/>
+
                     <ul>
-                        { getSlider.map((el)=>{
+                        {getSlider.map((el) => {
                             return (
-                                <li className="sliderChild" key={el.id} style={{backgroundImage : `url(${el.imageUrl})` }}></li>
-                            )
+                                <li
+                                    className="sliderChild"
+                                    key={el.id}
+                                    style={{ backgroundImage: `url(${el.imageUrl})` }}
+                                    onClick={() => {
+                                        setId(el.id);
+                                        setLink(el.link);
+                                        setImgUrl('');
+                                        setSave(false);
+                                        setIsNew(false);
+                                    }}
+                                ></li>
+                            );
                         })}
 
-                        <li className="sliderChild"><IconCirclePlus color="var(--color-black)"/></li>
+                        <li className="sliderChild" onClick={newSlide}>
+                            {imgUrl !== "" ? (
+                                <div
+                                    style={{
+                                        width: "100%",
+                                        height: "100%",
+                                        backgroundImage: `url(${imgUrl})`,
+                                        backgroundSize: "cover",
+                                        backgroundPosition: "center",
+                                        borderRadius: "8px"
+                                    }}
+                                />
+                            ) : (
+                                <IconCirclePlus color="var(--color-black)"/>
+                            )}
+                        </li>
                     </ul>
                 </form>
 
                 <form className="admin-form" id="admin-slider-form">
                     <ul>
                         <li>
-                            <span className="admin-form-title">이미지 업로드</span>
+                            <span className="admin-form-title">컨텐츠</span>
 
                             <div className="input-area">
                                 { balloonChk === 1 && <Balloon text={'이미지를 확인해주세요.'} status={'notice'} /> }
-                                <div className="seperate-item">
-                                <input
-                                    type="file"
-                                    id="event-banner-upload"
-                                    onChange={handleFileChange}
-                                />
-                                <label htmlFor="event-banner-upload">
-                                    <IconUpload color="var(--color-white)" width={17} height={17} />
-                                    이미지 업로드
-                                </label>
-                                </div>
-
-                                {imgUrl !== "" ? (
+                                { isNew === true ? 
                                     <div className="seperate-item">
-                                        <button
-                                        type="button"
-                                        className="red-btn"
-                                        onClick={() => {
-                                            if (!window.confirm("이미지를 삭제하시겠습니까?")) return;
-                                            setImgUrl("");
-                                            setImageFile('');
-                                            setSave(true);
-                                        }}
-                                        >
-                                        <IconTrash color="var(--color-white)" />
-                                        이미지 삭제
-                                        </button>
+                                        <input
+                                            type="file"
+                                            id="event-banner-upload"
+                                            onChange={handleFileChange}
+                                            disabled={!isNew}
+                                        />
+                                        <label htmlFor="event-banner-upload">
+                                            <IconUpload color="var(--color-white)" width={17} height={17} />
+                                            이미지 업로드
+                                        </label>
                                     </div>
-                                ) : null}
+                                :
+                                    <div className="seperate-item">
+                                            <button
+                                                type="button"
+                                                className="red-btn"
+                                                onClick={handleDelete}
+                                            >
+                                            <IconTrash color="var(--color-white)" />
+                                            슬라이드 삭제
+                                            </button>
+                                        </div>
+                                    }
                             </div>
                         </li>
                         
@@ -144,6 +195,7 @@ function AdminSlider () {
                                 type="text"
                                 placeholder="/page"
                                 value={link}
+                                disabled={!isNew}
                                 onChange={(e) => {
                                     setLink(e.target.value)
                                     setSave(true);
