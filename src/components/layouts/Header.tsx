@@ -192,7 +192,15 @@ function Header () {
                     })}
                 </ul>
 
-                <div className={`wholeMenu ${openMenu ? "show" : '' }`}></div>
+                <div className={`wholeMenu ${openMenu ? "show" : '' }`}>
+                    <div className="wrapper">
+                        { mainMenu.map((el) => {
+                            return (
+                                <>{el.menuName}</>
+                            )
+                        })}
+                    </div>
+                </div>
             </nav>
         </header>
     )
