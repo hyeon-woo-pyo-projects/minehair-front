@@ -1,3 +1,5 @@
+header { position: relative; background-color: #fff; z-index: 10; }
+
 header #headerLine {
     border-bottom: 1px solid #eee;
     padding: 15px 0;
@@ -127,8 +129,10 @@ header .perMenu .category ul li a { color: var(--color-placeholder); font-size: 
 header .perMenu .category ul li a:hover { color: var(--brand-color); }
 
 @media screen and (max-width : 720px) {
-    header #headerLine .wrapper .empty { display: none; }
+    header { position: sticky ; top: 0; }
+    header #headerLine .wrapper .empty { position: absolute; left: 30px; }
     header #headerLine #member { display: none; }
     header #headerLine .wrapper { justify-content: center; }
     header #headerLine .wrapper #headerLogo { width: 40%; }
+    header nav { display: none; }
 }

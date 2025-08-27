@@ -112,7 +112,14 @@ function Header () {
 
             <div id='headerLine'>
                 <div className="wrapper">
-                    <div className='empty'></div>
+                    <div className='empty'>
+                        <button type='button' id='menuBtn' className={openMenu ? 'show' : ''} onClick={toggleMenu}>
+                            <i></i>
+                            <i></i>
+                            <i></i>
+                            <i></i>
+                        </button>
+                    </div>
 
                     <Link to="/" id="headerLogo">
                         <img src={require('../../img/logo.png')} alt="민이헤어_로고" />
