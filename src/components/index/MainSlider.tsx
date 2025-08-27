@@ -77,9 +77,12 @@ function MainSlider () {
                 className='mainSlider'
             >
                 { slide.map((el)=>{
+                    console.log(el)
                     return(
                         <SwiperSlide>
-                            <Link to={el.link} style={{backgroundImage : el.imageUrl}}></Link>
+                            <Link to={el.link}>
+                                <img src={el.imageUrl} alt="슬라이드 이미지"/>
+                            </Link>
                         </SwiperSlide>
                     )
                 })}
