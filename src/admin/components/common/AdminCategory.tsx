@@ -729,10 +729,12 @@ const allCheck = (checked: boolean) => {
                                             이미지 업로드
                                         </label>
                                     </div>
-                                    <button type="button" className="red-btn" disabled={disabled} onClick={handleDeleteImageFromForm}>
-                                        <IconTrash color="var(--color-white)" />
-                                        삭제하기
-                                    </button>
+                                    { form.imageUrl !== '' ?
+                                        <button type="button" className="red-btn" disabled={disabled} onClick=  {handleDeleteImageFromForm}>
+                                            <IconTrash color="var(--color-white)" />
+                                            삭제하기
+                                        </button>
+                                    : null }
                                     {form.imageUrl && <div style={{ marginTop: 8 }}><img src={form.imageUrl} alt="menu" style={{ maxWidth: 120 }} /></div>}
                                 </div>
                             </li>
