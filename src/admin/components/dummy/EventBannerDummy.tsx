@@ -14,7 +14,7 @@ function EventBannerDummy({ content, textColor, color, imgUrl, isPost }: bannerP
         backgroundColor: color ?? "var(--color-gray)",
         backgroundImage: imgUrl ? `url(${imgUrl})` : undefined,
         color: textColor ?? "var(--color-white)",
-        backgroundSize: "contain",
+        backgroundSize: "100%",
         backgroundPosition: "center",
         backgroundRepeat : 'no-repeat'
     };

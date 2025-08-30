@@ -10,7 +10,7 @@
     height: 40px;
     background-repeat: no-repeat;
     background-position: center center;
-    background-size: contain;
+    background-size: 100%;
 }
 
 #headerBanner:hover {

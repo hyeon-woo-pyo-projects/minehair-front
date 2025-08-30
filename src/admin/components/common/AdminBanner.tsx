@@ -29,9 +29,6 @@ function AdminBanner() {
     const [url, setUrl] = useState<string>("#");
     const [imgUrl, setImgUrl] = useState<string>("");
 
-    // 실제 서버에 보낼 이미지 파일
-    const [imageFile, setImageFile] = useState<File | null>(null);
-
     const [save, setSave] = useState(false);
 
     useEffect(() => {
@@ -41,7 +38,6 @@ function AdminBanner() {
         setColor(bannerData?.color ?? "#ffffff");
         setUrl(bannerData?.link ?? "#");
         setImgUrl(bannerData?.imageUrl ?? "");
-        setImageFile(null);
     }, [bannerData]);
 
     // 서버에서 배너 호출
@@ -63,29 +59,48 @@ function AdminBanner() {
     }, []);
 
     // 파일 입력 핸들러
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // 파일 입력 핸들러
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
 
+        // 이미지 파일 체크
         if (!file.type.includes("image")) {
             alert("이미지 형식만 업로드 가능합니다.");
             return;
         }
+        // 10MB 제한
         if (file.size > 10485760) {
             alert("10MB 이하의 파일만 업로드 가능합니다.");
             return;
         }
 
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => {
-            if (typeof reader.result === "string") {
-                setImgUrl(reader.result);  // base64 문자열 저장
-                setSave(true);
-            }
-        };
-    };
+        // FormData 생성
+        const formData = new FormData();
+        formData.append("imageFile", file);
 
+        try {
+            const response = await fetch("https://minehair401.com/api/image/upload/BANNER", {
+                method: "POST",
+                body: formData,
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("accessToken") || ""}`, // 토큰 필요 시
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error("업로드 실패");
+            }
+
+            const data = await response.json();
+            setImgUrl(data.data.imageUrl);
+            setSave(true);
+            } catch (error) {
+                console.error("에러 발생:", error);
+                alert("업로드 중 에러가 발생했습니다.");
+        }
+    };
+    
     function saveData () {
         if (!window.confirm("저장 하시겠습니까?")) return;
         
@@ -231,15 +246,15 @@ function AdminBanner() {
 
                             <div className="input-area">
                                 <div className="seperate-item">
-                                <input
-                                    type="file"
-                                    id="event-banner-upload"
-                                    onChange={handleFileChange}
-                                />
-                                <label htmlFor="event-banner-upload">
-                                    <IconUpload color="var(--color-white)" width={17} height={17} />
-                                    이미지 업로드
-                                </label>
+                                    <input
+                                        type="file"
+                                        id="event-banner-upload"
+                                        onChange={handleFileChange}
+                                    />
+                                    <label htmlFor="event-banner-upload">
+                                        <IconUpload color="var(--color-white)" width={17} height={17} />
+                                        이미지 업로드
+                                    </label>
                                 </div>
 
                                 {imgUrl !== "" ? (
@@ -250,7 +265,6 @@ function AdminBanner() {
                                     onClick={() => {
                                         if (!window.confirm("이미지를 삭제하시겠습니까?")) return;
                                         setImgUrl("");
-                                        setImageFile(null);
                                         setSave(true);
                                     }}
                                     >
