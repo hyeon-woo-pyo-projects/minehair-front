@@ -57,8 +57,7 @@ function AdminBanner() {
     useEffect(() => {
         getBanner();
     }, []);
-
-    // 파일 입력 핸들러
+    
     // 파일 입력 핸들러
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];

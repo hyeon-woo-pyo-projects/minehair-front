@@ -13,7 +13,8 @@ interface menuProps {
     menuPath : string;
     menuVisible : boolean;
     parentId : string;
-    status : "active" | ""
+    status : "active" | "",
+    imageUrl : string
 }
 
 type subMenuProps = {
@@ -57,6 +58,7 @@ function Header () {
                 if (response.data.success === true) {
                     const rawMenu: any[] = response.data.data;
 
+                    
                     // 1. 메인 메뉴 추출
                     const mainMenus = rawMenu.filter((el) => el.menuType === 'MAJOR');
                     setMainMenu(mainMenus);
@@ -152,7 +154,6 @@ function Header () {
 
                     { mainMenu.map((el) => {
                         const connection = subMenu.filter(ss => ss.parentId === el.menuId);
-                        
                         return (
                             <li
                                 key={el.menuId}
@@ -164,7 +165,7 @@ function Header () {
                                 <Link to={`/pages${el.menuPath}`}>{el.menuName}</Link>
 
                                 { connection.length > 0 &&
-                                    <div className={`perMenu ${isHovered === el.menuId ? 'show' : ''}`}>
+                                    <div className={`perMenu${isHovered === el.menuId ? ' show' : ''}${el.imageUrl ? ' have-img' : ''}`}>
                                         <div className="categories">
                                             {connection.map((data) => {
                                                 const grandchildren = subSubMenu.filter(child => child.parentId === data.menuId);
@@ -185,6 +186,12 @@ function Header () {
                                                 );
                                             })}
                                         </div>
+                                        
+                                        {el.imageUrl ?
+                                            <div className="image-line">
+                                                <img src={el.imageUrl} alt='메뉴 이미지'/>
+                                            </div>
+                                        : null}
                                     </div>
                                 }
                             </li>

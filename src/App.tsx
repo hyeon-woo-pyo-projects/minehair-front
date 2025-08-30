@@ -20,6 +20,7 @@ import DefaultPages from './components/pages/DefaultPages';
 import AdminConsulation from './admin/components/common/AdminConsultation';
 import ManagerConsultation from './admin/components/manager/ManagerConsultation';
 import AdminSlider from './admin/components/common/AdminSlider';
+import QnA from './components/pages/QnA';
 
 function App() {
   // 토큰 체크
@@ -69,6 +70,7 @@ function App() {
                   <Route path="/member/forgot" element={<Forgot />} />
                   <Route path="/member/terms" element={<Terms />} />
                   <Route path="/member/privacy" element={<Privacy />} />
+                  <Route path="/pages/qna" element={<QnA />} />
                 </Routes>
               </>
             }

@@ -25,6 +25,7 @@ import IconTrash from "../../../icons/IconTrash";
 import "../../../style/admin/admin.css";
 import { useNavigate } from "react-router-dom";
 import Balloon from "../../../components/system/Balloon";
+import IconPicture from "../../../icons/IconPicture";
 
 interface MenuProps {
     menuId: number;
@@ -236,11 +237,46 @@ function AdminCategory() {
         setSave(true);
     }
 
-    /** 이미지 파일 선택 */
-    function handleImageSelect(file: File | null) {
-        setImageFile(file);
-        setSave(true);
-    }
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        // 이미지 파일 체크
+        if (!file.type.includes("image")) {
+            alert("이미지 형식만 업로드 가능합니다.");
+            return;
+        }
+        // 10MB 제한
+        if (file.size > 10485760) {
+            alert("10MB 이하의 파일만 업로드 가능합니다.");
+            return;
+        }
+
+        // FormData 생성
+        const formData = new FormData();
+        formData.append("imageFile", file);
+
+        try {
+            const response = await fetch("https://minehair401.com/api/image/upload/BANNER", {
+                method: "POST",
+                body: formData,
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("accessToken") || ""}`, // 토큰 필요 시
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error("업로드 실패");
+            }
+
+            const data = await response.json();
+            setForm((prev) => ({ ...prev, imageUrl: data.data.imageUrl }));
+            setSave(true);
+            } catch (error) {
+                console.error("에러 발생:", error);
+                alert("업로드 중 에러가 발생했습니다.");
+        }
+    };
 
     /** 드래그 오버 (중간에 위치 변경 보이기 용) */
     function handleDragOver(event: DragOverEvent, level: "major" | "minor" | "sub", parentMenuId?: number) {
@@ -722,20 +758,29 @@ const allCheck = (checked: boolean) => {
                             <li>
                                 <span className="admin-form-title">메뉴 이미지</span>
                                 <div className="input-area">
-                                    <div className="image-upload">
-                                        <input type="file" id="image-upload" disabled={disabled} onChange={(e) => { if (e.target.files && e.target.files[0]) handleImageSelect(e.target.files[0]); }} />
-                                        <label htmlFor="image-upload">
-                                            <IconUpload color="var(--color-white)" />
-                                            이미지 업로드
-                                        </label>
-                                    </div>
-                                    { form.imageUrl !== '' ?
-                                        <button type="button" className="red-btn" disabled={disabled} onClick=  {handleDeleteImageFromForm}>
-                                            <IconTrash color="var(--color-white)" />
-                                            삭제하기
-                                        </button>
-                                    : null }
-                                    {form.imageUrl && <div style={{ marginTop: 8 }}><img src={form.imageUrl} alt="menu" style={{ maxWidth: 120 }} /></div>}
+                                    { form.imageUrl === '' ? 
+                                        <div className="image-upload">
+                                            <input type="file" id="image-upload" disabled={disabled} onChange={handleFileChange} />
+                                            <label htmlFor="image-upload">
+                                                <IconUpload color="var(--color-white)" />
+                                                이미지 업로드
+                                            </label>
+                                        </div>
+                                    :
+                                        <>
+                                            <div className="image-upload">
+                                                <a className="image-preview" rel="noreferrer" target="_blank" href={form.imageUrl}>
+                                                    <IconPicture color="var(--color-white)"/>
+                                                    <span>사진 보기</span>
+                                                </a>
+                                            </div>
+
+                                            <button type="button" className="red-btn" disabled={disabled} onClick=  {handleDeleteImageFromForm}>
+                                                <IconTrash color="var(--color-white)" />
+                                                삭제하기
+                                            </button>
+                                        </>
+                                    }
                                 </div>
                             </li>
                         : null}

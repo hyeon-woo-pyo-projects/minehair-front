@@ -45,7 +45,8 @@
 .admin-page .admin-form ul li { position: relative; display: flex; flex-direction: column; gap: 12px; width: calc((100% / 4) - 25px); }
 .admin-page .admin-form ul li span.admin-form-title { display: block; font-size: 14px; font-weight: 500; }
 .admin-page .admin-form ul li .input-area { position: relative; display: flex; align-items: center; gap: 6px; min-height: 40px; }
-.admin-page .admin-form ul li .input-area button { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; border-radius: 5px; gap: 6px; }
+.admin-page .admin-form ul li .input-area button { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; border-radius: 5px; gap: 6px; min-height: 40px; }
+.admin-page .admin-form ul li .input-area button.blackBtn a { color: var(--color-white); }
 .admin-page .admin-form ul li .input-area .seperate-item { width: 100%; height: 100%; }
 .admin-page select { width: 100%; height: 40px; font-size: 14px; }
 
@@ -120,6 +121,10 @@
 
 .admin-body { padding: 30px 0 120px; }
 .admin-body h1.admin-title { font-size: 24px; font-weight: 600; margin-bottom: 30px; }
+
+
+
+
 
 /* ADMIN-WIDGET 어드민 위젯 */
 .admin-widget {
@@ -238,10 +243,23 @@
 
 .menu-category .add-btn:hover { background-color: var(--color-gray); }
 .menu-category .checkboxs { display: flex; gap: 20px; }
-.menu-category .image-upload { width: 100%; }
+.menu-category .image-upload { width: 100%; height: 100%; }
 .menu-category .image-upload input[type="file"] + label { background-color: var(--default-background); }
 .menu-category .image-upload input[type="file"] + label:hover { background-color: var(--color-black); }
 .menu-category input[type="checkbox"] + label { font-size: 14px; }
+.image-preview { 
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-color: var(--default-background);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    gap: 6px;
+}
+
+.image-preview span { font-size: 13px; color: var(--color-white); }
 
 
 
