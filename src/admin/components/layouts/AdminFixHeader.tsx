@@ -1,23 +1,18 @@
 
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import '../../../style/admin/adminHeader.css';
-import { useState } from "react";
-import AdminNavagation from "./AdminNavigation";
+import IconArrowLeft from "../../../icons/IconArrowLeft";
 
 function AdminFixHeader () {
-    const [ openMenu, setOpenMenu ] = useState(false);
-    const toggleMenu = () => { setOpenMenu(!openMenu) }
+    const navigate = useNavigate();
 
     return (
         <>
             <div id="admin-header">
-                <button type='button' id='menu-btn' className={openMenu ? 'show' : ''} onClick={toggleMenu}>
-                    <i></i>
-                    <i></i>
-                    <i></i>
-                    <i></i>
+                <button type='button' onClick={() => { navigate(-1) }}>
+                    <IconArrowLeft color="var(--color-black)"/>
                 </button>
 
                 <h5>관리자 페이지</h5>
@@ -25,8 +20,6 @@ function AdminFixHeader () {
                     <Link to={'/'}><button type="button" className="exit-btn">나가기</button></Link>
                 </div>
             </div>
-
-            <AdminNavagation openMenu={openMenu}/>
         </>
     )
 }

@@ -102,7 +102,7 @@
 }
 
 .admin-index section ul.admin-contents { margin-top: 15px; display: flex; gap: 12px 30px; flex-wrap: wrap; }
-.admin-index section ul.admin-contents li { position: relative; width: calc((100% / 10) - 15px); }
+.admin-index section ul.admin-contents li { position: relative; min-width: 130px; }
 .admin-index section ul.admin-contents li a {
     position: relative;
     transition: 0.25s;
@@ -247,6 +247,7 @@
 .menu-category .image-upload input[type="file"] + label { background-color: var(--default-background); }
 .menu-category .image-upload input[type="file"] + label:hover { background-color: var(--color-black); }
 .menu-category input[type="checkbox"] + label { font-size: 14px; }
+
 .image-preview { 
     width: 100%;
     height: 100%;
@@ -336,7 +337,7 @@
 @media screen and (max-width: 720px) {
     .admin-index section { padding: 30px 20px; }
     .admin-index section ul.admin-contents { gap: 12px; }
-    .admin-index section ul.admin-contents li { width: calc((100% / 3) - 8px); }
+    .admin-index section ul.admin-contents li { min-width: calc((100% / 3) - 8px) }
     .admin-index section ul.admin-contents li a { font-size: 12px; text-align: center; word-break: keep-all; }
 
     .admin-widget { padding: 12px 20px; }

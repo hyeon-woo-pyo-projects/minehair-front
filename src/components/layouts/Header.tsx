@@ -200,12 +200,41 @@ function Header () {
                 </ul>
 
                 <div className={`wholeMenu ${openMenu ? "show" : '' }`}>
-                    <div className="wrapper">
-                        { mainMenu.map((el) => {
-                            return (
-                                <>{el.menuName}</>
-                            )
-                        })}
+                    <div className="inner">
+                        <ul>
+                            { mainMenu.map((el) => {
+                                const connection = subMenu.filter(ss => ss.parentId === el.menuId);
+
+                                return (
+                                    <li key={el.menuId}>
+                                        <Link className='wholeMenu-main' to={el.menuPath} onClick={() => setOpenMenu(false)}>{el.menuName}</Link>
+
+                                        { connection.length > 0 &&
+                                            <div className="categories">
+                                                {connection.map((data) => {
+                                                    const grandchildren = subSubMenu.filter(child => child.parentId === data.menuId);
+                                                    return (
+                                                        <div className="category" key={data.menuId}>
+                                                            <Link to={`/pages${data.menuPath}`} onClick={() => setOpenMenu(false)}>{data.menuName}</Link>
+
+                                                            {grandchildren.length > 0 &&
+                                                                <div>
+                                                                    {grandchildren.map((ele, index) => (
+                                                                        <div key={index}>
+                                                                            <Link className='small-menu' to={`/pages${ele.menuPath}`} onClick={() => setOpenMenu(false)}>{ele.menuName}</Link>
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        }
+                                    </li>
+                                )
+                            })}
+                        </ul>
                     </div>
                 </div>
             </nav>

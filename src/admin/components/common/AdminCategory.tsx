@@ -37,7 +37,8 @@ interface MenuProps {
     menuVisible: "true" | "false" | string;
     parentId: number | null;
     imageUrl?: string;
-    roleIdList : number[]
+    roleIdList : number[];
+    isContents : boolean;
 }
 
 interface FormState {
@@ -50,7 +51,8 @@ interface FormState {
     selection02: string;
     selection03: string;
     imageUrl: string;
-    roleIdList: number[];   // ✅ number[]로 명확히 지정
+    roleIdList: number[];
+    isContents : boolean
 }
 
 /** Sortable wrapper */
@@ -113,7 +115,8 @@ function AdminCategory() {
         selection02: "",
         selection03: "",
         imageUrl: "",
-        roleIdList: []
+        roleIdList: [],
+        isContents : true,
     };
     const [form, setForm] = useState<typeof initialForm>(initialForm);
     const [disabled, setDisabled] = useState(true);
@@ -196,6 +199,7 @@ function AdminCategory() {
                 selection03,
                 imageUrl: selectedMenu.imageUrl ?? "",
                 roleIdList: roleList,
+                isContents : selectedMenu.isContents,
             });
         } else {
             setForm(initialForm);
@@ -400,14 +404,14 @@ function AdminCategory() {
     })
 
     // 전체 선택
-const allCheck = (checked: boolean) => {
-    setCheckers({
-        selector1: checked,
-        selector2: checked,
-        selector3: checked,
-    });
+    const allCheck = (checked: boolean) => {
+        setCheckers({
+            selector1: checked,
+            selector2: checked,
+            selector3: checked,
+        });
 
-    const newRoles = checked ? [1, 2, 3] : [];
+        const newRoles = checked ? [1, 2, 3] : [];
         setForm((prev) => ({ ...prev, roleIdList: newRoles }));
         setSave(true);
     };
@@ -428,6 +432,8 @@ const allCheck = (checked: boolean) => {
 
         setSave(true);
     };
+    
+
 
     const [ balloonChk, setBalloonChk ] = useState(0);
 
@@ -456,6 +462,7 @@ const allCheck = (checked: boolean) => {
                 isVisible : form.menuVisible,
                 menuType : form.selection01,
                 roles : form.roleIdList,
+                isContents: form.isContents,
             })
             .then((result)=>{
                 alert('저장되었습니다');
@@ -477,6 +484,7 @@ const allCheck = (checked: boolean) => {
                 menuType : form.selection01,
                 orderNo : hiddenValue.menuOrderNo,
                 roles : form.roleIdList,
+                isContents: form.isContents,
             })
             .then((result)=>{
                 alert('저장되었습니다');
@@ -656,6 +664,7 @@ const allCheck = (checked: boolean) => {
                         <li>
                             { balloonChk === 3 && <Balloon text={'노출 권한을 설정해주세요.'} status={'notice'} /> }
                             <span className="admin-form-title">노출 권한</span>
+
                             <div className="input-area">
                                 <div className="checkboxs">
                                     <div className="checkbox-child">
@@ -784,6 +793,38 @@ const allCheck = (checked: boolean) => {
                                 </div>
                             </li>
                         : null}
+
+                        <li>
+                            <span className="admin-form-title">페이지 설정</span>
+
+                            <div className="input-area">
+                                <div className="radios">
+                                    <div className="radio-child">
+                                        <input
+                                            type="radio"
+                                            id="contentsPage"
+                                            name="pageRadio"
+                                            disabled={disabled}
+                                            checked={ form.isContents === true }
+                                            onChange={() => handleFormChange({ isContents: true })}
+                                        />
+                                        <label htmlFor="contentsPage">컨텐츠 페이지</label>
+                                    </div>
+
+                                    <div className="radio-child">
+                                        <input
+                                            type="radio"
+                                            id="normalPage"
+                                            name="pageRadio"
+                                            disabled={disabled}
+                                            checked={ form.isContents === false }
+                                            onChange={() => handleFormChange({ isContents: false })}
+                                        />
+                                        <label htmlFor="normalPage">일반 페이지</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
 
                         { newMenu === false ?
                             <li>

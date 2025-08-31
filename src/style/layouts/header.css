@@ -83,12 +83,20 @@ header nav .wholeMenu {
     left: 0;
     background-color: var(--color-white);
     z-index: 2;
-    padding: 100px 0 20px;
+    padding: 100px 0 60px;
     visibility: hidden;
     opacity: 0;
 }
 
 header nav .wholeMenu.show { opacity: 1; visibility: visible; }
+header nav .wholeMenu ul { display: flex; justify-content: space-between; }
+header nav .wholeMenu ul li { position: relative; display: block; height: auto; padding: 0; }
+header nav .wholeMenu ul li a { position: relative; transition: all 0.25s; }
+header nav .wholeMenu ul li a.wholeMenu-main { display: block; font-weight: 600; font-size: 20px; margin-bottom: 20px; }
+header nav .wholeMenu ul li a.small-menu { font-size: 15px; margin-left: 6px; color: var(--color-placeholder); }
+header nav .wholeMenu ul li a:hover { color: var(--brand-color); }
+header nav .wholeMenu ul li .categories { display: flex; flex-direction: column; gap: 20px 0; }
+header nav .wholeMenu ul li .categories .category { text-align: left; display: flex; flex-direction: column; gap: 6px; }
 
 
 /* 개별 메뉴 */
