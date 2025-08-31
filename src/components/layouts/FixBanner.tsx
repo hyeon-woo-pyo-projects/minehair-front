@@ -104,7 +104,7 @@ function FixBanner () {
 
                     <div>
                         { balloonChk === 2 && <Balloon text={'연락처를 확인해주세요.'} status={'notice'} /> }
-                        <input type="text" placeholder="연락처(-없이)" maxLength={11} value={consultForm.phone} onChange={ e => setConsultForm({...consultForm, phone : e.target.value})}/>
+                        <input type="text" placeholder="연락처" maxLength={11} value={consultForm.phone} onChange={ e => setConsultForm({...consultForm, phone : e.target.value})}/>
                     </div>
 
                     <div>
@@ -117,7 +117,7 @@ function FixBanner () {
                         </select>
                     </div>
 
-                    <div>
+                    <div className="pc-show">
                         { balloonChk === 4 && <Balloon text={'동의해주세요.'} status={'notice'} /> }
                         <input type="checkbox" id="agreeChk" onChange={ e => setConsultForm({...consultForm, agree : e.target.checked})}/>
                         <label htmlFor="agreeChk">
@@ -126,7 +126,17 @@ function FixBanner () {
                     </div>
                 </form>
 
-                <button id="sendCall" onClick={submitConsulting}>상담신청</button>
+                <div className="fixBanner-btns">
+                    <div className="mo-show">
+                        { balloonChk === 4 && <Balloon text={'동의해주세요.'} status={'notice'} /> }
+                        <input type="checkbox" id="agreeChk2" onChange={ e => setConsultForm({...consultForm, agree : e.target.checked})}/>
+                        <label htmlFor="agreeChk2">
+                            개인정보처리방침 동의
+                        </label>
+                    </div>
+                    
+                    <button id="sendCall" onClick={submitConsulting}>상담신청</button>
+                </div>
             </div>
         </div>
     )

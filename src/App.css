@@ -29,6 +29,9 @@
   color: #61dafb;
 }
 
+.pc-show { display: flex; }
+.mo-show { display: none; }
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -36,4 +39,9 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+@media screen and (max-width: 720px) {
+  .pc-show { display: none !important; }
+  .mo-show { display: flex !important; }
 }

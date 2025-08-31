@@ -128,7 +128,10 @@
 
     #fixedBanner .wrapper { flex-direction: column; align-items: start; padding: 20px; }
     #fixedBanner .wrapper h5 { font-size: 18px; }
-    #fixedBanner .wrapper form { display: grid; grid-template-columns: 1fr 1fr; margin-top: 12px; }
+    #fixedBanner .wrapper form { display: grid; grid-template-columns: 1fr 1fr 1fr; margin-top: 12px; }
     #fixedBanner .wrapper form > div { width: 100%; }
-    #fixedBanner #sendCall { width: 100%; font-size: 14px; height: 35px; margin-top: 12px; }
+    #fixedBanner .fixBanner-btns { display: flex; align-items: center; width: 100%; margin-top: 12px; }
+    #fixedBanner .mo-show { width: 100%; }
+    #fixedBanner .mo-show label { color: var(--color-white); font-size: 14px; }
+    #fixedBanner #sendCall { width: 100%; font-size: 14px; height: 35px; }
 }
