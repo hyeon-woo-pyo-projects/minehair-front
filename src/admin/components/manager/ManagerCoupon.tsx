@@ -316,43 +316,45 @@ function ManagerCoupon () {
                             <span className="admin-form-title">할인</span>
 
                             <div className="input-area">
-                                { formData.discountType === 'PRICE' ?
-                                    <input 
-                                        type="text" 
-                                        id="discount-amount"
-                                        value={formData.discountAmount}
-                                        maxLength={6}
-                                        onChange={(e) => {
-                                            const value = e.target.value;
-                                            if (/^\d*$/.test(value)) {
-                                            handleChange({ discountAmount: Number(value) });
-                                            }
-                                        }}
-                                        disabled={disabled}
-                                    />
-                                :
-                                    <input 
-                                        type="text" 
-                                        id="discount-amount"
-                                        value={formData.discountAmount > 100 ? 100 : formData.discountAmount}
-                                        maxLength={3}
-                                        onChange={(e) => {
-                                            const value = e.target.value;
+                                <div className="flex-item gap-6">
+                                    { formData.discountType === 'PRICE' ?
+                                        <input 
+                                            type="text" 
+                                            id="discount-amount"
+                                            value={formData.discountAmount}
+                                            maxLength={6}
+                                            onChange={(e) => {
+                                                const value = e.target.value;
+                                                if (/^\d*$/.test(value)) {
+                                                handleChange({ discountAmount: Number(value) });
+                                                }
+                                            }}
+                                            disabled={disabled}
+                                        />
+                                    :
+                                        <input 
+                                            type="text" 
+                                            id="discount-amount"
+                                            value={formData.discountAmount > 100 ? 100 : formData.discountAmount}
+                                            maxLength={3}
+                                            onChange={(e) => {
+                                                const value = e.target.value;
 
-                                            if (/^\d*$/.test(value)) {
-                                                let numberValue = Number(value);
-                                                
-                                                if (numberValue > 100) { numberValue = 100; }
-                                                handleChange({ discountAmount: numberValue });
-                                            }
-                                        }}
-                                        disabled={disabled}
-                                    />
-                                }
+                                                if (/^\d*$/.test(value)) {
+                                                    let numberValue = Number(value);
+                                                    
+                                                    if (numberValue > 100) { numberValue = 100; }
+                                                    handleChange({ discountAmount: numberValue });
+                                                }
+                                            }}
+                                            disabled={disabled}
+                                        />
+                                    }
 
-                                <span className="appendix">
-                                    { formData.discountType === 'PRICE' ? '원' : '%' }
-                                </span>
+                                    <span className="appendix">
+                                        { formData.discountType === 'PRICE' ? '원' : '%' }
+                                    </span>
+                                </div>
                             </div>
                         </li>
 
@@ -437,12 +439,12 @@ function ManagerCoupon () {
                             </li>
                         : '' }
                     </ul>
-                </form>
-            </div>
 
-            <div className="admin-btns">
-                <button className="blackBtn" type="button" onClick={() => navigate(-1)}>뒤로가기</button>
-                <button className="primaryBtn" type="button" disabled={!saveActive} onClick={handleSave}>저장하기</button>
+                    <div className="admin-btns">
+                        <button className="blackBtn" type="button" onClick={() => navigate(-1)}>뒤로가기</button>
+                        <button className="primaryBtn" type="button" disabled={!saveActive} onClick={handleSave}>저장하기</button>
+                    </div>
+                </form>
             </div>
         </div>
     )

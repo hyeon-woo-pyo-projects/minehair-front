@@ -252,8 +252,15 @@ code {
 .react-datepicker__tab-loop { position: absolute; }
 .react-datepicker-wrapper { width: 100%; }
 
+.flex-item { display: flex; align-items: center; }
+.gap-6 { gap: 6px; }
+.gap-12 { gap: 12px; }
+
 @media screen and ( max-width: 720px ) {
     .wrapper { width: 100%; padding: 0 20px; }
     .inner { width: 100%; }
     input[type="text"],input[type="password"],input[type="email"], select { width: 100%; min-width: auto; font-size: 14px; height: 35px; }
+
+    .radios { gap: 6px; flex-wrap: wrap; }
+    table tr td { font-size: 12px; }
 }

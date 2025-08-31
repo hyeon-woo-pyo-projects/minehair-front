@@ -333,6 +333,7 @@
 }
 
 @media screen and (max-width: 720px) {
+    .add-btn { min-width: 100%; min-height: 50px; }
     .admin-index section { padding: 30px 20px; }
     .admin-index section ul.admin-contents { gap: 12px; }
     .admin-index section ul.admin-contents li { min-width: calc((100% / 3) - 8px) }
@@ -345,10 +346,20 @@
         transform: translate(-50%);
     }
     .admin-widget button.save-btn { width: 80px; }
-
     .admin-body { padding: 30px 20px 100px; }
-
+    
     .admin-page .admin-form ul { gap: 12px; }
     .admin-page .admin-form ul li { width: calc((100% / 2) - 6px); }
+    .admin-page .admin-form ul li .input-area { flex-direction: column; align-items: start; }
+    .admin-page .admin-btns { gap: 12px; margin-top: 30px; flex-direction: column; }
+    .admin-page .admin-btns button { width: 100%; min-width: unset; }
+
+    /* 헤더 메뉴 */
+    .menu-category .admin-body-header .publish { display: none; }
+    .menu-category .checkboxs { gap: 6px; flex-wrap: wrap; }
+    .menu-category .admin-body .menu-bar ul { min-width: calc(100% / 3); }
+
+    /* 홈 슬라이드 */
+    #admin-slider .sliderChild { min-height: 160px;}
 }
 

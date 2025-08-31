@@ -1,5 +1,5 @@
 
-#manager-coupon #admin-slider .sliderChild { min-height: 150px; }
+#manager-coupon #admin-slider .sliderChild { min-height: 150px; padding: 12px; }
 #manager-coupon #admin-slider .sliderChild.hide::after {
     content: '';
     display: flex;
@@ -12,3 +12,9 @@
 }
 #manager-coupon .coupon .coupon-title { font-size: 26px; color: var(--color-black); font-weight: 600; margin-bottom: 12px; }
 #manager-coupon .coupon .coupon-period { font-size: 14px; color: var(--color-darkGray); font-weight: 500; }
+
+@media screen and (max-width: 720px) {
+    #manager-coupon .coupon .coupon-title { font-size: 20px; }
+    #manager-coupon .coupon .coupon-price { font-size: 14px; }
+    #manager-coupon .coupon .coupon-period { font-size: 12px; }
+}

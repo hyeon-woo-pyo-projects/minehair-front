@@ -73,7 +73,7 @@
 #admin-menu .sub-switch { background-color: var(--color-darkGray); }
 
 @media screen and (max-width: 720px) {
-    #admin-header { padding: 12px 20px; }
+    #admin-header { padding: 12px 20px; position: sticky; top: 0; z-index: 10; }
     #admin-header .btns button { width: 80px; }
 
     #admin-menu { width: 80%; }
