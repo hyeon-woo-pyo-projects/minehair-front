@@ -21,6 +21,7 @@ import AdminConsulation from './admin/components/common/AdminConsultation';
 import ManagerConsultation from './admin/components/manager/ManagerConsultation';
 import AdminSlider from './admin/components/common/AdminSlider';
 import QnA from './components/pages/QnA';
+import ManagerCoupon from './admin/components/manager/ManagerCoupon';
 
 function App() {
   // 토큰 체크
@@ -54,6 +55,7 @@ function App() {
 
             {/* 관리자 */}
             <Route path="manager-consultation" element={<ManagerConsultation />} />
+            <Route path="manager-coupon" element={<ManagerCoupon />} />
           </Route>
 
           {/* 일반 사용자 레이아웃: 모든 비-관리자 경로 처리 */}

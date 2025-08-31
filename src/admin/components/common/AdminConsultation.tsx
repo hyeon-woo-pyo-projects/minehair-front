@@ -98,11 +98,13 @@ function AdminConsultation() {
             <div className="admin-body inner">
                 <h1 className="admin-title">상담 카테고리</h1>
 
+                <div className="admin-body-header">
+                    <span className="admin-form-title">현재 목록</span>
+                </div>
+
                 <form className="admin-form" id="admin-consulation-form">
                     <ul>
                         <li>
-                            <span className="admin-form-title">현재 목록</span>
-
                             <div className="input-area">
                                 <div className="consultation-items">
                                     {current.map((data) => (

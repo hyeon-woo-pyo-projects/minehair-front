@@ -43,7 +43,7 @@ input[type="email"] {
   padding: 0 20px;
   font-size: 16px;
   height: 42px;
-  min-width: 200px;
+  min-width: 150px;
   width: 100%;
   border-radius: 5px;
   color: var(--color-black);
@@ -164,6 +164,7 @@ table tr:last-child td { border-bottom: 0; }
 
 .noticeText { font-size: 14px; color: var(--color-red); font-weight: 500; }
 .noticeText::before { content: '※'; color: var(--color-red); font-size: 16px; margin-right: 5px; }
+.appendix { font-size: 14px; font-weight: 500; }
 
 @font-face {
   font-family: 'Pretendard';
@@ -245,6 +246,11 @@ code {
 
 .wrapper { width: 1280px; margin: auto; }
 .inner { width: 800px; margin: auto; }
+.empty-notice { font-size: 14px; padding: 20px 0; font-weight: 500; background-color: var(--color-lightGray); border-radius: 5px; text-align: center; }
+.react-datepicker button { width: 20px !important; height: 20px !important; }
+.react-datepicker__close-icon { width: auto !important; }
+.react-datepicker__tab-loop { position: absolute; }
+.react-datepicker-wrapper { width: 100%; }
 
 @media screen and ( max-width: 720px ) {
     .wrapper { width: 100%; padding: 0 20px; }

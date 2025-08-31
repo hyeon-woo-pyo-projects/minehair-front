@@ -129,27 +129,27 @@ function AdminBanner() {
                 <h1 className="admin-title">이벤트 배너</h1>
 
                 <div className="admin-body-header">
-                {bannerData?.isPost === true ? (
-                    <p className="pulblish-status active">노출 중</p>
-                ) : (
-                    <p className="pulblish-status">노출 중단</p>
-                )}
+                    {bannerData?.isPost === true ? (
+                        <p className="pulblish-status active">노출 중</p>
+                    ) : (
+                        <p className="pulblish-status">노출 중단</p>
+                    )}
 
-                <div className="publish">
-                    <label htmlFor="publish-toggle">게시하기</label>
-                    <button
-                    id="publish-toggle"
-                    className={bannerData?.isPost === true ? "publish-btn active" : "publish-btn"}
-                    onClick={() => {
-                        setBannerData((prev) =>
-                        prev ? { ...prev, isPost: !prev.isPost } : prev
-                        );
-                        setSave(true);
-                    }}
-                    >
-                    <i className="ball"></i>
-                    </button>
-                </div>
+                    <div className="publish">
+                        <label htmlFor="publish-toggle">게시하기</label>
+                        <button
+                        id="publish-toggle"
+                        className={bannerData?.isPost === true ? "publish-btn active" : "publish-btn"}
+                        onClick={() => {
+                            setBannerData((prev) =>
+                            prev ? { ...prev, isPost: !prev.isPost } : prev
+                            );
+                            setSave(true);
+                        }}
+                        >
+                        <i className="ball"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <EventBannerDummy
