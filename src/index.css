@@ -147,7 +147,7 @@ button.whiteBtn { background-color: var(--color-white); color: var(--color-black
 
 .table-body { max-height: 500px; overflow: auto; }
 table { width: 100%; border-collapse: collapse; border: 1px solid var(--color-gray); }
-table tr:nth-child(even) { background-color: var(--brand-lightColor); }
+table tr:nth-child(even) { background-color: var(--color-lightGray); }
 table tr th {
   font-size: 14px;
   font-weight: 500;

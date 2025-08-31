@@ -138,6 +138,8 @@ header .perMenu .category ul li {
 header .perMenu .category ul li a { color: var(--color-placeholder); font-size: 14px; margin-left: 12px; min-width: 50px; }
 header .perMenu .category ul li a:hover { color: var(--brand-color); }
 
+.mobile-menu { display: none; }
+
 @media screen and (max-width : 720px) {
     header { position: sticky ; top: 0; }
     header #headerLine .wrapper .empty { position: absolute; left: 30px; }
@@ -146,4 +148,30 @@ header .perMenu .category ul li a:hover { color: var(--brand-color); }
     header #headerLine .wrapper { justify-content: center; }
     header #headerLine .wrapper #headerLogo { width: 40%; }
     header nav { display: none; }
+
+    .mobile-menu {
+        display: block;
+        position: absolute;
+        transition: all 0.25s;
+        z-index: 10;
+        top: 0;
+        left: -100%;
+        width: 70%;
+        height: 100%;
+        background-color: var(--color-white);
+        box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.2);
+    }
+    .mobile-menu.show {
+        left: 0;
+    }
+    .mobile-menu .menu-top { padding: 20px; border-bottom: 1px solid var(--color-lightGray); width: 100%; display: flex; }
+    .mobile-menu .menu-body { text-align: left; padding: 20px; }
+    .mobile-menu .menu-body .mobile-member { font-size: 16px; display: flex; align-items: center; gap: 12px; font-weight: 500; margin-bottom: 30px; }
+    .mobile-menu .menu-body .mobile-categories li { padding-bottom: 20px; width: 100%; }
+    .mobile-menu .menu-body .mobile-categories button { width: 100%; display: flex; align-items: center; justify-content: space-between; font-size: 16px; font-weight: 500; }
+    .mobile-menu .menu-body .mobile-categories button .arrow { position: relative; transition: all 0.25s; }
+    .mobile-menu .menu-body .mobile-categories button .arrow.show { transform: rotate(180deg); }
+    .mobile-menu .menu-body .mobile-categories .categories { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; display: flex; flex-direction: column; gap: 6px; margin-left: 12px; }
+    .mobile-menu .menu-body .mobile-categories .categories .category { display: flex; flex-direction: column; gap: 6px; }
+    .mobile-menu .menu-body .mobile-categories .categories .category a { color: var(--color-placeholder); font-size: 15px; }
 }

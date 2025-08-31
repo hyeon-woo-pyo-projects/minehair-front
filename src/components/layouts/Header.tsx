@@ -5,6 +5,8 @@ import HeaderBanner from './HeaderBanner';
 
 import "../../style/layouts/header.css"
 import axiosInstance from '../../api/axiosInstance';
+import IconCross from '../../icons/IconCross';
+import IconArrowDown from '../../icons/IconArrowDown';
 
 interface menuProps {
     menuId : number;
@@ -107,27 +109,161 @@ function Header () {
         navigate('/');
         window.location.reload();
     }
+
+    // 모바일 메뉴 열림 상태
+    const [ mobileShow, setMobileShow ] = useState(false);
+    const [openMobileMenu, setOpenMobileMenu] = useState<number | null>(null);
+
+    const toggleMobileMenu = (menuId: number) => {
+        if (openMobileMenu === menuId) {
+            setOpenMobileMenu(null); // 이미 열려있으면 닫기
+        } else {
+            setOpenMobileMenu(menuId); // 클릭한 메뉴 열기
+        }
+    };
     
     return (
-        <header>
-            <HeaderBanner/>
+        <>
+            <header>
+                <HeaderBanner/>
 
-            <div id='headerLine'>
-                <div className="wrapper">
-                    <div className='empty'>
+                <div id='headerLine'>
+                    <div className="wrapper">
+                        <div className='empty'>
+                            <button type='button' id='menuBtn' className={openMenu ? 'show' : ''} onClick={() => { setMobileShow(true); }}>
+                                <i></i>
+                                <i></i>
+                                <i></i>
+                                <i></i>
+                            </button>
+                        </div>
+
+                        <Link to="/" id="headerLogo">
+                            <img src={require('../../img/logo.png')} alt="민이헤어_로고" />
+                        </Link>
+                        
+                        <div id='member'>
+                            { userLogin === false ?
+                            <>
+                                <Link to="/member/login">로그인</Link>
+                                <Link to="/member/register">회원가입</Link>
+                            </>
+                            :
+                            <>
+                                <Link to='/' onClick={logOut}>로그아웃</Link>
+                                <Link to="/">마이페이지</Link>
+                            </>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <nav>
+                    <ul id='headerCategory' className="wrapper">
                         <button type='button' id='menuBtn' className={openMenu ? 'show' : ''} onClick={toggleMenu}>
                             <i></i>
                             <i></i>
                             <i></i>
                             <i></i>
                         </button>
-                    </div>
 
-                    <Link to="/" id="headerLogo">
-                        <img src={require('../../img/logo.png')} alt="민이헤어_로고" />
-                    </Link>
-                    
-                    <div id='member'>
+                        { mainMenu.map((el) => {
+                            const connection = subMenu.filter(ss => ss.parentId === el.menuId);
+                            return (
+                                <li
+                                    key={el.menuId}
+                                    data-tab={`menu${el.menuId}`}
+                                    className={`navMenu ${el.menuVisible ? 'show' : ''}`}
+                                    onMouseEnter={() => setIsHovered(el.menuId)}
+                                    onMouseLeave={() => setIsHovered(null)}
+                                >
+                                    <Link to={`/pages${el.menuPath}`}>{el.menuName}</Link>
+
+                                    { connection.length > 0 &&
+                                        <div className={`perMenu${isHovered === el.menuId ? ' show' : ''}${el.imageUrl ? ' have-img' : ''}`}>
+                                            <div className="categories">
+                                                {connection.map((data) => {
+                                                    const grandchildren = subSubMenu.filter(child => child.parentId === data.menuId);
+                                                    return (
+                                                        <div className="category" key={data.menuId}>
+                                                            <Link to={`/pages${data.menuPath}`}>{data.menuName}</Link>
+
+                                                            {grandchildren.length > 0 &&
+                                                                <ul>
+                                                                    {grandchildren.map((ele, index) => (
+                                                                        <li key={index}>
+                                                                            <Link to={`/pages${ele.menuPath}`}>{ele.menuName}</Link>
+                                                                        </li>
+                                                                    ))}
+                                                                </ul>
+                                                            }
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                            
+                                            {el.imageUrl ?
+                                                <div className="image-line">
+                                                    <img src={el.imageUrl} alt='메뉴 이미지'/>
+                                                </div>
+                                            : null}
+                                        </div>
+                                    }
+                                </li>
+                            );
+                        })}
+                    </ul>
+
+                    <div className={`wholeMenu ${openMenu ? "show" : '' }`}>
+                        <div className="inner">
+                            <ul>
+                                { mainMenu.map((el) => {
+                                    const connection = subMenu.filter(ss => ss.parentId === el.menuId);
+
+                                    return (
+                                        <li key={el.menuId}>
+                                            <Link className='wholeMenu-main' to={el.menuPath} onClick={() => setOpenMenu(false)}>{el.menuName}</Link>
+
+                                            { connection.length > 0 &&
+                                                <div className="categories">
+                                                    {connection.map((data) => {
+                                                        const grandchildren = subSubMenu.filter(child => child.parentId === data.menuId);
+                                                        return (
+                                                            <div className="category" key={data.menuId}>
+                                                                <Link to={`/pages${data.menuPath}`} onClick={() => setOpenMenu(false)}>{data.menuName}</Link>
+
+                                                                {grandchildren.length > 0 &&
+                                                                    <div>
+                                                                        {grandchildren.map((ele, index) => (
+                                                                            <div key={index}>
+                                                                                <Link className='small-menu' to={`/pages${ele.menuPath}`} onClick={() => setOpenMenu(false)}>{ele.menuName}</Link>
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                }
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
+                                            }
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+
+            <div className={`mobile-menu${mobileShow ? ' show' : ''}`}>
+                <div className="menu-top">
+                    <div className="close-btn" onClick={() => { setMobileShow(false); }}>
+                        <IconCross color='var(--color-black)' width={30} height={30} />
+                    </div>
+                </div>
+
+                <div className="menu-body">
+                    <div className='mobile-member'>
                         { userLogin === false ?
                         <>
                             <Link to="/member/login">로그인</Link>
@@ -140,105 +276,66 @@ function Header () {
                         </>
                         }
                     </div>
-                </div>
-            </div>
 
-            <nav>
-                <ul id='headerCategory' className="wrapper">
-                    <button type='button' id='menuBtn' className={openMenu ? 'show' : ''} onClick={toggleMenu}>
-                        <i></i>
-                        <i></i>
-                        <i></i>
-                        <i></i>
-                    </button>
+                    <ul className={`mobile-categories${mobileShow ? ' show' : ''}`}>
+                        { mainMenu.map((el) => {
+                            const connection = subMenu.filter(ss => ss.parentId === el.menuId);
 
-                    { mainMenu.map((el) => {
-                        const connection = subMenu.filter(ss => ss.parentId === el.menuId);
-                        return (
-                            <li
-                                key={el.menuId}
-                                data-tab={`menu${el.menuId}`}
-                                className={`navMenu ${el.menuVisible ? 'show' : ''}`}
-                                onMouseEnter={() => setIsHovered(el.menuId)}
-                                onMouseLeave={() => setIsHovered(null)}
-                            >
-                                <Link to={`/pages${el.menuPath}`}>{el.menuName}</Link>
-
-                                { connection.length > 0 &&
-                                    <div className={`perMenu${isHovered === el.menuId ? ' show' : ''}${el.imageUrl ? ' have-img' : ''}`}>
+                            return (
+                                <li key={el.menuId}>
+                                    <button
+                                        type="button"
+                                        className="wholeMenu-main"
+                                        onClick={() => {
+                                            if (connection.length > 0) {
+                                                toggleMobileMenu(el.menuId);
+                                            } else {
+                                                navigate(`/pages${el.menuPath}`);
+                                                setOpenMenu(false);
+                                            }
+                                        }}
+                                    >
+                                        {el.menuName}
+                                        { connection.length > 0 && (
+                                            <div className={`arrow${openMobileMenu === el.menuId ? ' show' : ''}`}>
+                                                <IconArrowDown
+                                                    color='var(--color-black)'
+                                                    width={15}
+                                                    height={15}
+                                                />
+                                            </div>
+                                        )}
+                                    </button>
+                                    
+                                    { connection.length > 0 && openMobileMenu === el.menuId && (
                                         <div className="categories">
                                             {connection.map((data) => {
                                                 const grandchildren = subSubMenu.filter(child => child.parentId === data.menuId);
                                                 return (
                                                     <div className="category" key={data.menuId}>
-                                                        <Link to={`/pages${data.menuPath}`}>{data.menuName}</Link>
+                                                        <Link to={`/pages${data.menuPath}`} onClick={() => setOpenMenu(false)}>{data.menuName}</Link>
 
                                                         {grandchildren.length > 0 &&
-                                                            <ul>
+                                                            <div>
                                                                 {grandchildren.map((ele, index) => (
-                                                                    <li key={index}>
-                                                                        <Link to={`/pages${ele.menuPath}`}>{ele.menuName}</Link>
-                                                                    </li>
+                                                                    <div key={index}>
+                                                                        <Link className='small-menu' to={`/pages${ele.menuPath}`} onClick={() => setOpenMenu(false)}>{ele.menuName}</Link>
+                                                                    </div>
                                                                 ))}
-                                                            </ul>
+                                                            </div>
                                                         }
                                                     </div>
                                                 );
                                             })}
                                         </div>
-                                        
-                                        {el.imageUrl ?
-                                            <div className="image-line">
-                                                <img src={el.imageUrl} alt='메뉴 이미지'/>
-                                            </div>
-                                        : null}
-                                    </div>
-                                }
-                            </li>
-                        );
-                    })}
-                </ul>
-
-                <div className={`wholeMenu ${openMenu ? "show" : '' }`}>
-                    <div className="inner">
-                        <ul>
-                            { mainMenu.map((el) => {
-                                const connection = subMenu.filter(ss => ss.parentId === el.menuId);
-
-                                return (
-                                    <li key={el.menuId}>
-                                        <Link className='wholeMenu-main' to={el.menuPath} onClick={() => setOpenMenu(false)}>{el.menuName}</Link>
-
-                                        { connection.length > 0 &&
-                                            <div className="categories">
-                                                {connection.map((data) => {
-                                                    const grandchildren = subSubMenu.filter(child => child.parentId === data.menuId);
-                                                    return (
-                                                        <div className="category" key={data.menuId}>
-                                                            <Link to={`/pages${data.menuPath}`} onClick={() => setOpenMenu(false)}>{data.menuName}</Link>
-
-                                                            {grandchildren.length > 0 &&
-                                                                <div>
-                                                                    {grandchildren.map((ele, index) => (
-                                                                        <div key={index}>
-                                                                            <Link className='small-menu' to={`/pages${ele.menuPath}`} onClick={() => setOpenMenu(false)}>{ele.menuName}</Link>
-                                                                        </div>
-                                                                    ))}
-                                                                </div>
-                                                            }
-                                                        </div>
-                                                    );
-                                                })}
-                                            </div>
-                                        }
-                                    </li>
-                                )
-                            })}
-                        </ul>
-                    </div>
+                                    )}
+                                </li>
+                            )
+                        })}
+                    </ul>
                 </div>
-            </nav>
-        </header>
+            </div>
+        </>
     )
 }
 
