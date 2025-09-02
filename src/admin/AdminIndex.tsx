@@ -29,7 +29,7 @@ function AdminIndex () {
                 <h3 className="admin-title">페이지</h3>
 
                 <ul className="admin-contents">
-                    <li><Link to={'/admin/page-eventpage'}>이벤트 페이지</Link></li>
+                    <li><Link to={'/admin/page-eventgrid'}>이벤트 그리드</Link></li>
                 </ul>
             </section>
         </div>

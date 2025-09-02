@@ -283,6 +283,15 @@ code {
 .gap-6 { gap: 6px; }
 .gap-12 { gap: 12px; }
 
+.contents-view.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+.contents-view.grid .contents { position: relative; overflow: hidden; width: 400px; height: 400px; cursor: pointer; }
+.contents-view.grid .contents .img, .contents-view.grid .contents img { width: 100%; height: 100%; }
+
 @media screen and ( max-width: 720px ) {
     .wrapper { width: 100%; padding: 0 20px; }
     .inner { width: 100%; }
