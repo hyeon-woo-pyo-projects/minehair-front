@@ -26,8 +26,13 @@ function QnA () {
             }
         })
         .catch((err)=>{
-            alert('오류가 발생했습니다');
-            console.log(err);
+            if ( err.status === 401 ) {
+                alert('회원만 조회 가능합니다');
+                navigate(-1);
+            }else {
+                alert('오류가 발생했습니다');
+                console.log(err);
+            }
         })
     }
 
