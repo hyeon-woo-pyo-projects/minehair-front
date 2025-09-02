@@ -1,2 +1,36 @@
 .pages { padding: 60px 0 120px; }
 .pages h1.page-title { font-weight: 600; font-size: 24xpx; margin-bottom: 30px; }
+.pages .small-btns { display: flex; justify-content: end; margin: 20px 0; gap: 20px; }
+.pages .small-btns.between { justify-content: space-between; }
+.pages .small-btns.between .flex { display: flex; align-items: center; gap: 20px; }
+
+.pages .pages-body .body-header.text-contents {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 0 50px;
+}
+.pages .pages-body .body-header.text-contents p { font-weight: 600; font-size: 14px; }
+.pages .pages-body .body-header.text-contents p span { font-weight: 400; color: var(--color-darkGray); }
+
+
+.pages form.pages-form ul { display: flex; flex-direction: column; }
+.pages form.pages-form ul li { position: relative; display: flex; align-items: center; }
+.pages form.pages-form ul li label { flex: none;}
+.pages form.pages-form ul li textarea { height: 300px; resize: none; }
+.pages .main-btns { width: 100%; display: flex; align-items: center; justify-content: center; gap: 30px; margin-top: 30px; }
+.pages .main-btns button { width: 100%; height: 40px; font-size: 14px; font-weight: 500; border-radius: 5px; }
+.pages .contents-top { position: relative; display: flex; justify-content: space-between; align-items: center; width: 100%; }
+
+
+
+/* Q&A */
+.pages .qna-section table tr { cursor: pointer; position: relative; transition: all 0.25s; }
+.pages .qna-section table tr:hover { background-color: var(--brand-lightColor); }
+.pages#qna-writer form.pages-form ul { gap: 20px; }
+.pages#qna-writer form.pages-form ul li { gap: 12px; }
+
+.pages#qna-details form.pages-form { margin-top: 30px; }
+.pages#qna-details form.pages-form ul li { position: relative; width: 100%; border: 1px solid var(--color-darkGray); border-width: 1px 0 0; padding: 12px; }
+.pages#qna-details form.pages-form ul li:last-child { border-bottom: 1px solid var(--color-darkGray); min-height: 200px; }
+.pages#qna-details form.pages-form ul li p { font-weight: 600; }

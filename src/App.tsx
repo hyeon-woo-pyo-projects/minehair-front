@@ -22,6 +22,9 @@ import ManagerConsultation from './admin/components/manager/ManagerConsultation'
 import AdminSlider from './admin/components/common/AdminSlider';
 import QnA from './components/pages/QnA';
 import ManagerCoupon from './admin/components/manager/ManagerCoupon';
+import EventPage from './admin/components/pages/EventPage';
+import QnaDetails from './components/pages/QnaDetails';
+import QnaWriter from './components/pages/QnaWriter';
 
 function App() {
   // 토큰 체크
@@ -56,6 +59,9 @@ function App() {
             {/* 관리자 */}
             <Route path="manager-consultation" element={<ManagerConsultation />} />
             <Route path="manager-coupon" element={<ManagerCoupon />} />
+
+            {/* 페이지 */}
+            <Route path="page-eventpage" element={<EventPage />} />
           </Route>
 
           {/* 일반 사용자 레이아웃: 모든 비-관리자 경로 처리 */}
@@ -73,6 +79,8 @@ function App() {
                   <Route path="/member/terms" element={<Terms />} />
                   <Route path="/member/privacy" element={<Privacy />} />
                   <Route path="/pages/qna" element={<QnA />} />
+                  <Route path="/pages/qna-writer" element={<QnaWriter />} />
+                  <Route path="/pages/qna-details" element={<QnaDetails />} />
                 </Routes>
               </>
             }

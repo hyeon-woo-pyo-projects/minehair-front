@@ -16,7 +16,8 @@
   --color-gray: #ddd;
   --color-darkGray : #aaa;
   --color-lightGray : #eee;
-  --color-green : #4dd45e;
+  --color-green : #49b257;
+  --color-darkGreen : #3c8b46;
   --color-blue : #1c60f0;
   --color-skyblue : #57a8e9;
   --color-placeholder : #797979;
@@ -79,6 +80,18 @@ input[type="checkbox"] + label::before {
   transition: all .25s;
 }
 
+textarea {
+  position: relative;
+  transition: all 0.25s;
+  resize: none;
+  border: 1px solid var(--color-gray);
+  outline: none;
+  padding: 12px;
+  width: 100%;
+  border-radius: 5px;
+}
+textarea:focus { border: 1px solid var(--color-black); }
+
 .radios { display: flex; gap: 20px; }
 input[type="radio"] { display: none; }
 input[type="radio"] + label { position: relative; display: flex; gap: 6px; align-items: center; font-size: 14px; cursor: pointer; }
@@ -135,6 +148,16 @@ button {
   border: 0;
   cursor: pointer;
 }
+button.small-btn {
+  min-width: 100px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 5px;
+  font-size: 12px;
+}
 button:disabled { opacity: 0.5; cursor: no-drop; }
 button.primaryBtn { background-color: var(--brand-color); color: var(--color-white); }
 button.primaryBtn:hover { background-color: var(--brand-color-hover); }
@@ -143,6 +166,8 @@ button.blackBtn { background-color: var(--default-background); color: var(--colo
 button.blackBtn:hover { background-color: var(--color-black); }
 button.red-btn { background-color: var(--color-red); color: var(--color-white); }
 button.red-btn:hover { background-color: #c14d4d }
+button.green-btn { background-color: var(--color-green); color: var(--color-white); }
+button.green-btn:hover { background-color: var(--color-darkGreen); color: var(--color-white); }
 button.whiteBtn { background-color: var(--color-white); color: var(--color-black); }
 
 .table-body { max-height: 500px; overflow: auto; }
@@ -165,6 +190,7 @@ table tr:last-child td { border-bottom: 0; }
 .noticeText { font-size: 14px; color: var(--color-red); font-weight: 500; }
 .noticeText::before { content: '※'; color: var(--color-red); font-size: 16px; margin-right: 5px; }
 .appendix { font-size: 14px; font-weight: 500; }
+.flex-contents { display: flex !important; align-items: start !important; gap: 6px; }
 
 @font-face {
   font-family: 'Pretendard';
@@ -246,6 +272,7 @@ code {
 
 .wrapper { width: 1280px; margin: auto; }
 .inner { width: 800px; margin: auto; }
+.body-500 { width: 500px; margin: auto; }
 .empty-notice { font-size: 14px; padding: 20px 0; font-weight: 500; background-color: var(--color-lightGray); border-radius: 5px; text-align: center; }
 .react-datepicker button { width: 20px !important; height: 20px !important; }
 .react-datepicker__close-icon { width: auto !important; }

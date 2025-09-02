@@ -24,6 +24,14 @@ function AdminIndex () {
                     <li><Link to={'/admin/manager-coupon'}>쿠폰 관리</Link></li>
                 </ul>
             </section>
+
+            <section>
+                <h3 className="admin-title">페이지</h3>
+
+                <ul className="admin-contents">
+                    <li><Link to={'/admin/page-eventpage'}>이벤트 페이지</Link></li>
+                </ul>
+            </section>
         </div>
     )
 }
