@@ -43,6 +43,7 @@
 .admin-page .admin-form .center-menu { display: flex; justify-content: center; align-items: center; margin: 50px 0; }
 .admin-page .admin-form ul { position: relative; display: flex; flex-wrap: wrap; gap: 30px; }
 .admin-page .admin-form ul li { position: relative; display: flex; flex-direction: column; gap: 12px; width: calc((100% / 4) - 25px); }
+.admin-page .admin-form ul.child-3 li { width: calc((100% / 3) - 25px); }
 .admin-page .admin-form ul li .admin-form-title { display: block; font-size: 14px; font-weight: 500; }
 .admin-page .admin-form ul li .input-area { position: relative; display: flex; align-items: center; gap: 6px; min-height: 40px; }
 .admin-page .admin-form ul li .input-area button { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; border-radius: 5px; gap: 6px; min-height: 40px; }
@@ -331,6 +332,12 @@
     background-size: contain;
     background-repeat: no-repeat;
 }
+
+
+
+/* ADMIN-SNS 어드민 sns */
+#admin-sns .contents-view .contents { width: 50px; height: 50px; }
+
 
 @media screen and (max-width: 720px) {
     .add-btn { min-width: 100%; min-height: 50px; }

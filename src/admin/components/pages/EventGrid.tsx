@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../../api/axiosInstance";
 import IconCirclePlus from "../../../icons/IconCirclePlus";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import IconUpload from "../../../icons/IconUpload";
 import IconTrash from "../../../icons/IconTrash";
 import Balloon from "../../../components/system/Balloon";
@@ -184,7 +184,7 @@ function EventGrid () {
             <div className="admin-body wrapper">
                 <h1 className="admin-title">이벤트 페이지 그리드 설정</h1>
 
-                <div className="contents-view grid">
+                <div className={`contents-view${ data.length > 0 ? ' grid' : ''}`}>
                     { data.length > 0 ?
                         data.map((el) => {
                             return (
@@ -210,7 +210,7 @@ function EventGrid () {
                         </button>
                     </div>
 
-                    <ul>
+                    <ul className="child-3">
                         <li>
                             { ballon === 1 && <Balloon text={'링크를 입력해주세요'} status="notice" /> }
                             <span className="admin-form-title">링크</span>

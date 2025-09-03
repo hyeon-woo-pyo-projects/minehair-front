@@ -273,7 +273,7 @@ code {
 .wrapper { width: 1280px; margin: auto; }
 .inner { width: 800px; margin: auto; }
 .body-500 { width: 500px; margin: auto; }
-.empty-notice { font-size: 14px; padding: 20px 0; font-weight: 500; background-color: var(--color-lightGray); border-radius: 5px; text-align: center; }
+.empty-notice { font-size: 14px; padding: 20px 0; font-weight: 500; background-color: var(--color-lightGray); border-radius: 5px; text-align: center; width: 100%; }
 .react-datepicker button { width: 20px !important; height: 20px !important; }
 .react-datepicker__close-icon { width: auto !important; }
 .react-datepicker__tab-loop { position: absolute; }
@@ -283,14 +283,10 @@ code {
 .gap-6 { gap: 6px; }
 .gap-12 { gap: 12px; }
 
-.contents-view.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 20px;
-}
-
-.contents-view.grid .contents { position: relative; overflow: hidden; width: 400px; height: 400px; cursor: pointer; }
-.contents-view.grid .contents .img, .contents-view.grid .contents img { width: 100%; height: 100%; }
+.contents-view { display: flex; justify-content: center; align-items: center; gap: 20px; }
+.contents-view.grid { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+.contents-view .contents { position: relative; overflow: hidden; cursor: pointer; }
+.contents-view .contents .img, .contents-view .contents img { width: 100%; height: 100%; }
 
 @media screen and ( max-width: 720px ) {
     .wrapper { width: 100%; padding: 0 20px; }
