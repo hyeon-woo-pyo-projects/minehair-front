@@ -26,6 +26,7 @@ import EventGrid from './admin/components/pages/EventGrid';
 import QnaDetails from './components/pages/QnaDetails';
 import QnaWriter from './components/pages/QnaWriter';
 import AdminSns from './admin/components/common/AdminSns';
+import Event from './components/pages/Event';
 
 function App() {
   // 토큰 체크
@@ -74,15 +75,20 @@ function App() {
                 <Header />
                 <Routes>
                   <Route path="/" element={<Landing />} />
-                  <Route path="/pages/*" element={<DefaultPages />} />
+
+                  {/* 멤버 관련 */}
                   <Route path="/member/login" element={<Login />} />
                   <Route path="/member/register" element={<Register />} />
                   <Route path="/member/forgot" element={<Forgot />} />
                   <Route path="/member/terms" element={<Terms />} />
                   <Route path="/member/privacy" element={<Privacy />} />
+
+                  {/* 페이지 */}
+                  <Route path="/pages/*" element={<DefaultPages />} />
                   <Route path="/pages/qna" element={<QnA />} />
                   <Route path="/pages/qna-writer" element={<QnaWriter />} />
                   <Route path="/pages/qna-details" element={<QnaDetails />} />
+                  <Route path="/pages/event" element={<Event />} />
                 </Routes>
               </>
             }

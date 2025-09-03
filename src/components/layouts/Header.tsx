@@ -7,6 +7,7 @@ import "../../style/layouts/header.css"
 import axiosInstance from '../../api/axiosInstance';
 import IconCross from '../../icons/IconCross';
 import IconArrowDown from '../../icons/IconArrowDown';
+import EventSlider from '../pages/EventSlider';
 
 interface menuProps {
     menuId : number;
@@ -360,15 +361,19 @@ function Header () {
                 </div>
 
                 <div className="menu-footer">
-                        { snsData.length > 0 ?
-                            <ul id='menu-sns'>
-                                { snsData.map(( el ) => {
-                                    return (
-                                        <li key={el.id} onClick={() => setMobileShow(false)}><Link target='_blank' to={el.linkUrl}><img src={el.imageUrl} alt='SNS'/></Link></li>
-                                    )
-                                })}
-                            </ul>
-                        : '' }
+                    <div className="event-slider" onClick={() => { navigate('/pages/event'); setMobileShow(false) }}>
+                        <EventSlider/>
+                    </div>
+
+                    { snsData.length > 0 ?
+                        <ul id='menu-sns'>
+                            { snsData.map(( el ) => {
+                                return (
+                                    <li key={el.id} onClick={() => setMobileShow(false)}><Link target='_blank' to={el.linkUrl}><img src={el.imageUrl} alt='SNS'/></Link></li>
+                                )
+                            })}
+                        </ul>
+                    : '' }
                 </div>
             </div>
         </>

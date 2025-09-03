@@ -285,9 +285,9 @@ code {
 .gap-6 { gap: 6px; }
 .gap-12 { gap: 12px; }
 
-.contents-view { display: flex; justify-content: center; align-items: center; gap: 20px; }
+.contents-view { display: flex; justify-content: start; align-items: center; gap: 20px; flex-wrap: wrap; }
 .contents-view.grid { display: grid; grid-template-columns: 1fr 1fr 1fr; }
-.contents-view .contents { position: relative; overflow: hidden; cursor: pointer; }
+.contents-view .contents { position: relative; overflow: hidden; cursor: pointer; width: calc((100% / 5) - 16px); }
 .contents-view .contents .img, .contents-view .contents img { width: 100%; height: 100%; }
 
 @media screen and ( max-width: 720px ) {
@@ -297,4 +297,6 @@ code {
 
     .radios { gap: 6px; flex-wrap: wrap; }
     table tr td { font-size: 12px; }
+
+    .contents-view .contents { position: relative; overflow: hidden; cursor: pointer; width: calc((100% / 3) - 14px); }
 }

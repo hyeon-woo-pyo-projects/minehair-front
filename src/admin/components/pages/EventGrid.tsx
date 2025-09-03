@@ -13,6 +13,8 @@ interface ContentsProps {
     slideOrderNo : number,
     imageUrl : string,
     linkUrl : string,
+    textContent : string,
+    isAddPost : boolean,
 }
 
 function EventGrid () {
@@ -28,6 +30,8 @@ function EventGrid () {
         slideOrderNo : 0,
         imageUrl : '',
         linkUrl : '',
+        textContent : '',
+        isAddPost : false,
     })
 
     function getData () {
@@ -56,8 +60,6 @@ function EventGrid () {
         setEdit(true);
         setSave(false);
         setDeleteBtn(true);
-
-        console.log(content)
     }
 
     // 새 이벤트 생성
@@ -68,6 +70,8 @@ function EventGrid () {
             slideOrderNo : 0,
             imageUrl : '',
             linkUrl : '',
+            textContent : '',
+            isAddPost : false,
         });
         setEdit(false);
         setDisabled(false);
@@ -129,7 +133,8 @@ function EventGrid () {
 
     function handleSave () {
         if ( clickedData.linkUrl === '' ) { setBalloon(1); return false; }
-        if ( clickedData.imageUrl === '' ) { setBalloon(2); return false; }
+        if ( clickedData.textContent === '' ) { setBalloon(2); return false; }
+        if ( clickedData.imageUrl === '' ) { setBalloon(3); return false; }
         
         if ( !edit ) {
             axiosInstance
@@ -138,6 +143,8 @@ function EventGrid () {
                 slideOrderNo : clickedData.slideOrderNo,
                 imageUrl : clickedData.imageUrl,
                 linkUrl : clickedData.linkUrl,
+                textContent : clickedData.textContent,
+                isAddPost : clickedData.isAddPost,
             })
             .then((res) => {
                 if ( res.data.success === true ) {
@@ -156,6 +163,8 @@ function EventGrid () {
                 slideOrderNo : clickedData.slideOrderNo,
                 imageUrl : clickedData.imageUrl,
                 linkUrl : clickedData.linkUrl,
+                textContent : clickedData.textContent,
+                isAddPost : clickedData.isAddPost,
             })
             .then((res) => {
                 if ( res.data.success === true ) {
@@ -184,7 +193,7 @@ function EventGrid () {
             <div className="admin-body wrapper">
                 <h1 className="admin-title">이벤트 페이지 그리드 설정</h1>
 
-                <div className={`contents-view${ data.length > 0 ? ' grid' : ''}`}>
+                <div className={`contents-view`}>
                     { data.length > 0 ?
                         data.map((el) => {
                             return (
@@ -210,7 +219,7 @@ function EventGrid () {
                         </button>
                     </div>
 
-                    <ul className="child-3">
+                    <ul>
                         <li>
                             { ballon === 1 && <Balloon text={'링크를 입력해주세요'} status="notice" /> }
                             <span className="admin-form-title">링크</span>
@@ -226,7 +235,53 @@ function EventGrid () {
                         </li>
 
                         <li>
-                            { ballon === 2 && <Balloon text={'이미지를 등록해주세요'} status="notice" /> }
+                            { ballon === 2 && <Balloon text={'텍스트를 입력해주세요'} status="notice" /> }
+                            <span className="admin-form-title">호버 텍스트</span>
+
+                            <div className="input-area">
+                                <input
+                                    type="text"
+                                    value={clickedData.textContent}
+                                    onChange={(e) => { setClickedData({ ...clickedData, textContent : e.target.value }); setSave(true); }}
+                                    disabled={disabled}
+                                />
+                            </div>
+                        </li>
+
+                        <li>
+                            <span className="admin-form-title">슬라이드 추가여부</span>
+
+                            <div className="input-area">
+                                <div className="radios">
+                                    <div className="radio-child">
+                                        <input
+                                            type="radio"
+                                            id="slide-add"
+                                            name="mini-slide"
+                                            checked={clickedData.isAddPost === true}
+                                            onChange={() => { setClickedData({...clickedData, isAddPost : true}) }}
+                                            disabled={disabled}
+                                        />
+                                        <label htmlFor="slide-add">추가</label>
+                                    </div>
+
+                                    <div className="radio-child">
+                                        <input
+                                            type="radio"
+                                            id="slide-not-add"
+                                            name="mini-slide"
+                                            checked={clickedData.isAddPost === false}
+                                            onChange={() => { setClickedData({...clickedData, isAddPost : false}) }}
+                                            disabled={disabled}
+                                        />
+                                        <label htmlFor="slide-not-add">제외</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li>
+                            { ballon === 3 && <Balloon text={'이미지를 등록해주세요'} status="notice" /> }
                             <span className="admin-form-title">이미지</span>
 
                             <div className="input-area">
