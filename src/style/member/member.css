@@ -113,3 +113,13 @@
 
 #page-forgot .inner form ul { display: flex; flex-direction: column; gap: 20px; }
 #page-forgot .inner form .btns { margin-top: 0; }
+
+@media screen and (max-width: 720px) {
+    .membersComponents .innerTitle { margin: 30px 0; font-size: 24px; }
+    .membersComponents label.formTitle { font-size: 14px; width: 25%; }
+    .memberNav { display: none; }
+    .membersComponents .membersForm { width: 100%; }
+
+    #page-forgot .inner { flex-direction: column; padding: 0 20px; }
+    #page-forgot .inner form { min-height: auto; gap: 30px; }
+}
