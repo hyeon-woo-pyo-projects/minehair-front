@@ -50,6 +50,8 @@ input[type="email"] {
   color: var(--color-black);
 }
 
+img { width: 100%; }
+
 input[type="text"]::placeholder,
 input[type="password"]::placeholder,
 input[type="email"]::placeholder { color: var(--color-placeholder); }

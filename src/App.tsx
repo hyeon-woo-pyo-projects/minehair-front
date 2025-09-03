@@ -25,6 +25,7 @@ import ManagerCoupon from './admin/components/manager/ManagerCoupon';
 import EventGrid from './admin/components/pages/EventGrid';
 import QnaDetails from './components/pages/QnaDetails';
 import QnaWriter from './components/pages/QnaWriter';
+import AdminSns from './admin/components/common/AdminSns';
 
 function App() {
   // 토큰 체크
@@ -55,6 +56,7 @@ function App() {
             <Route path="admin-preview" element={<AdminPreview />} />
             <Route path="admin-consultation" element={<AdminConsulation />} />
             <Route path="admin-slide" element={<AdminSlider />} />
+            <Route path="admin-sns" element={<AdminSns />} />
 
             {/* 관리자 */}
             <Route path="manager-consultation" element={<ManagerConsultation />} />

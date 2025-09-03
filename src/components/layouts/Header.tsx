@@ -45,6 +45,13 @@ type subSubMenuProps = {
     roleIdList : []
 };
 
+interface SnsProps {
+    id : number,
+    orderNo : number,
+    imageUrl : string,
+    linkUrl : string,
+}
+
 function Header () {
     const navigate = useNavigate();
     // API 연동 시작
@@ -78,11 +85,6 @@ function Header () {
                 console.log('error', error);
             });
     };
-
-
-    useEffect(() => {
-        getMenu();
-    }, []);
     // 연동 끝
 
     
@@ -121,6 +123,28 @@ function Header () {
             setOpenMobileMenu(menuId); // 클릭한 메뉴 열기
         }
     };
+
+
+    // SNS 데이터 받아오기
+    const [ snsData, setSnsData ] = useState<SnsProps[]>([])
+    function getSns () {
+        axiosInstance
+        .get('/sns/platform')
+        .then((res) => {
+            if ( res.data.success === true ) {
+                const snsData = res.data.data;
+                setSnsData(snsData);
+            }
+        })
+        .catch((err) => { })
+    }
+
+
+
+    useEffect(() => {
+        getMenu();
+        getSns();
+    }, []);
     
     return (
         <>
@@ -266,13 +290,13 @@ function Header () {
                     <div className='mobile-member'>
                         { userLogin === false ?
                         <>
-                            <Link to="/member/login">로그인</Link>
-                            <Link to="/member/register">회원가입</Link>
+                            <Link to="/member/login" onClick={()=>{setMobileShow(false)}}>로그인</Link>
+                            <Link to="/member/register" onClick={()=>{setMobileShow(false)}}>회원가입</Link>
                         </>
                         :
                         <>
-                            <Link to='/' onClick={logOut}>로그아웃</Link>
-                            <Link to="/">마이페이지</Link>
+                            <Link to='/'  onClick={()=>{setMobileShow(false); logOut();}}>로그아웃</Link>
+                            <Link to="/" onClick={()=>{setMobileShow(false)}}>마이페이지</Link>
                         </>
                         }
                     </div>
@@ -291,7 +315,7 @@ function Header () {
                                                 toggleMobileMenu(el.menuId);
                                             } else {
                                                 navigate(`/pages${el.menuPath}`);
-                                                setOpenMenu(false);
+                                                setMobileShow(false);
                                             }
                                         }}
                                     >
@@ -313,13 +337,13 @@ function Header () {
                                                 const grandchildren = subSubMenu.filter(child => child.parentId === data.menuId);
                                                 return (
                                                     <div className="category" key={data.menuId}>
-                                                        <Link to={`/pages${data.menuPath}`} onClick={() => setOpenMenu(false)}>{data.menuName}</Link>
+                                                        <Link to={`/pages${data.menuPath}`} onClick={() => setMobileShow(false)}>{data.menuName}</Link>
 
                                                         {grandchildren.length > 0 &&
                                                             <div>
                                                                 {grandchildren.map((ele, index) => (
                                                                     <div key={index}>
-                                                                        <Link className='small-menu' to={`/pages${ele.menuPath}`} onClick={() => setOpenMenu(false)}>{ele.menuName}</Link>
+                                                                        <Link className='small-menu' to={`/pages${ele.menuPath}`} onClick={() => setMobileShow(false)}>{ele.menuName}</Link>
                                                                     </div>
                                                                 ))}
                                                             </div>
@@ -333,6 +357,18 @@ function Header () {
                             )
                         })}
                     </ul>
+                </div>
+
+                <div className="menu-footer">
+                        { snsData.length > 0 ?
+                            <ul id='menu-sns'>
+                                { snsData.map(( el ) => {
+                                    return (
+                                        <li key={el.id} onClick={() => setMobileShow(false)}><Link target='_blank' to={el.linkUrl}><img src={el.imageUrl} alt='SNS'/></Link></li>
+                                    )
+                                })}
+                            </ul>
+                        : '' }
                 </div>
             </div>
         </>

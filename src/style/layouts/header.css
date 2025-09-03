@@ -168,10 +168,14 @@ header .perMenu .category ul li a:hover { color: var(--brand-color); }
     .mobile-menu .menu-body { text-align: left; padding: 20px; }
     .mobile-menu .menu-body .mobile-member { font-size: 16px; display: flex; align-items: center; gap: 12px; font-weight: 500; margin-bottom: 30px; }
     .mobile-menu .menu-body .mobile-categories li { padding-bottom: 20px; width: 100%; }
+    .mobile-menu .menu-body .mobile-categories li:last-child { padding-bottom: 0; }
     .mobile-menu .menu-body .mobile-categories button { width: 100%; display: flex; align-items: center; justify-content: space-between; font-size: 16px; font-weight: 500; }
     .mobile-menu .menu-body .mobile-categories button .arrow { position: relative; transition: all 0.25s; }
     .mobile-menu .menu-body .mobile-categories button .arrow.show { transform: rotate(180deg); }
     .mobile-menu .menu-body .mobile-categories .categories { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; display: flex; flex-direction: column; gap: 6px; margin-left: 12px; }
     .mobile-menu .menu-body .mobile-categories .categories .category { display: flex; flex-direction: column; gap: 6px; }
     .mobile-menu .menu-body .mobile-categories .categories .category a { color: var(--color-placeholder); font-size: 15px; }
+    .mobile-menu .menu-footer { position: relative; width: 100%; padding: 20px; }
+    .mobile-menu .menu-footer #menu-sns { position: relative; display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .mobile-menu .menu-footer #menu-sns li { width: calc((100%/5) - 6px); }
 }
