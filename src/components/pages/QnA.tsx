@@ -60,9 +60,9 @@ function QnA () {
 
                     <table>
                         <colgroup>
-                            <col width={'70%'}/>
+                            <col width={'60%'}/>
                             <col width={'20%'}/>
-                            <col width={'10%'}/>
+                            <col width={'20%'}/>
                         </colgroup>
                         
                         <thead>

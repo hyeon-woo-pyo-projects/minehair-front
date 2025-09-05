@@ -74,11 +74,11 @@
 
 
 @media screen and (max-width : 720px) {
-    .pages { padding: 30px 0 60px; }
+    .pages { padding: 30px 20px 60px; }
 
 
     /* EVENT */
-    .pages#page-event .slider-area .swiper .swiper-pagination-bullet { width: 10px; height: 10px; }
+    .pages#page-event .slider-area .swiper .swiper-pagination-bullet { width: 10px; height: 12px; }
     .pages#page-event .slider-area .swiper .swiper-pagination-bullet-active { width: 30px; }
     .pages#page-event .slider-area { margin: 30px 0 12px; height: 200px; border-radius: 12px; }
     .pages#page-event .grid-area { gap: 12px; }
