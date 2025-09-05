@@ -283,7 +283,7 @@ function Header () {
             <div className={`mobile-menu${mobileShow ? ' show' : ''}`}>
                 <div className="menu-top">
                     <div className="close-btn" onClick={() => { setMobileShow(false); }}>
-                        <IconCross color='var(--color-black)' width={30} height={30} />
+                        <IconCross color='#f49d9f' width={30} height={30} />
                     </div>
                 </div>
 
