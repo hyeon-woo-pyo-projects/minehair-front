@@ -1,5 +1,7 @@
 .pages { padding: 60px 0 120px; }
-.pages h1.page-title { font-weight: 600; font-size: 24xpx; margin-bottom: 30px; }
+.pages.seperate { display: flex; justify-content: space-between; align-items: start; gap: 50px; }
+.pages.seperate .pages-seperate { width: 100%; }
+.pages h1.page-title { font-weight: 600; font-size: 24px; margin-bottom: 30px; }
 .pages .small-btns { display: flex; justify-content: end; margin: 20px 0; gap: 20px; }
 .pages .small-btns.between { justify-content: space-between; }
 .pages .small-btns.between .flex { display: flex; align-items: center; gap: 20px; }
@@ -12,6 +14,8 @@
 }
 .pages .pages-body .body-header.text-contents p { font-weight: 600; font-size: 14px; }
 .pages .pages-body .body-header.text-contents p span { font-weight: 400; color: var(--color-darkGray); }
+.pages .pages-body .btns { margin-top: 30px; display: flex; align-items: center; gap: 30px; }
+.pages .pages-body .btns button { width: 100%; height: 42px; border-radius: 5px; font-size: 16px; font-weight: 500; }
 
 
 .pages form.pages-form ul { display: flex; flex-direction: column; }
@@ -75,8 +79,100 @@
 #event-slide .contents-view .swiper .contents { height: 100%; }
 #event-slide .contents-view .swiper .contents .img img { object-fit: cover; }
 
+
+
+/* MY PAGE */
+#pages-mypage .mypage-category {
+    width: 100%;
+    margin: auto;
+    text-align: left;
+    border: 1px solid var(--color-gray);
+    border-radius: 15px;
+}
+#pages-mypage .mypage-category li { position: relative; padding: 12px 30px; width: 100%;  border-bottom: 1px solid var(--color-gray);
+}
+#pages-mypage .mypage-category li:last-child { border-bottom: 0; }
+#pages-mypage .mypage-category li a { display: block; width: 100%; display: flex; align-items: center; justify-content: space-between; }
+
+
+
+
+/* COUPON */
+#pages-coupon .pages-form ul {
+    max-height: 500px;
+    overflow: auto;
+    border: 1px solid var(--color-gray);
+    border-radius: 5px;
+    padding: 30px 0;
+}
+#pages-coupon .pages-form ul li {
+    padding: 15px 30px;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+}
+#pages-coupon .pages-form ul li:last-child { border-bottom: 0; }
+#pages-coupon .pages-form ul li .text-contents {
+    position: relative;
+    border: 1px solid var(--color-darkGray);
+    border-right : 1px dashed var(--color-darkGray);
+    padding: 30px; 
+    text-align: left; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 6px; 
+    min-width: 300px;
+}
+#pages-coupon .pages-form ul li .text-contents::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: -7px;
+    right: -8px;
+    z-index: 2;
+    background-color: var(--color-white);
+    transform: rotate(45deg);
+    width: 15px;
+    height: 15px;
+    border-bottom: 1px solid var(--color-darkGray);
+    border-right: 1px solid var(--color-darkGray);
+}
+#pages-coupon .pages-form ul li .text-contents::after {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: -7px;
+    right: -8px;
+    z-index: 2;
+    background-color: var(--color-white);
+    transform: rotate(45deg);
+    width: 15px;
+    height: 15px;
+    border-top: 1px solid var(--color-darkGray);
+    border-left: 1px solid var(--color-darkGray);
+}
+#pages-coupon .pages-form ul li .text-contents .coupon-title { font-size: 14px; }
+#pages-coupon .pages-form ul li .text-contents .coupon-discount { font-size: 24px; font-weight: 600; }
+#pages-coupon .pages-form ul li .text-contents .coupon-period { color: var(--color-placeholder); font-size: 12px; }
+#pages-coupon .pages-form ul li .download {
+    position: relative;
+    transition: all .25s;
+    width: 80px;
+    border: 1px solid var(--color-darkGray);
+    border-left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+#pages-coupon .pages-form ul li .download:hover { background-color: var(--color-lightGray); }
+
+
+
+
 @media screen and (max-width : 720px) {
     .pages { padding: 30px 20px 60px; }
+    .pages .wrapper { padding: 0; }
 
 
     /* EVENT */

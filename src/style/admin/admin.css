@@ -383,6 +383,7 @@
     .admin-widget button.save-btn { width: 80px; }
     .admin-body { padding: 30px 20px 100px; }
     
+    .admin-page { width: 100%; }
     .admin-page .admin-form ul { gap: 12px; }
     .admin-page .admin-form ul li, .admin-page .admin-form ul.child-3 li { width: calc((100% / 2) - 6px); }
     .admin-page .admin-form ul li .input-area { flex-direction: column; align-items: start; }
@@ -393,6 +394,7 @@
     .admin-page.navigator .nav-area { min-width: auto; max-width: unset; }
     .admin-page.navigator .nav-area .side-nav ul { flex-direction: unset; overflow: auto; border-bottom: 1px solid var(--color-gray); }
     .admin-page.navigator .nav-area .side-nav ul li { min-width: 120px; }
+    .admin-page.navigator .nav-area .side-nav .side-footer { display: none; }
 
     /* 헤더 메뉴 */
     .menu-category .admin-body-header .publish { display: none; }

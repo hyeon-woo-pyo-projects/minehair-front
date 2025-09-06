@@ -277,7 +277,7 @@ code {
 .wrapper { width: 1280px; margin: auto; }
 .inner { width: 800px; margin: auto; }
 .body-500 { width: 500px; margin: auto; }
-.empty-notice { font-size: 14px; padding: 20px 0; font-weight: 500; background-color: var(--color-lightGray); border-radius: 5px; text-align: center; width: 100%; }
+.empty-notice { font-size: 14px; padding: 20px 0; font-weight: 500; border-radius: 5px; text-align: center; width: 100%; }
 .react-datepicker button { width: 20px !important; height: 20px !important; }
 .react-datepicker__close-icon { width: auto !important; }
 .react-datepicker__tab-loop { position: absolute; }

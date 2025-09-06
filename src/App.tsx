@@ -28,6 +28,8 @@ import QnaWriter from './components/pages/QnaWriter';
 import AdminSns from './admin/components/common/AdminSns';
 import Event from './components/pages/Event';
 import EventPage from './admin/components/pages/EventPage';
+import MyPageLanding from './components/myPage/MyPageLanding';
+import MyCoupon from './components/myPage/MyCoupon';
 
 function App() {
   // 토큰 체크
@@ -84,6 +86,10 @@ function App() {
                   <Route path="/member/forgot" element={<Forgot />} />
                   <Route path="/member/terms" element={<Terms />} />
                   <Route path="/member/privacy" element={<Privacy />} />
+
+                  {/* 마이페이지 */}
+                  <Route path="/mypage/*" element={<MyPageLanding />} />
+                  <Route path="/mypage/coupon" element={<MyCoupon />} />
 
                   {/* 페이지 */}
                   <Route path="/pages/*" element={<DefaultPages />} />
