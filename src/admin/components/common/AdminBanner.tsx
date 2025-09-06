@@ -6,6 +6,7 @@ import IconTrash from "../../../icons/IconTrash";
 import { useNavigate } from "react-router-dom";
 
 interface BannerProps {
+    bannerType: string,
     content: string;
     textColor: string;
     color: string;
@@ -13,7 +14,6 @@ interface BannerProps {
     imageUrl: string;
     isPost: boolean;
     apiUrl: string;
-    call: string;
 }
 
 function AdminBanner() {
@@ -105,6 +105,7 @@ function AdminBanner() {
         
         axiosInstance
         .patch('/banner/1', {
+            bannerType : 'MAIN',
             content : content,
             color : color,
             textColor : textColor,
@@ -125,8 +126,9 @@ function AdminBanner() {
 
     return (
         <div className="admin-page event-banner">
+            <input type="text" />
             <div className="admin-body wrapper">
-                <h1 className="admin-title">이벤트 배너</h1>
+                <h1 className="admin-title">메인 배너</h1>
 
                 <div className="admin-body-header">
                     {bannerData?.isPost === true ? (

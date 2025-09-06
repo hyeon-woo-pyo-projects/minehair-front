@@ -9,7 +9,7 @@ function AdminIndex () {
                 <h3 className="admin-title">공통 레이아웃</h3>
 
                 <ul className="admin-contents">
-                    <li><Link to={'/admin/admin-banner'}>이벤트 배너</Link></li>
+                    <li><Link to={'/admin/admin-banner'}>메인 배너</Link></li>
                     <li><Link to={'/admin/admin-category'}>헤더 메뉴</Link></li>
                     <li><Link to={'/admin/admin-consultation'}>상담 카테고리</Link></li>
                     <li><Link to={'/admin/admin-slide'}>홈 슬라이드</Link></li>
@@ -30,7 +30,7 @@ function AdminIndex () {
                 <h3 className="admin-title">페이지</h3>
 
                 <ul className="admin-contents">
-                    <li><Link to={'/admin/page-eventgrid'}>이벤트 그리드</Link></li>
+                    <li><Link to={'/admin/page-eventpage'}>이벤트</Link></li>
                 </ul>
             </section>
         </div>

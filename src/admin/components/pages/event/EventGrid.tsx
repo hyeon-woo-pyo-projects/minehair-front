@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
-import axiosInstance from "../../../api/axiosInstance";
-import IconCirclePlus from "../../../icons/IconCirclePlus";
+import axiosInstance from "../../../../api/axiosInstance";
+import IconCirclePlus from "../../../../icons/IconCirclePlus";
 import { Link, useNavigate } from "react-router-dom";
-import IconUpload from "../../../icons/IconUpload";
-import IconTrash from "../../../icons/IconTrash";
-import Balloon from "../../../components/system/Balloon";
-import IconPicture from "../../../icons/IconPicture";
+import IconUpload from "../../../../icons/IconUpload";
+import IconTrash from "../../../../icons/IconTrash";
+import Balloon from "../../../../components/system/Balloon";
+import IconPicture from "../../../../icons/IconPicture";
 
 interface ContentsProps {
     id : number,
+    contentsType : string,
     orderNo : number,
     slideOrderNo : number,
     imageUrl : string,
@@ -26,6 +27,7 @@ function EventGrid () {
     const [ edit, setEdit ] = useState(false);
     const [ clickedData, setClickedData ] = useState({
         id : 0,
+        contentsType : 'NORMAL',
         orderNo : 0,
         slideOrderNo : 0,
         imageUrl : '',
@@ -36,7 +38,7 @@ function EventGrid () {
 
     function getData () {
         axiosInstance
-        .get('/event/page/contents')
+        .get('/event/page/contents/NORMAL')
         .then((res) => {
             if ( res.data.success === true ) {
                 const data = res.data.data;
@@ -66,6 +68,7 @@ function EventGrid () {
     function handleNewEvent () {
         setClickedData({
             id : 0,
+            contentsType : 'NORMAL',
             orderNo : 0,
             slideOrderNo : 0,
             imageUrl : '',
@@ -139,6 +142,7 @@ function EventGrid () {
         if ( !edit ) {
             axiosInstance
             .post('/event/page/contents', {
+                contentsType : 'NORMAL',
                 orderNo : clickedData.orderNo,
                 slideOrderNo : clickedData.slideOrderNo,
                 imageUrl : clickedData.imageUrl,
@@ -149,7 +153,7 @@ function EventGrid () {
             .then((res) => {
                 if ( res.data.success === true ) {
                     alert('저장되었습니다');
-                    window.location.reload();
+                    getData();
                 }
             })
             .catch((err) => {
@@ -159,6 +163,7 @@ function EventGrid () {
         } else {
             axiosInstance
             .patch(`/event/page/contents/${clickedData.id}`, {
+                contentsType : 'NORMAL',
                 orderNo : clickedData.orderNo,
                 slideOrderNo : clickedData.slideOrderNo,
                 imageUrl : clickedData.imageUrl,
@@ -169,7 +174,7 @@ function EventGrid () {
             .then((res) => {
                 if ( res.data.success === true ) {
                     alert('수정되었습니다');
-                    window.location.reload();
+                    getData();
                 }
             })
             .catch((err) => {
@@ -184,7 +189,7 @@ function EventGrid () {
         if ( !window.confirm('해당 이벤트를 삭제하시겠습니까?') ) return;
         axiosInstance
         .delete(`/event/page/contents/${clickedData.id}`)
-        .then((res) => { if ( res.data.success === true ) { alert('삭제되었습니다'); window.location.reload(); } })
+        .then((res) => { if ( res.data.success === true ) { alert('삭제되었습니다'); getData(); } })
         .catch((err) => { alert('오류가 발생했습니다'); console.log(err); })
     }
 
@@ -193,7 +198,7 @@ function EventGrid () {
             <div className="admin-body wrapper">
                 <h1 className="admin-title">이벤트 페이지 그리드 설정</h1>
 
-                <div className={`contents-view`}>
+                <div className='contents-view'>
                     { data.length > 0 ?
                         data.map((el) => {
                             return (
@@ -247,39 +252,7 @@ function EventGrid () {
                                 />
                             </div>
                         </li>
-
-                        <li>
-                            <span className="admin-form-title">슬라이드 추가여부</span>
-
-                            <div className="input-area">
-                                <div className="radios">
-                                    <div className="radio-child">
-                                        <input
-                                            type="radio"
-                                            id="slide-add"
-                                            name="mini-slide"
-                                            checked={clickedData.isAddPost === true}
-                                            onChange={() => { setClickedData({...clickedData, isAddPost : true}) }}
-                                            disabled={disabled}
-                                        />
-                                        <label htmlFor="slide-add">추가</label>
-                                    </div>
-
-                                    <div className="radio-child">
-                                        <input
-                                            type="radio"
-                                            id="slide-not-add"
-                                            name="mini-slide"
-                                            checked={clickedData.isAddPost === false}
-                                            onChange={() => { setClickedData({...clickedData, isAddPost : false}) }}
-                                            disabled={disabled}
-                                        />
-                                        <label htmlFor="slide-not-add">제외</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
+                        
                         <li>
                             { ballon === 3 && <Balloon text={'이미지를 등록해주세요'} status="notice" /> }
                             <span className="admin-form-title">이미지</span>

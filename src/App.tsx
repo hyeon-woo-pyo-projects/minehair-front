@@ -22,11 +22,12 @@ import ManagerConsultation from './admin/components/manager/ManagerConsultation'
 import AdminSlider from './admin/components/common/AdminSlider';
 import QnA from './components/pages/QnA';
 import ManagerCoupon from './admin/components/manager/ManagerCoupon';
-import EventGrid from './admin/components/pages/EventGrid';
+import EventGrid from './admin/components/pages/event/EventGrid';
 import QnaDetails from './components/pages/QnaDetails';
 import QnaWriter from './components/pages/QnaWriter';
 import AdminSns from './admin/components/common/AdminSns';
 import Event from './components/pages/Event';
+import EventPage from './admin/components/pages/EventPage';
 
 function App() {
   // 토큰 체크
@@ -64,6 +65,7 @@ function App() {
             <Route path="manager-coupon" element={<ManagerCoupon />} />
 
             {/* 페이지 */}
+            <Route path="page-eventpage" element={<EventPage />} />
             <Route path="page-eventgrid" element={<EventGrid />} />
           </Route>
 

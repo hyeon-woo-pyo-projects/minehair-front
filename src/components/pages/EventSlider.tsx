@@ -10,6 +10,7 @@ import 'swiper/css/scrollbar';
 
 interface EventProps {
     id : number,
+    contentsType : string,
     orderNo : number,
     slideOrderNo : number,
     imageUrl : string,
@@ -23,12 +24,11 @@ function EventSlider () {
 
     function getData () {
         axiosInstance
-        .get('/event/page/contents')
+        .get('/event/page/contents/SLIDE')
         .then((res) => {
             if ( res.data.success === true ) {
                 const data = res.data.data;
-                const slideData = data.filter(el => el.isAddPost === true);
-                setSlideData(slideData);
+                setSlideData(data);
             }
         })
         .catch((err) => {

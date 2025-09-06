@@ -25,7 +25,7 @@ function Event () {
 
     function getData () {
         axiosInstance
-        .get('/event/page/contents')
+        .get('/event/page/contents/NORMAL')
         .then((res) => {
             if ( res.data.success === true ) {
                 const data = res.data.data;

@@ -125,6 +125,8 @@ input[type="radio"]:checked:disabled + label::after { background-color: var(--co
 input[type="checkbox"]:checked + label::before { background-color: var(--color-placeholder); border-color: var(--color-placeholder); }
 
 select {
+  position: relative;
+  transition: all 0.25s;
   height: 42px;
   min-width: 200px;
   border: 0;

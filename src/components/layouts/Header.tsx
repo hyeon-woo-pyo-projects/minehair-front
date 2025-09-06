@@ -362,7 +362,7 @@ function Header () {
 
                 <div className="menu-footer">
                     <div className="event-slider" onClick={() => { navigate('/pages/event'); setMobileShow(false) }}>
-                        <EventSlider/>
+                        
                     </div>
 
                     { snsData.length > 0 ?

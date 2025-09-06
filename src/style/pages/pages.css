@@ -71,7 +71,9 @@
 }
 .pages#page-event .grid-area .events a:hover .hover { opacity: 1;}
 .pages#page-event .grid-area .events a .hover p { font-weight: 500; color: var(--color-white); font-size: 24px; }
-
+#event-slide .contents-view .swiper { height: 300px; width: 100%; }
+#event-slide .contents-view .swiper .contents { height: 100%; }
+#event-slide .contents-view .swiper .contents .img img { object-fit: cover; }
 
 @media screen and (max-width : 720px) {
     .pages { padding: 30px 20px 60px; }

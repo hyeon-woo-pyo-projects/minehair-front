@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import IconCirclePlus from "../../../icons/IconCirclePlus";
 import { useEffect, useState } from "react";
 import Balloon from "../../../components/system/Balloon";
@@ -6,10 +6,10 @@ import IconUpload from "../../../icons/IconUpload";
 import IconPicture from "../../../icons/IconPicture";
 import IconTrash from "../../../icons/IconTrash";
 import axiosInstance from "../../../api/axiosInstance";
-import { id } from "date-fns/locale";
 
 interface DataProps {
     id : number,
+    logoId : number,
     orderNo : number,
     imageUrl : string,
     linkUrl : string,
@@ -23,6 +23,7 @@ function AdminSns () {
     const [ deleteBtn, setDeleteBtn ] = useState(false);
     const [ clickedData, setClickedData ] = useState({
         id: 0,
+        logoId : 0,
         orderNo : 0,
         imageUrl : '',
         linkUrl : ''
@@ -64,6 +65,7 @@ function AdminSns () {
             alert("10MB 이하의 파일만 업로드 가능합니다.");
             return;
         }
+        
 
         // FormData 생성
         const formData = new FormData();
@@ -85,9 +87,9 @@ function AdminSns () {
             const data = await response.json();
             setClickedData({ ...clickedData, imageUrl : data.data.imageUrl });
             setSave(true);
-            } catch (error) {
-                console.error("에러 발생:", error);
-                alert("업로드 중 에러가 발생했습니다.");
+        } catch (error) {
+            console.error("에러 발생:", error);
+            alert("업로드 중 에러가 발생했습니다.");
         }
     };
 
@@ -108,6 +110,7 @@ function AdminSns () {
         setDeleteBtn(false);
         setClickedData({
             id: 0,
+            logoId : 0,
             orderNo : 0,
             imageUrl : '',
             linkUrl : ''
@@ -116,12 +119,15 @@ function AdminSns () {
 
     // 저장하기
     function handleSave () {
-        if ( clickedData.linkUrl === '' ) { setBalloon(1); return false; }
-        if ( clickedData.imageUrl === '' ) { setBalloon(2); return false; }
+        // if ( clickedData.linkUrl === '' ) { setBalloon(1); return false; }
+        // if ( clickedData.linkUrl === '' ) { setBalloon(2); return false; }
+        if ( clickedData.linkUrl === '' ) { setBalloon(3); return false; }
+        if ( clickedData.imageUrl === '' ) { setBalloon(4); return false; }
 
         if ( edit === true ) {
             axiosInstance
             .patch(`/sns/platform/${clickedData.id}`, {
+                logoId : clickedData.logoId,
                 orderNo : clickedData.orderNo,
                 imageUrl : clickedData.imageUrl,
                 linkUrl : clickedData.linkUrl
@@ -132,6 +138,7 @@ function AdminSns () {
             axiosInstance
             .post('/sns/platform', {
                 id : clickedData.id,
+                logoId : clickedData.logoId,
                 orderNo: clickedData.orderNo,
                 imageUrl : clickedData.imageUrl,
                 linkUrl : clickedData.linkUrl,
@@ -182,6 +189,7 @@ function AdminSns () {
 
                 <form className="admin-form">
                     <input type="text" value={clickedData.id} hidden disabled/>
+                    <input type="text" value={clickedData.logoId} hidden disabled/>
                     <input type="text" value={clickedData.orderNo} hidden disabled/>
 
                     <div className="center-menu">
@@ -193,7 +201,64 @@ function AdminSns () {
 
                     <ul className="child-3">
                         <li>
-                            { balloon === 1 && <Balloon text={'링크를 입력해주세요'} status="notice" /> }
+                            { balloon === 1 && <Balloon text={'섹션을 선택해주세요'} status="notice" /> }
+                            <span className="admin-form-title">섹션</span>
+
+                            <div className="input-area">
+                                <select
+                                    id="sns-section"
+                                    disabled={disabled}
+                                    value={clickedData.logoId}
+                                    onChange={(e) => { setClickedData({...clickedData, logoId : Number(e.target.value)})}
+                                }>
+                                    <option value={0}>새로운 섹션</option>
+                                </select>
+                            </div>
+                        </li>
+
+                        <li>
+                            { balloon === 2 && <Balloon text={'이미지를 등록해주세요'} status="notice" /> }
+                            <span className="admin-form-title">로고 이미지</span>
+
+                            <div className="input-area">
+                                <div className="seperate-item">
+                                    { clickedData.imageUrl === '' ?
+                                    <>
+                                        <input
+                                            type="file"
+                                            id="sns-logo"
+                                            onChange={handleFileChange}
+                                            disabled={disabled}
+                                        />
+                                        <label htmlFor="sns-logo">
+                                            <IconUpload color="var(--color-white)" width={17} height={17} />
+                                            이미지 업로드
+                                        </label>
+                                    </>
+                                    :
+                                        <a 
+                                            className="image-preview"
+                                            rel="noreferrer"
+                                            target="_blank"
+                                            href={clickedData.imageUrl}
+                                        >
+                                            <IconPicture color="var(--color-white)"/>
+                                            <span>사진 보기</span>
+                                        </a>
+                                    }
+                                </div>
+                                
+                                { clickedData.imageUrl !== '' &&
+                                    <button type="button" className="red-btn" disabled={disabled} onClick={handleDeleteImageFromForm}>
+                                        <IconTrash color="var(--color-white)" width={17} height={17} />
+                                        이미지 삭제
+                                    </button>
+                                }
+                            </div>
+                        </li>
+                        
+                        <li>
+                            { balloon === 3 && <Balloon text={'링크를 입력해주세요'} status="notice" /> }
                             <span className="admin-form-title">링크</span>
 
                             <div className="input-area">
@@ -207,7 +272,7 @@ function AdminSns () {
                         </li>
 
                         <li>
-                            { balloon === 2 && <Balloon text={'이미지를 등록해주세요'} status="notice" /> }
+                            { balloon === 4 && <Balloon text={'이미지를 등록해주세요'} status="notice" /> }
                             <span className="admin-form-title">이미지</span>
 
                             <div className="input-area">
@@ -216,11 +281,11 @@ function AdminSns () {
                                     <>
                                         <input
                                             type="file"
-                                            id="event-banner-upload"
+                                            id="event-sns-upload"
                                             onChange={handleFileChange}
                                             disabled={disabled}
                                         />
-                                        <label htmlFor="event-banner-upload">
+                                        <label htmlFor="event-sns-upload">
                                             <IconUpload color="var(--color-white)" width={17} height={17} />
                                             이미지 업로드
                                         </label>

@@ -1,5 +1,5 @@
 /* ADMIN 어드민 공통 */
-.admin-page { min-height: calc(100% - 60px); }
+.admin-page { min-height: calc(100vh - 60px); }
 .admin-page input[type="text"] { height: 40px; font-size: 14px; }
 .admin-page input[type="color"] {
     border: 0;
@@ -137,6 +137,31 @@
 }
 
 .add-btn:hover { background-color: var(--color-gray); }
+
+
+.admin-page.navigator { display: flex;}
+.admin-page.navigator .nav-area { min-width: 200px; max-width: 30%; }
+.admin-page.navigator .nav-area .side-nav { height: 100%; border-right: 1px solid var(--color-gray); }
+.admin-page.navigator .nav-area .side-nav ul {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+}
+
+.admin-page.navigator .nav-area .side-nav ul button {
+    position: relative;
+    transition: all 0.25s;
+    background-color: var(--color-black);
+    color: var(--color-white);
+    width: 100%;
+    border-radius: 5px;
+    min-height: 42px;
+}
+.admin-page.navigator .nav-area .side-nav button:hover { background-color: var(--default-background); }
+.admin-page.navigator .nav-area .side-nav .side-footer { border-top: 1px solid var(--color-gray); padding: 12px; }
+.admin-page.navigator .nav-area .side-nav .side-footer a { display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 14px; }
+.admin-page.navigator .contents-area { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; }
 
 
 
@@ -363,6 +388,11 @@
     .admin-page .admin-form ul li .input-area { flex-direction: column; align-items: start; }
     .admin-page .admin-btns { gap: 12px; margin-top: 30px; flex-direction: column; }
     .admin-page .admin-btns button { width: 100%; min-width: unset; }
+
+    .admin-page.navigator { flex-direction: column; }
+    .admin-page.navigator .nav-area { min-width: auto; max-width: unset; }
+    .admin-page.navigator .nav-area .side-nav ul { flex-direction: unset; overflow: auto; border-bottom: 1px solid var(--color-gray); }
+    .admin-page.navigator .nav-area .side-nav ul li { min-width: 120px; }
 
     /* 헤더 메뉴 */
     .menu-category .admin-body-header .publish { display: none; }
