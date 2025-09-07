@@ -7,7 +7,6 @@ import "../../style/layouts/header.css"
 import axiosInstance from '../../api/axiosInstance';
 import IconCross from '../../icons/IconCross';
 import IconArrowDown from '../../icons/IconArrowDown';
-import EventSlider from '../pages/EventSlider';
 
 interface menuProps {
     menuId : number;
@@ -125,6 +124,31 @@ function Header () {
         }
     };
 
+    const [ eventBanner, setEventBanner ] = useState({
+        id: 0,
+        bannerType : 'NAVIGATION',
+        imageUrl : '',
+        color: '',
+        content: '',
+        textColor: '',
+        link: '',
+        isPost: true,
+    });
+
+    // 이벤트 배너
+    function getEventBanner () {
+        axiosInstance
+        .get('/banner')
+        .then((res)=>{
+            if ( res.data.success === true ) {
+                const data = res.data.data;
+                const eventBanner = data.filter((el) => el.bannerType === 'NAVIGATION' )[0];
+                if ( !eventBanner ) { return false; }
+                setEventBanner(eventBanner);
+            }
+        })
+    }
+
 
     // SNS 데이터 받아오기
     const [ snsData, setSnsData ] = useState<SnsProps[]>([])
@@ -145,6 +169,7 @@ function Header () {
     useEffect(() => {
         getMenu();
         getSns();
+        getEventBanner();
     }, []);
     
     return (
@@ -361,9 +386,11 @@ function Header () {
                 </div>
 
                 <div className="menu-footer">
-                    <div className="event-slider" onClick={() => { navigate('/pages/event'); setMobileShow(false) }}>
-                        
-                    </div>
+                    { eventBanner.id !== 0 ? 
+                        <div className="event-banner" onClick={() => setMobileShow(false)}>
+                            <Link to={'/pages/event'}><img src={eventBanner.imageUrl}/></Link>
+                        </div>
+                    : null}
 
                     { snsData.length > 0 ?
                         <ul id='menu-sns'>
