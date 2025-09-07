@@ -367,6 +367,14 @@
 #admin-sns .contents-view .contents { width: 50px; height: 50px; }
 
 
+
+
+/* EVENT-BANNER 이벤트 배너 */
+#admin-event-banner .banner-item { height: 70px; }
+#admin-event-banner .banner-item img { height: 100%; object-fit: cover; }
+
+
+
 @media screen and (max-width: 720px) {
     .add-btn { min-width: 100%; min-height: 50px; }
     .admin-index section { padding: 30px 20px; }
