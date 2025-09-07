@@ -166,6 +166,7 @@
     cursor: pointer;
 }
 #pages-coupon .pages-form ul li .download:hover { background-color: var(--color-lightGray); }
+#pages-coupon .pages-form ul li .download p { font-size: 12px; font-weight: 500; }
 
 
 
@@ -173,6 +174,7 @@
 @media screen and (max-width : 720px) {
     .pages { padding: 30px 20px 60px; }
     .pages .wrapper { padding: 0; }
+    .pages.seperate { flex-direction: column; }
 
 
     /* EVENT */
@@ -181,4 +183,12 @@
     .pages#page-event .slider-area { margin: 30px 0 12px; height: 200px; border-radius: 12px; }
     .pages#page-event .grid-area { gap: 12px; }
     .pages#page-event .grid-area .events { width: calc(50% - 6px); }
+
+
+
+    /* COUPON */
+    #pages-coupon .pages-form ul li { padding: 0 15px; }
+    #pages-coupon .pages-form ul li .text-contents { padding: 20px; min-width: 75%; }
+    #pages-coupon .pages-form ul li .download { width: 30%; }
+    #pages-coupon .pages-form ul li .text-contents .coupon-period { font-size: 11px; }
 }

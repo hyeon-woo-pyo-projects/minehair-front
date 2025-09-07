@@ -14,10 +14,31 @@ interface CouponProps {
     isPost : boolean,
 }
 
+interface MyCouponProps {
+    id : number,
+    couponId : number,
+    usersId : number,
+    isUse : boolean,
+    issueDate : string,
+    useDate : string,
+    couponInfo : {
+        id : number,
+        content : string,
+        conditionType : string,
+        discountType : string,
+        discountAmount : number,
+        periodStart : string,
+        periodEnd : string,
+        isPost : boolean,
+    }
+}
+
+
+
 function MyCoupon () {
     const navigate = useNavigate();
     const [ couponList, setCouponList ] = useState<CouponProps[]>([]);
-    const [ myCoupon, setMyCoupon ] = useState<CouponProps[]>([]);
+    const [ myCoupon, setMyCoupon ] = useState<MyCouponProps[]>([]);
 
     // 로그인 확인
     function checkToken () {
@@ -47,7 +68,6 @@ function MyCoupon () {
             if ( res.data.success === true ) {
                 const data = res.data.data;
                 setCouponList(data);
-                console.log(data);
             }
         })
         .catch((err) => { alert('오류가 발생했습니다'); console.log(err); })
@@ -68,7 +88,7 @@ function MyCoupon () {
         .then((res) => {
             if ( res.data.success === true ) {
                 const data = res.data.data;
-                console.log(data);
+                setMyCoupon(data);
             }
         })
         .catch((err) => { alert('오류가 발생했습니다'); console.log(err); })
@@ -92,15 +112,15 @@ function MyCoupon () {
                                 return (
                                     <li key={index}>
                                         <input type="text" value={el.id} hidden disabled/>
-                                        <input type="text" value={el.conditionType} hidden disabled/>
+                                        <input type="text" value={el.couponInfo.conditionType} hidden disabled/>
 
                                         <div className="text-contents">
-                                            <p className="coupon-title">{el.content}</p>
-                                            <p className="coupon-discount">{el.discountAmount}<span>{el.discountType === 'PRICE' ? '원' : '%' }</span></p>
-                                            <p className="coupon-period">사용기간 : {formatDate(el.periodStart ? new Date(el.periodStart) : null)} ~ {formatDate(el.periodEnd ? new Date(el.periodEnd) : null)}</p>
+                                            <p className="coupon-title">{el.couponInfo.content}</p>
+                                            <p className="coupon-discount">{el.couponInfo.discountAmount}<span>{el.couponInfo.discountType === 'PRICE' ? '원' : '%' }</span></p>
+                                            <p className="coupon-period">사용기간 : {formatDate(el.couponInfo.periodStart ? new Date(el.couponInfo.periodStart) : null)} ~ {formatDate(el.couponInfo.periodEnd ? new Date(el.couponInfo.periodEnd) : null)}</p>
                                         </div>
 
-                                        <div className="download" onClick={()=>{getCoupon(el.id)}}><IconDownload color="var(--color-black)"/></div>
+                                        <div className="download"><p>사용하기</p></div>
                                     </li>
                                 )
                             })
