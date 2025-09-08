@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axiosInstance from "../../api/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import IconDownload from "../../icons/IconDownload";
+import CouponPopup from "../system/popup/CouponPopup";
 
 interface CouponProps {
     id : number,
@@ -39,6 +40,7 @@ function MyCoupon () {
     const navigate = useNavigate();
     const [ couponList, setCouponList ] = useState<CouponProps[]>([]);
     const [ myCoupon, setMyCoupon ] = useState<MyCouponProps[]>([]);
+    const [ selectedCoupon, setSelectedCoupon ] = useState<MyCouponProps | null>(null);
 
     // 로그인 확인
     function checkToken () {
@@ -102,6 +104,8 @@ function MyCoupon () {
 
     return (
         <div className="pages wrapper seperate" id="pages-coupon">
+            <CouponPopup coupon={selectedCoupon} onClose={() => setSelectedCoupon(null)} />
+
             <div className="pages-seperate">
                 <h1 className="page-title">내 쿠폰함</h1>
 
@@ -116,11 +120,19 @@ function MyCoupon () {
 
                                         <div className="text-contents">
                                             <p className="coupon-title">{el.couponInfo.content}</p>
-                                            <p className="coupon-discount">{el.couponInfo.discountAmount}<span>{el.couponInfo.discountType === 'PRICE' ? '원' : '%' }</span></p>
-                                            <p className="coupon-period">사용기간 : {formatDate(el.couponInfo.periodStart ? new Date(el.couponInfo.periodStart) : null)} ~ {formatDate(el.couponInfo.periodEnd ? new Date(el.couponInfo.periodEnd) : null)}</p>
+                                            <p className="coupon-discount">
+                                                {el.couponInfo.discountAmount}
+                                                <span>{el.couponInfo.discountType === 'PRICE' ? '원' : '%' }</span>
+                                            </p>
+                                            <p className="coupon-period">
+                                                사용기간 : {formatDate(el.couponInfo.periodStart ? new Date(el.couponInfo.periodStart) : null)} ~ {formatDate(el.couponInfo.periodEnd ? new Date(el.couponInfo.periodEnd) : null)}
+                                            </p>
                                         </div>
 
-                                        <div className="download"><p>사용하기</p></div>
+                                        {/* ✅ 클릭 시 선택된 쿠폰 세팅 */}
+                                        <div className="download" onClick={()=> setSelectedCoupon(el)}>
+                                            <p>사용하기</p>
+                                        </div>
                                     </li>
                                 )
                             })
