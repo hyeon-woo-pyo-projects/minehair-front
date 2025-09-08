@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import IconArrowRight from "../../icons/IconArrowRight";
 import { useEffect } from "react";
+import axiosInstance from "../../api/axiosInstance";
 
 function MyPageLanding () {
     const navigate = useNavigate();
@@ -19,6 +20,16 @@ function MyPageLanding () {
     useEffect(()=>{
         checkToken();
     }, []);
+
+    // 회원탈퇴
+    function handleRemove(){
+        if ( !window.confirm('탈퇴하면 모든 정보가 사라집니다.\n정말로 탈퇴하시겠습니까?') ) return;
+
+        axiosInstance
+        .delete('/user')
+        .then((res) => { if ( res.data.success === true ) { alert('삭제되었습니다'); navigate('/') } })
+        .catch((err) => { alert('오류가 발생했습니다'); console.log(err); })
+    }
 
     return (
         <div className="pages" id="pages-mypage">
@@ -42,7 +53,7 @@ function MyPageLanding () {
                 </ul>
 
                 <div className="btns">
-                    <button type="button" className="red-btn">회원 탈퇴</button>
+                    <button type="button" className="red-btn" onClick={handleRemove}>회원 탈퇴</button>
                 </div>
             </div>
         </div>
