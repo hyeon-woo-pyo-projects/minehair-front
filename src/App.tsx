@@ -33,24 +33,25 @@ import MyCoupon from './components/myPage/MyCoupon';
 import Expired from './components/system/Expired';
 import { useEffect } from 'react';
 
-function App() {
+
+// ✅ Router 안쪽에서만 useNavigate 사용 가능
+function AppRoutes() {
+  const navigate = useNavigate();
+
   // 토큰 체크
   const checkLoginExpiry = () => {
     const expiryTime = localStorage.getItem('loginExpiry');
     if (expiryTime && new Date().getTime() > Number(expiryTime)) {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        localStorage.removeItem('roleCode');
-        localStorage.removeItem('loginExpiry');
-        console.log("로그인 정보가 만료되어 초기화되었습니다.");
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('roleCode');
+      localStorage.removeItem('loginExpiry');
+      console.log("로그인 정보가 만료되어 초기화되었습니다.");
     }
   };
-  
   checkLoginExpiry();
 
-  // 401시 로직
-  const navigate = useNavigate();
-
+  // 401시 이동 처리
   useEffect(() => {
     const handleUnauthorized = () => {
       navigate("/expired");
@@ -63,64 +64,70 @@ function App() {
   }, [navigate]);
 
   return (
+    <Routes>
+      {/* Admin 전용 라우트 */}
+      <Route path="admin" element={<AdminRouter />}>
+        <Route path="index" element={<AdminIndex />} />
+        <Route path="admin-banner" element={<AdminBanner />} />
+        <Route path="admin-category" element={<AdminCategory />} />
+        <Route path="admin-logo" element={<AdminLogo />} />
+        <Route path="admin-preview" element={<AdminPreview />} />
+        <Route path="admin-consultation" element={<AdminConsulation />} />
+        <Route path="admin-slide" element={<AdminSlider />} />
+        <Route path="admin-sns" element={<AdminSns />} />
+
+        {/* 관리자 */}
+        <Route path="manager-consultation" element={<ManagerConsultation />} />
+        <Route path="manager-coupon" element={<ManagerCoupon />} />
+
+        {/* 페이지 */}
+        <Route path="page-eventpage" element={<EventPage />} />
+        <Route path="page-eventgrid" element={<EventGrid />} />
+      </Route>
+
+      {/* 일반 사용자 레이아웃 */}
+      <Route
+        path="*"
+        element={
+          <>
+            <Header />
+            <Routes>
+              <Route path="/" element={<Landing />} />
+
+              {/* 시스템 */}
+              <Route path="expired" element={<Expired />} />
+
+              {/* 멤버 관련 */}
+              <Route path="/member/login" element={<Login />} />
+              <Route path="/member/register" element={<Register />} />
+              <Route path="/member/forgot" element={<Forgot />} />
+              <Route path="/member/terms" element={<Terms />} />
+              <Route path="/member/privacy" element={<Privacy />} />
+
+              {/* 마이페이지 */}
+              <Route path="/mypage/*" element={<MyPageLanding />} />
+              <Route path="/mypage/coupon" element={<MyCoupon />} />
+
+              {/* 페이지 */}
+              <Route path="/pages/*" element={<DefaultPages />} />
+              <Route path="/pages/qna" element={<QnA />} />
+              <Route path="/pages/qna-writer" element={<QnaWriter />} />
+              <Route path="/pages/qna-details" element={<QnaDetails />} />
+              <Route path="/pages/event" element={<Event />} />
+            </Routes>
+          </>
+        }
+      />
+    </Routes>
+  );
+}
+
+function App() {
+  return (
     <div className="App">
+      {/* ✅ Router를 최상단에 배치 */}
       <HashRouter>
-        <Routes>
-          {/* Admin 전용 라우트: parent 경로는 "admin", children은 상대경로로 정의 */}
-          <Route path="admin" element={<AdminRouter />}>
-            {/* 공통 레이아웃 */}
-            <Route path="index" element={<AdminIndex />} />
-            <Route path="admin-banner" element={<AdminBanner />} />
-            <Route path="admin-category" element={<AdminCategory />} />
-            <Route path="admin-logo" element={<AdminLogo />} />
-            <Route path="admin-preview" element={<AdminPreview />} />
-            <Route path="admin-consultation" element={<AdminConsulation />} />
-            <Route path="admin-slide" element={<AdminSlider />} />
-            <Route path="admin-sns" element={<AdminSns />} />
-
-            {/* 관리자 */}
-            <Route path="manager-consultation" element={<ManagerConsultation />} />
-            <Route path="manager-coupon" element={<ManagerCoupon />} />
-
-            {/* 페이지 */}
-            <Route path="page-eventpage" element={<EventPage />} />
-            <Route path="page-eventgrid" element={<EventGrid />} />
-          </Route>
-
-          {/* 일반 사용자 레이아웃: 모든 비-관리자 경로 처리 */}
-          <Route
-            path="*"
-            element={
-              <>
-                <Header />
-                <Routes>
-                  <Route path="/" element={<Landing />} />
-
-                  {/* 시스템 */}
-                  <Route path="expired" element={<Expired />} />
-
-                  {/* 멤버 관련 */}
-                  <Route path="/member/login" element={<Login />} />
-                  <Route path="/member/register" element={<Register />} />
-                  <Route path="/member/forgot" element={<Forgot />} />
-                  <Route path="/member/terms" element={<Terms />} />
-                  <Route path="/member/privacy" element={<Privacy />} />
-
-                  {/* 마이페이지 */}
-                  <Route path="/mypage/*" element={<MyPageLanding />} />
-                  <Route path="/mypage/coupon" element={<MyCoupon />} />
-
-                  {/* 페이지 */}
-                  <Route path="/pages/*" element={<DefaultPages />} />
-                  <Route path="/pages/qna" element={<QnA />} />
-                  <Route path="/pages/qna-writer" element={<QnaWriter />} />
-                  <Route path="/pages/qna-details" element={<QnaDetails />} />
-                  <Route path="/pages/event" element={<Event />} />
-                </Routes>
-              </>
-            }
-          />
-        </Routes>
+        <AppRoutes />
       </HashRouter>
     </div>
   );
