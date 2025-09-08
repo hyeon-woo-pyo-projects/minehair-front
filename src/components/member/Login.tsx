@@ -77,17 +77,9 @@ function Login () {
                             <input type="password" placeholder='비밀번호' id='loginPassword'onChange={ e => setLogin({...login, password : e.target.value})}/>
                         </li>
 
-                        {/* <li>
-                            <label htmlFor='' className='formTitle'></label>
-
-                            <div>
-                                <input type="checkbox" id='autoLogin'/>
-                                <label htmlFor="autoLogin">자동로그인</label>
-                            </div>
-                        </li> */}
+                        { errMsg === true ? <span className='noticeText'>아이디와 비밀번호를 다시 확인해주세요.</span> : null }
 
                         <div className="btns">
-                            { errMsg === true ? <span className='noticeText'>아이디와 비밀번호를 다시 확인해주세요.</span> : null }
                             <button type='submit' className='blackBtn' onClick={submitLogin}>로그인</button>
                         </div>
                     </form>

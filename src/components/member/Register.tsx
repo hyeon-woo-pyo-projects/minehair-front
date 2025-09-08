@@ -56,11 +56,11 @@ function Register () {
         axiosInstance
         .post('/user', {
             userId : id,
-            email : email,
             password : password,
+            confirmPassword : passwordChk,
             name : name,
             phone : phone,
-            userType : ''
+            email : email,
         })
         .then((response) => {
             if ( response.data.success === true ) {
