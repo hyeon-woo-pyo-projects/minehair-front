@@ -1,3 +1,4 @@
+import axiosInstance from '../../../api/axiosInstance';
 import IconCross from '../../../icons/IconCross';
 import '../../../style/system/popup.css';
 
@@ -23,12 +24,21 @@ interface MyCouponProps {
 }
 
 interface CouponPopupProps {
-    coupon: MyCouponProps | null;   // ✅ 선택된 쿠폰
-    onClose: () => void;            // ✅ 닫기 함수
+    coupon: MyCouponProps | null;
+    onClose: () => void;
 }
 
 function CouponPopup({ coupon, onClose }: CouponPopupProps) {
-    if (!coupon) return null; // ✅ 선택된 쿠폰 없으면 팝업 안 띄움
+    if (!coupon) return null;
+
+    function handleUse () {
+        if ( !window.confirm('쿠폰을 사용처리 하시겠습니까?\n(사용 처리 후엔 되돌릴 수 없습니다)') ) return;
+        
+        axiosInstance
+        .post(`/coupon/issue/use/${coupon?.id}`)
+        .then((res) => { if ( res.data.success === true ) { alert('쿠폰을 사용했습니다'); window.location.reload(); }})
+        .catch((err) => { alert('에러가 발생했습니다'); console.log(err); })
+    }
 
     return (
         <div className="popup" id="popup-coupon">
@@ -51,7 +61,12 @@ function CouponPopup({ coupon, onClose }: CouponPopupProps) {
                         </div>
                     </div>
                     <div className="popup-contents">
-                        <button className="use-btn" onClick={() => alert(`${coupon.couponInfo.content} 쿠폰 사용!`)}>사용하기</button>
+                        <div className="coupon-notice">
+                            <p>쿠폰을 직원에게 보여주세요.</p>
+                            <p>쿠폰 사용은 직접 누르지 말아주세요.</p>
+                            <p>사용된 쿠폰은 되돌릴 수 없습니다.</p>
+                        </div>
+                        <button className="use-btn" onClick={handleUse}>사용하기</button>
                     </div>
                 </div>
             </div>
