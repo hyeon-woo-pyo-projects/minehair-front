@@ -153,8 +153,12 @@ function AdminCategory() {
             }
         })
         .catch((err)=>{
-            alert('오류가 발생했습니다');
-            console.log(err);
+            if ( err.status === 401 ) {
+                navigate('/expired');
+            }else {
+                alert('오류가 발생했습니다');
+                console.log(err);
+            }
         })
     }
 
@@ -373,8 +377,12 @@ function AdminCategory() {
             alert("순서가 변경되었습니다");
         })
         .catch((err) => {
-            console.error("순서 저장 오류", err);
-            alert("순서 변경 저장에 실패했습니다");
+            if ( err.status === 401 ) {
+                navigate('/expired');
+            }else {
+                console.error("순서 저장 오류", err);
+                alert("순서 변경 저장에 실패했습니다");
+            }
         });
     }
     // 새로운 메뉴 생성 상태

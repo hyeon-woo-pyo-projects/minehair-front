@@ -1,5 +1,5 @@
 // App.tsx
-import { HashRouter, Route, Routes } from 'react-router-dom';
+import { HashRouter, Route, Routes, useNavigate } from 'react-router-dom';
 
 import Header from './components/layouts/Header';
 import Landing from './components/index/Landing';
@@ -31,6 +31,7 @@ import EventPage from './admin/components/pages/EventPage';
 import MyPageLanding from './components/myPage/MyPageLanding';
 import MyCoupon from './components/myPage/MyCoupon';
 import Expired from './components/system/Expired';
+import { useEffect } from 'react';
 
 function App() {
   // 토큰 체크
@@ -46,6 +47,20 @@ function App() {
   };
   
   checkLoginExpiry();
+
+  // 401시 로직
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleUnauthorized = () => {
+      navigate("/expired");
+    };
+
+    window.addEventListener("unauthorized", handleUnauthorized);
+    return () => {
+      window.removeEventListener("unauthorized", handleUnauthorized);
+    };
+  }, [navigate]);
 
   return (
     <div className="App">

@@ -49,8 +49,13 @@ function AdminBanner() {
                 setBannerData(response.data.data[0]);
             }
         })
-        .catch((error) => {
-            console.log("error", error);
+        .catch((err) => {
+            if ( err.status === 401 ) {
+                navigate('/expired');
+            }else {
+                alert('오류가 발생했습니다');
+                console.log(err);
+            }
         });
     };
 
@@ -119,8 +124,12 @@ function AdminBanner() {
             }
         })
         .catch((err)=>{
-            alert('저장 중 오류가 발생했습니다');
-            console.log(err)
+            if ( err.status === 401 ) {
+                navigate('/expired');
+            }else {
+                alert('오류가 발생했습니다');
+                console.log(err);
+            }
         })
     }
 

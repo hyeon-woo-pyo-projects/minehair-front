@@ -39,10 +39,6 @@ function AdminSns () {
     const [ data, setData ] = useState<DataProps[]>([]);
     const [ logoData, setLogoData ] = useState<LogoProps[]>([]);
 
-    function test () {
-        navigate('/expired');
-    }
-
     function getData () {
         // 로고 가져오기
         axiosInstance
@@ -208,8 +204,6 @@ function AdminSns () {
         <div className="admin-page" id="admin-sns">
             <div className="admin-body inner">
                 <h1 className="admin-title">SNS 플랫폼</h1>
-
-                <button type="button" onClick={test}>tes</button>
 
                 <div className="contents-view">
                     { logoData.length > 0 ?
