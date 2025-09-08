@@ -15,6 +15,13 @@ interface DataProps {
     linkUrl : string,
 }
 
+interface LogoProps {
+    id : number,
+    logoType : string,
+    description : string,
+    imageUrl : string,
+}
+
 function AdminSns () {
     const navigate = useNavigate();
     const [ balloon, setBalloon ] = useState(0);
@@ -29,9 +36,34 @@ function AdminSns () {
         linkUrl : ''
     })
     
-    const [ data, setData ] = useState<DataProps[]>([])
+    const [ data, setData ] = useState<DataProps[]>([]);
+    const [ logoData, setLogoData ] = useState<LogoProps[]>([]);
+
+    function test () {
+        navigate('/expired');
+    }
 
     function getData () {
+        // 로고 가져오기
+        axiosInstance
+        .get('/logo')
+        .then((res) => {
+            if ( res.data.success === true ) {
+                const data = res.data.data;
+                const logoData = data.filter((el) => el.logoType === 'NAVIGATION');
+
+                console.log(logoData);
+            }
+        })
+        .catch((err) => {
+            if ( err.status === 401 ) {
+                navigate('/expired');
+            }else {
+                alert('오류가 발생했습니다');
+                console.log(err);
+            }
+        })
+
         axiosInstance
         .get('/sns/platform')
         .then((res) => {
@@ -102,57 +134,61 @@ function AdminSns () {
     };
 
     // 새로 생성
-    const [ edit, setEdit ] = useState(false);
-    function handleNew () {
-        setEdit(false);
+    const [ section, setSection ] = useState(false);
+    function handleNewSection () {
+        setSection(true);
         setDisabled(false);
-        setSave(true);
         setDeleteBtn(false);
-        setClickedData({
-            id: 0,
-            logoId : 0,
-            orderNo : 0,
-            imageUrl : '',
-            linkUrl : ''
-        })
     }
 
     // 저장하기
     function handleSave () {
         // if ( clickedData.linkUrl === '' ) { setBalloon(1); return false; }
         // if ( clickedData.linkUrl === '' ) { setBalloon(2); return false; }
-        if ( clickedData.linkUrl === '' ) { setBalloon(3); return false; }
-        if ( clickedData.imageUrl === '' ) { setBalloon(4); return false; }
+        // if ( clickedData.imageUrl === '' ) { setBalloon(3); return false; }
 
-        if ( edit === true ) {
+        if ( section === true ) {
+            if ( !clickedData.imageUrl ) { setBalloon(1); return false; }
+            
             axiosInstance
-            .patch(`/sns/platform/${clickedData.id}`, {
-                logoId : clickedData.logoId,
-                orderNo : clickedData.orderNo,
+            .post('/logo', {
+                logoType : 'NAVIGATION',
+                description : '',
                 imageUrl : clickedData.imageUrl,
-                linkUrl : clickedData.linkUrl
             })
-            .then((res) => { if ( res.data.success === true ) { alert('수정되었습니다'); window.location.reload(); } })
-            .catch((err) => { alert('오류가 발생했습니다'); console.log(err) });
-        } else {
-            axiosInstance
-            .post('/sns/platform', {
-                id : clickedData.id,
-                logoId : clickedData.logoId,
-                orderNo: clickedData.orderNo,
-                imageUrl : clickedData.imageUrl,
-                linkUrl : clickedData.linkUrl,
-            })
-            .then((res) => { if ( res.data.success === true ) { setBalloon(0); alert('저장되었습니다'); window.location.reload(); } })
-            .catch((err) => { alert('오류가 발생했습니다'); console.log(err); })
+            .then((res) => { if ( res.data.success === true ) { alert('저장되었습니다'); getData(); }})
+            .catch((err) => { alert('오류가 발생했습니다'); console.log(err)})
         }
+
+        // if ( section === true ) {
+        //     axiosInstance
+        //     .patch(`/sns/platform/${clickedData.id}`, {
+        //         logoId : clickedData.logoId,
+        //         orderNo : clickedData.orderNo,
+        //         imageUrl : clickedData.imageUrl,
+        //         linkUrl : clickedData.linkUrl
+        //     })
+        //     .then((res) => { if ( res.data.success === true ) { alert('수정되었습니다'); window.location.reload(); } })
+        //     .catch((err) => { alert('오류가 발생했습니다'); console.log(err) });
+        // } else {
+        //     axiosInstance
+        //     .post('/sns/platform', {
+        //         id : clickedData.id,
+        //         logoId : clickedData.logoId,
+        //         orderNo: clickedData.orderNo,
+        //         imageUrl : clickedData.imageUrl,
+        //         linkUrl : clickedData.linkUrl,
+        //     })
+        //     .then((res) => { if ( res.data.success === true ) { setBalloon(0); alert('저장되었습니다'); window.location.reload(); } })
+        //     .catch((err) => { alert('오류가 발생했습니다'); console.log(err); })
+        // }
     }
 
     // 클릭
     function handleClick (clickedData : DataProps) {
         setClickedData({...clickedData});
         setDisabled(false);
-        setEdit(true);
+        setSection(true);
         setSave(false);
         setDeleteBtn(true);
         setBalloon(0);
@@ -173,13 +209,17 @@ function AdminSns () {
             <div className="admin-body inner">
                 <h1 className="admin-title">SNS 플랫폼</h1>
 
+                <button type="button" onClick={test}>tes</button>
+
                 <div className="contents-view">
-                    { data.length > 0 ?
-                        data.map((el) => {
+                    { logoData.length > 0 ?
+                        logoData.map((el) => {
                             return (
-                                <div className="contents" key={el.id} onClick={() => { handleClick(el) }}>
-                                    <div className="img"><img src={el.imageUrl} alt="sns 이미지"/></div>
-                                </div>
+                                <section key={el.id}>
+                                    <div className="main-logo">
+                                        <img src={el.imageUrl} alt="섹션 메인 로고"/>
+                                    </div>
+                                </section>
                             )
                         })
                     :
@@ -193,71 +233,57 @@ function AdminSns () {
                     <input type="text" value={clickedData.orderNo} hidden disabled/>
 
                     <div className="center-menu">
-                        <button className="add-btn" type="button" onClick={handleNew}>
+                        <button className="add-btn" type="button" onClick={handleNewSection}>
                             <IconCirclePlus color="var(--color-black)" />
-                            SNS 추가
+                            섹션 추가
                         </button>
                     </div>
 
                     <ul className="child-3">
-                        <li>
-                            { balloon === 1 && <Balloon text={'섹션을 선택해주세요'} status="notice" /> }
-                            <span className="admin-form-title">섹션</span>
+                        { section === true ? 
+                            <li>
+                                { balloon === 1 && <Balloon text={'이미지를 등록해주세요'} status="notice" /> }
+                                <span className="admin-form-title">메인 로고</span>
 
-                            <div className="input-area">
-                                <select
-                                    id="sns-section"
-                                    disabled={disabled}
-                                    value={clickedData.logoId}
-                                    onChange={(e) => { setClickedData({...clickedData, logoId : Number(e.target.value)})}
-                                }>
-                                    <option value={0}>새로운 섹션</option>
-                                </select>
-                            </div>
-                        </li>
-
-                        <li>
-                            { balloon === 2 && <Balloon text={'이미지를 등록해주세요'} status="notice" /> }
-                            <span className="admin-form-title">로고 이미지</span>
-
-                            <div className="input-area">
-                                <div className="seperate-item">
-                                    { clickedData.imageUrl === '' ?
-                                    <>
-                                        <input
-                                            type="file"
-                                            id="sns-logo"
-                                            onChange={handleFileChange}
-                                            disabled={disabled}
-                                        />
-                                        <label htmlFor="sns-logo">
-                                            <IconUpload color="var(--color-white)" width={17} height={17} />
-                                            이미지 업로드
-                                        </label>
-                                    </>
-                                    :
-                                        <a 
-                                            className="image-preview"
-                                            rel="noreferrer"
-                                            target="_blank"
-                                            href={clickedData.imageUrl}
-                                        >
-                                            <IconPicture color="var(--color-white)"/>
-                                            <span>사진 보기</span>
-                                        </a>
+                                <div className="input-area">
+                                    <div className="seperate-item">
+                                        { clickedData.imageUrl === '' ?
+                                        <>
+                                            <input
+                                                type="file"
+                                                id="sns-logo"
+                                                onChange={handleFileChange}
+                                                disabled={disabled}
+                                            />
+                                            <label htmlFor="sns-logo">
+                                                <IconUpload color="var(--color-white)" width={17} height={17} />
+                                                이미지 업로드
+                                            </label>
+                                        </>
+                                        :
+                                            <a 
+                                                className="image-preview"
+                                                rel="noreferrer"
+                                                target="_blank"
+                                                href={clickedData.imageUrl}
+                                            >
+                                                <IconPicture color="var(--color-white)"/>
+                                                <span>사진 보기</span>
+                                            </a>
+                                        }
+                                    </div>
+                                    
+                                    { clickedData.imageUrl !== '' &&
+                                        <button type="button" className="red-btn" disabled={disabled} onClick={handleDeleteImageFromForm}>
+                                            <IconTrash color="var(--color-white)" width={17} height={17} />
+                                            이미지 삭제
+                                        </button>
                                     }
                                 </div>
-                                
-                                { clickedData.imageUrl !== '' &&
-                                    <button type="button" className="red-btn" disabled={disabled} onClick={handleDeleteImageFromForm}>
-                                        <IconTrash color="var(--color-white)" width={17} height={17} />
-                                        이미지 삭제
-                                    </button>
-                                }
-                            </div>
-                        </li>
+                            </li>
+                        : null}
                         
-                        <li>
+                        {/* <li>
                             { balloon === 3 && <Balloon text={'링크를 입력해주세요'} status="notice" /> }
                             <span className="admin-form-title">링크</span>
 
@@ -269,9 +295,9 @@ function AdminSns () {
                                     disabled={disabled}
                                 />
                             </div>
-                        </li>
+                        </li> */}
 
-                        <li>
+                        {/* <li>
                             { balloon === 4 && <Balloon text={'이미지를 등록해주세요'} status="notice" /> }
                             <span className="admin-form-title">이미지</span>
 
@@ -310,7 +336,7 @@ function AdminSns () {
                                     </button>
                                 }
                             </div>
-                        </li>
+                        </li> */}
 
                         { deleteBtn === true &&
                             <li>

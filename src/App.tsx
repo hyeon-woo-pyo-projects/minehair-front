@@ -30,6 +30,7 @@ import Event from './components/pages/Event';
 import EventPage from './admin/components/pages/EventPage';
 import MyPageLanding from './components/myPage/MyPageLanding';
 import MyCoupon from './components/myPage/MyCoupon';
+import Expired from './components/system/Expired';
 
 function App() {
   // 토큰 체크
@@ -79,6 +80,9 @@ function App() {
                 <Header />
                 <Routes>
                   <Route path="/" element={<Landing />} />
+
+                  {/* 시스템 */}
+                  <Route path="expired" element={<Expired />} />
 
                   {/* 멤버 관련 */}
                   <Route path="/member/login" element={<Login />} />
