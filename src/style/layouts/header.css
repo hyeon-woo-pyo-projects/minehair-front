@@ -168,6 +168,7 @@ header .perMenu .category ul li a:hover { color: var(--brand-color); }
         height: 100%;
         background-color: var(--color-white);
         box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.2);
+        overflow: auto;
     }
     .mobile-menu.show {
         left: 0;
@@ -196,6 +197,17 @@ header .perMenu .category ul li a:hover { color: var(--brand-color); }
     .mobile-menu .menu-footer .event-banner { width: 100%; height: 100px; margin-bottom: 20px; }
     .mobile-menu .menu-footer .event-banner a { display: block; width: 100%; height: 100%; }
     .mobile-menu .menu-footer .event-banner a img { height: 100%; object-fit: cover; }
-    .mobile-menu .menu-footer #menu-sns { position: relative; display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
-    .mobile-menu .menu-footer #menu-sns li { width: calc((100%/5) - 6px); }
+    .mobile-menu .menu-footer .sns-platform { display: flex; flex-direction: column; gap: 20px 0; margin-top: 50px; }
+    .mobile-menu .menu-footer .sns-platform section .main-logo { position: relative; display: flex; align-items: center; height: 20px; }
+    .mobile-menu .menu-footer .sns-platform section .main-logo::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background-color: var(--color-gray);
+    }
+    .mobile-menu .menu-footer .sns-platform section .main-logo img { background-color: var(--color-white); width: 70%; margin: auto; height: 100%; object-fit: cover; z-index: 1; padding: 0 6px; }
+    .mobile-menu .menu-footer .sns-platform section .sns-child { margin-top: 12px; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; }
+    .mobile-menu .menu-footer .sns-platform section .sns-child a { width: 30px; height: 30px;}
 }

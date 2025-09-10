@@ -51,7 +51,7 @@ function AdminSns () {
             })
             .catch((err) => {
                 if ( err.status === 401 ) navigate('/expired');
-                else { alert('로고 불러오기 오류'); console.log(err); }
+                else { if ( err.status === 401 ) navigate('/expired'); else { alert('SNS 불러오기 오류'); console.log(err);} }
             });
 
         axiosInstance.get('/sns/platform')

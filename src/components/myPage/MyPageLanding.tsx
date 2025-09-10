@@ -27,7 +27,7 @@ function MyPageLanding () {
 
         axiosInstance
         .delete('/user')
-        .then((res) => { if ( res.data.success === true ) { alert('삭제되었습니다'); navigate('/') } })
+        .then((res) => { if ( res.data.success === true ) { alert('삭제되었습니다'); navigate('/'); window.location.reload(); } })
         .catch((err) => { alert('오류가 발생했습니다'); console.log(err); })
     }
 

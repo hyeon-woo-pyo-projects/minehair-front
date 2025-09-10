@@ -45,8 +45,16 @@ type subSubMenuProps = {
     roleIdList : []
 };
 
+interface LogoProps {
+    id : number,
+    logoType : string,
+    description : string,
+    imageUrl : string,
+}
+
 interface SnsProps {
     id : number,
+    logoId : number,
     orderNo : number,
     imageUrl : string,
     linkUrl : string,
@@ -151,17 +159,30 @@ function Header () {
 
 
     // SNS 데이터 받아오기
+    const [ logoData, setLogoData ] = useState<LogoProps[]>([])
     const [ snsData, setSnsData ] = useState<SnsProps[]>([])
+
     function getSns () {
-        axiosInstance
-        .get('/sns/platform')
-        .then((res) => {
-            if ( res.data.success === true ) {
-                const snsData = res.data.data;
-                setSnsData(snsData);
-            }
-        })
-        .catch((err) => { })
+        axiosInstance.get('/logo')
+            .then((res) => {
+                if ( res.data.success ) {
+                    const logoData = res.data.data.filter((el: LogoProps) => el.logoType === 'NAVIGATION');
+                    setLogoData(logoData);
+                }
+            })
+            .catch((err) => {
+                if ( err.status === 401 ) navigate('/expired');
+                else { if ( err.status === 401 ) navigate('/expired'); else { alert('SNS 불러오기 오류'); console.log(err);} }
+            });
+
+        axiosInstance.get('/sns/platform')
+            .then((res) => {
+                if ( res.data.success ) setSnsData(res.data.data);
+            })
+            .catch((err) => {
+                if ( err.status === 401 ) navigate('/expired');
+                else { alert('SNS 불러오기 오류'); console.log(err); }
+            });
     }
 
 
@@ -392,15 +413,36 @@ function Header () {
                         </div>
                     : null}
 
-                    { snsData.length > 0 ?
-                        <ul id='menu-sns'>
-                            { snsData.map(( el ) => {
+                    { logoData.length > 0 ?
+                        <div className="sns-platform">
+                            {logoData.map((el) => {
                                 return (
-                                    <li key={el.id} onClick={() => setMobileShow(false)}><Link target='_blank' to={el.linkUrl}><img src={el.imageUrl} alt='SNS'/></Link></li>
+                                    <section key={el.id}>
+                                        <div className="main-logo">
+                                            <img src={el.imageUrl} alt="섹션 메인 로고"/>
+                                        </div>
+    
+                                        <div className="sns-child">
+                                            { snsData.map((ele) => {
+                                                if ( el.id === ele.logoId ) {
+                                                    return (
+                                                        <a
+                                                            href={ele.linkUrl.startsWith('http') ? ele.linkUrl : `https://${ele.linkUrl}`}
+                                                            target='_blank'
+                                                            rel="noopener noreferrer"
+                                                            key={ele.id}
+                                                        >
+                                                            <img src={ele.imageUrl} alt="SNS 이미지"/>
+                                                        </a>
+                                                    )
+                                                }
+                                            }) }
+                                        </div>
+                                    </section>
                                 )
                             })}
-                        </ul>
-                    : '' }
+                        </div>
+                    : null }
                 </div>
             </div>
         </>
