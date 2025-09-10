@@ -6,7 +6,7 @@
 .pages .small-btns.between { justify-content: space-between; }
 .pages .small-btns.between .flex { display: flex; align-items: center; gap: 20px; }
 
-.pages .btns { margin-top: 60px; display: flex; align-items: center; gap: 30px; justify-content: center; }
+.pages .btns { margin-top: 60px; display: flex; align-items: center; gap: 12px; justify-content: center; flex-direction: column; }
 .pages .btns button { min-width: 300px; height: 42px; font-size: 16px; font-weight: 500; border-radius: 5px; }
 
 .pages .pages-form .pages-form-title { font-size: 14px; font-weight: 500; flex: none; min-width: 65px; text-align: start; }
@@ -107,6 +107,7 @@
 #pages-myaccount .pages-form li { gap: 20px; }
 #pages-myaccount .pages-form .input-area { width: 100%; }
 #pages-myaccount .pages-form .input-area .form-btn { width: 100%; height: 42px; border-radius: 5px; }
+#pages-myaccount .member-out { font-size: 12px; margin-top: 20px; text-align: right;padding: 0 12px; cursor: pointer; }
 
 
 

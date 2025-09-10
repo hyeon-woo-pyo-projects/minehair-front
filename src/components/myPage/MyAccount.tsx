@@ -123,6 +123,25 @@ function MyAccount () {
         })
     }
 
+    // 회원탈퇴
+    function handleRemove(){
+        if ( !window.confirm('탈퇴하면 모든 정보가 사라집니다.\n정말로 탈퇴하시겠습니까?') ) return;
+
+        axiosInstance
+        .delete('/user')
+        .then((res) => { if ( res.data.success === true ) { 
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
+            localStorage.removeItem("roleCode");
+            alert('탈퇴했습니다');
+            window.location.href = '/';
+        } })
+        .catch((err) => { alert('오류가 발생했습니다'); console.log(err); })
+    }
+
+
+
+
 
     return (
         <div className="pages inner" id="pages-myaccount">
@@ -256,7 +275,9 @@ function MyAccount () {
 
                 <div className="btns">
                     <button type="button" className="primaryBtn" disabled={disabled} onClick={handleSave}>저장하기</button>
+                    <button type="button" className="blackBtn" onClick={() => { navigate(-1) }}>뒤로가기</button>
                 </div>
+                <p className="member-out" onClick={handleRemove}>회원탈퇴</p>
             </form>
         </div>
     )
