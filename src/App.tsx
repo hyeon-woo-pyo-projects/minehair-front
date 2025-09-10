@@ -32,6 +32,7 @@ import MyPageLanding from './components/myPage/MyPageLanding';
 import MyCoupon from './components/myPage/MyCoupon';
 import Expired from './components/system/Expired';
 import { useEffect } from 'react';
+import AdminQuick from './admin/components/common/AdminQuick';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -73,6 +74,7 @@ function AppRoutes() {
         <Route path="admin-consultation" element={<AdminConsulation />} />
         <Route path="admin-slide" element={<AdminSlider />} />
         <Route path="admin-sns" element={<AdminSns />} />
+        <Route path="admin-quick" element={<AdminQuick />} />
 
         {/* 관리자 */}
         <Route path="manager-consultation" element={<ManagerConsultation />} />

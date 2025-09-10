@@ -127,6 +127,20 @@
     background-color: var(--brand-color-hover);
 }
 
+.main-quick-menu { position: relative; transition: all 0.25s; opacity: 0; background-color: var(--color-white); position: fixed; right: 20px; bottom: 100px; z-index: 2; width: 100px; }
+.main-quick-menu.show { opacity: 1;}
+.main-quick-menu h6 {
+    font-size: 14px;
+    font-weight: 600;
+    background-color: var(--default-background);
+    color: var(--color-white);
+    padding: 6px 0;
+    border-radius: 5px 5px 0 0;
+}
+.main-quick-menu .quick-body { border: 1px solid var(--color-gray); }
+.main-quick-menu .quick-body li { padding: 12px; border-bottom: 1px solid var(--color-gray); }
+.main-quick-menu .quick-body li:last-child { border-bottom: 0; }
+
 @media screen and (max-width: 720px) {
     .my-navigation-buttons { display: none; }
 
@@ -138,4 +152,6 @@
     #fixedBanner .mo-show { width: 100%; }
     #fixedBanner .mo-show label { color: var(--color-white); font-size: 14px; }
     #fixedBanner #sendCall { width: 100%; font-size: 14px; height: 35px; }
+
+    .main-quick-menu { display: none; }
 }

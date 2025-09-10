@@ -14,6 +14,7 @@ function AdminIndex () {
                     <li><Link to={'/admin/admin-consultation'}>상담 카테고리</Link></li>
                     <li><Link to={'/admin/admin-slide'}>홈 슬라이드</Link></li>
                     <li><Link to={'/admin/admin-sns'}>SNS</Link></li>
+                    <li><Link to={'/admin/admin-quick'}>퀵 메뉴</Link></li>
                 </ul>
             </section>
 

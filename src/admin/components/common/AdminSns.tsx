@@ -219,7 +219,8 @@ function AdminSns () {
         api.then((res)=>{ 
             if ( res.data.success ) { alert('삭제되었습니다'); getData(); }
         }).catch((err) => { 
-            alert('삭제 오류'); console.log(err);
+            if ( err.status === 401 ) navigate('/expired');
+            else { alert('오류가 발생했습니다'); console.log(err); }
         });
     }
 

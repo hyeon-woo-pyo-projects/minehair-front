@@ -373,6 +373,24 @@
 
 
 
+/* ADMIN-QUICK 퀵 메뉴 */
+#admin-quick .contents-view { justify-content: center; }
+#admin-quick .contents-view .quick-menu { opacity: 1; position: relative; bottom: unset; right: unset; background-color: var(--color-white); width: 100px; }
+#admin-quick .contents-view .quick-menu h6 {
+    font-size: 14px;
+    font-weight: 600;
+    background-color: var(--default-background);
+    color: var(--color-white);
+    padding: 6px 0;
+    border-radius: 5px 5px 0 0;
+}
+#admin-quick .contents-view .quick-body { border: 1px solid var(--color-gray); }
+#admin-quick .contents-view .quick-body li { padding: 12px; border-bottom: 1px solid var(--color-gray); cursor: pointer; }
+#admin-quick .contents-view .quick-body li:last-child { border-bottom: 0; }
+
+
+
+
 /* EVENT-BANNER 이벤트 배너 */
 #admin-event-banner .banner-item { height: 70px; }
 #admin-event-banner .banner-item img { height: 100%; object-fit: cover; }
