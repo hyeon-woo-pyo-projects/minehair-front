@@ -45,8 +45,6 @@
 }
 
 .my-navigation-buttons button {
-    position: relative;
-    transition: all 0.25s;
     width: 64px;
     height: 64px;
     box-shadow: 0 8px 10px 5px rgba(0, 0, 0, .05);
@@ -59,8 +57,14 @@
 }
 
 .my-navigation-buttons button:hover { background-color: var(--color-lightGray); }
-.my-navigation-buttons button.my-button-pause { width: 130px; height: 130px; }
-/* .my-navigation-buttons button.my-button-pause.paused { background-color: red !important; } */
+.my-navigation-buttons button.my-button-pause {
+    transition: none;
+    box-shadow: unset;
+    width: 130px;
+    height: 130px;
+    background: url('../../img/paused-btn.png') no-repeat center center;
+}
+.my-navigation-buttons button.my-button-pause.paused { background-image: url('../../img/play-btn.png'); }
 
 #fixedBanner {
     position: sticky;

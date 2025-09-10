@@ -1,25 +1,41 @@
 import { Link, useNavigate } from 'react-router-dom';
 
 import '../../style/member/member.css'
-import { useEffect, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import MemberNav from './MemberNav';
 import axiosInstance from '../../api/axiosInstance';
+import DatePicker from 'react-datepicker';
+import { ko } from "date-fns/locale";
+import { format } from "date-fns";
+
+interface RegisterProps  {
+    userId : string,
+    password : string,
+    confirmPassword : string,
+    name : string,
+    phone : string,
+    email : string,
+    birthDate : Date | null,
+}
 
 function Register () {
     // 유효성 검사
-    const [ id, setId ] = useState('');
-    const [ name, setName ] = useState('');
-    const [ password, setPassword ] = useState('');
-    const [ passwordChk, setPasswordChk ] = useState('');
-    const [ email, setEmail ] = useState('');
-    const [ phone, setPhone ] = useState('');
+    const [ inputForm, setInputForm ] = useState<RegisterProps>({
+        userId : '',
+        password : '',
+        confirmPassword : '',
+        name : '',
+        phone : '',
+        email : '',
+        birthDate : null as Date | null,
+    })
     const [ certi, setCerti ] = useState('');
     const [ btnActive, setBtnActive ] = useState(false);
-    const [emailValid, setEmailValid] = useState(true);
+    const [ emailValid, setEmailValid ] = useState(true);
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        setEmail(value);
+        setInputForm({...inputForm, email : value});
         const regex = /^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$/;
         setEmailValid(regex.test(value));
     };
@@ -38,29 +54,31 @@ function Register () {
 
     useEffect(() => {
         const isValid =
-            ( id !== '' && id.length > 3 ) &&
-            ( name !== '' && name.length > 2 ) &&
-            ( password !== '' && password.length > 3 )&&
-            ( passwordChk !== '' && password === passwordChk ) &&
-            ( email !== '' && emailValid ) &&
-            ( phone !== '' && phone.replaceAll('-', '').length === 11 && /^\d+$/.test(phone.replaceAll('-', '')) ) &&
+            ( inputForm.userId !== '' && inputForm.userId.length > 3 ) &&
+            ( inputForm.name !== '' && inputForm.name.length > 2 ) &&
+            ( inputForm.password !== '' && inputForm.password.length > 3 )&&
+            ( inputForm.confirmPassword !== '' && inputForm.password === inputForm.confirmPassword ) &&
+            ( inputForm.birthDate !== null ) &&
+            ( inputForm.email !== '' && emailValid ) &&
+            ( inputForm.phone !== '' && inputForm.phone.replaceAll('-', '').length === 11 && /^\d+$/.test(inputForm.phone.replaceAll('-', '')) ) &&
             certi === '000' &&
             terms.chk01 === true && terms.chk02 === true;
 
         setBtnActive(isValid);
-    }, [id, password, passwordChk, email, emailValid, phone, certi, terms]);
+    }, [inputForm, certi, terms]);
 
     const navigate = useNavigate();
 
     const register = () => {
         axiosInstance
         .post('/user', {
-            userId : id,
-            password : password,
-            confirmPassword : passwordChk,
-            name : name,
-            phone : phone,
-            email : email,
+            userId : inputForm.userId,
+            password : inputForm.password,
+            confirmPassword : inputForm.confirmPassword,
+            name : inputForm.name,
+            phone : inputForm.phone,
+            email : inputForm.email,
+            birthDate : inputForm.birthDate ? format(inputForm.birthDate, "yyyy-MM-dd") : null,
         })
         .then((response) => {
             if ( response.data.success === true ) {
@@ -74,6 +92,20 @@ function Register () {
         })
     }
 
+    const BirthDate = forwardRef<HTMLInputElement, any>(
+        ({ value, onClick }, ref) => (
+            <input
+                type="text"
+                value={value || ""}
+                onClick={onClick}
+                ref={ref}
+                placeholder="시작일 선택"
+                maxLength={11}
+                readOnly
+            />
+        )
+    );
+
     return (
         <div id="page-register" className='membersComponents'>
             <div className="wrapper">
@@ -85,22 +117,37 @@ function Register () {
                     <form id='registerForm' className='membersForm' noValidate>
                         <li>
                             <label htmlFor="registerId" className='formTitle'>아이디</label>
-                            <input type="text" placeholder='아이디' id='registerId' onChange={(e) => setId(e.target.value) }/>
+                            <input type="text" placeholder='아이디' id='registerId' onChange={(e) => setInputForm({ ...inputForm, userId : e.target.value}) }/>
                         </li>
 
                         <li>
                             <label htmlFor="registerName" className='formTitle'>이름</label>
-                            <input type="text" placeholder='이름' id='registerName' onChange={(e) => setName(e.target.value) }/>
+                            <input type="text" placeholder='이름' id='registerName' onChange={(e) => setInputForm({ ...inputForm, name : e.target.value}) }/>
                         </li>
 
                         <li>
                             <label htmlFor="registerPassword" className='formTitle'>비밀번호</label>
-                            <input type="password" placeholder='비밀번호' id='registerPassword' onChange={(e) => setPassword(e.target.value) } />
+                            <input type="password" placeholder='비밀번호' id='registerPassword' onChange={(e) => setInputForm({ ...inputForm, password : e.target.value}) } />
                         </li>
 
                         <li>
                             <label htmlFor="registerPasswordChk" className='formTitle'>비밀번호 확인</label>
-                            <input type="password" placeholder='비밀번호 확인' id='registerPasswordChk' onChange={(e) => setPasswordChk(e.target.value) }/>
+                            <input type="password" placeholder='비밀번호 확인' id='registerPasswordChk' onChange={(e) => setInputForm({ ...inputForm, confirmPassword : e.target.value}) }/>
+                        </li>
+
+                        <li>
+                            <label htmlFor="registerPasswordChk" className='formTitle'>생년월일</label>
+                            <DatePicker
+                                selected={inputForm.birthDate}
+                                onChange={(date) => setInputForm({ ...inputForm, birthDate: date })}
+                                dateFormat="yyyy-MM-dd"
+                                locale={ko}
+                                openToDate={new Date(new Date().setFullYear(new Date().getFullYear() - 20))}
+                                maxDate={new Date()}
+                                showPopperArrow={false}
+                                isClearable={false}
+                                customInput={<BirthDate />}
+                            />
                         </li>
 
                         <li>
@@ -112,7 +159,7 @@ function Register () {
                             <label htmlFor="phone" className='formTitle'>휴대폰번호</label>
 
                             <div>
-                                <input type="text" placeholder='"-"없이' id='phone' maxLength={11} onChange={(e) => setPhone(e.target.value) }/>
+                                <input type="text" placeholder='"-"없이' id='phone' maxLength={11} onChange={(e) => setInputForm({ ...inputForm, phone : e.target.value}) }/>
                                 <button type='button'>인증번호 받기</button>
                             </div>
                         </li>

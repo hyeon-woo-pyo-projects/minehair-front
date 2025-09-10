@@ -33,8 +33,6 @@ import MyCoupon from './components/myPage/MyCoupon';
 import Expired from './components/system/Expired';
 import { useEffect } from 'react';
 
-
-// ✅ Router 안쪽에서만 useNavigate 사용 가능
 function AppRoutes() {
   const navigate = useNavigate();
 
@@ -125,7 +123,6 @@ function AppRoutes() {
 function App() {
   return (
     <div className="App">
-      {/* ✅ Router를 최상단에 배치 */}
       <HashRouter>
         <AppRoutes />
       </HashRouter>
