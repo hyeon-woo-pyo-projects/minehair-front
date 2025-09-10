@@ -135,7 +135,6 @@ function AdminBanner() {
 
     return (
         <div className="admin-page event-banner">
-            <input type="text" />
             <div className="admin-body wrapper">
                 <h1 className="admin-title">메인 배너</h1>
 
