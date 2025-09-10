@@ -167,6 +167,23 @@
 }
 #pages-coupon .pages-form ul li .download:hover { background-color: var(--color-lightGray); }
 #pages-coupon .pages-form ul li .download p { font-size: 12px; font-weight: 500; }
+#pages-coupon .pages-form ul li.used { cursor: no-drop; }
+#pages-coupon .pages-form ul li.used::after {
+        content: '사용완료';
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        color: var(--color-white);
+        font-weight: 500;
+        font-size: 14px;
+}
+#pages-coupon .pages-form ul li.used .text-contents,
+#pages-coupon .pages-form ul li.used .download { background-color: rgba(0, 0, 0, 0.5); }
 
 
 

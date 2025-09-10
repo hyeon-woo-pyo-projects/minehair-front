@@ -114,7 +114,7 @@ function MyCoupon () {
                         { myCoupon.length > 0 ?
                             myCoupon.map((el, index)=>{
                                 return (
-                                    <li key={index}>
+                                    <li key={index} className={el.isUse === true ? 'used' : ''}>
                                         <input type="text" value={el.id} hidden disabled/>
                                         <input type="text" value={el.couponInfo.conditionType} hidden disabled/>
 
@@ -128,11 +128,16 @@ function MyCoupon () {
                                                 사용기간 : {formatDate(el.couponInfo.periodStart ? new Date(el.couponInfo.periodStart) : null)} ~ {formatDate(el.couponInfo.periodEnd ? new Date(el.couponInfo.periodEnd) : null)}
                                             </p>
                                         </div>
-
-                                        {/* ✅ 클릭 시 선택된 쿠폰 세팅 */}
-                                        <div className="download" onClick={()=> setSelectedCoupon(el)}>
-                                            <p>사용하기</p>
-                                        </div>
+                                        
+                                        { el.isUse === false ? 
+                                            <div className="download" onClick={()=> setSelectedCoupon(el)}>
+                                                <p>사용하기</p>
+                                            </div>
+                                        :
+                                            <div className="download">
+                                                <p>사용완료</p>
+                                            </div>
+                                        }
                                     </li>
                                 )
                             })
