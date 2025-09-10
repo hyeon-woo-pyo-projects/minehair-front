@@ -13,6 +13,18 @@
 #manager-coupon .coupon .coupon-title { font-size: 26px; color: var(--color-black); font-weight: 600; margin-bottom: 12px; }
 #manager-coupon .coupon .coupon-period { font-size: 14px; color: var(--color-darkGray); font-weight: 500; }
 
+
+/* Q&A */
+#manager-qna .contents-view { flex-direction: column; width: 100%; flex-wrap: nowrap; gap: 0; }
+#manager-qna .contents-view .qna { width: 100%; display: flex; flex-direction: column; gap: 6px; padding: 20px; cursor: pointer; }
+#manager-qna .contents-view .qna:hover { background-color: var(--color-gray); }
+#manager-qna .contents-view .qna .question { width: 100%; display: flex; align-items: center; justify-content: space-between; }
+#manager-qna .contents-view .qna .question p { font-weight: 600; }
+#manager-qna .contents-view .qna .question p span { color: var(--color-red); }
+#manager-qna .contents-view .qna .answer { text-align: start; }
+#manager-qna .contents-view .qna .answer p { color: var(--color-darkBlue); }
+#manager-qna .contents-view .qna .answer p span { color: var(--color-blue); font-weight: 500; }
+
 @media screen and (max-width: 720px) {
     #manager-coupon .coupon .coupon-title { font-size: 20px; }
     #manager-coupon .coupon .coupon-price { font-size: 14px; }

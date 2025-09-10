@@ -24,6 +24,7 @@ function AdminIndex () {
                 <ul className="admin-contents">
                     <li><Link to={'/admin/manager-consultation'}>상담 신청자</Link></li>
                     <li><Link to={'/admin/manager-coupon'}>쿠폰 관리</Link></li>
+                    <li><Link to={'/admin/manager-qna'}>Q&A 등록</Link></li>
                 </ul>
             </section>
 

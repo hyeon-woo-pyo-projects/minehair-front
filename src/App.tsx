@@ -33,6 +33,7 @@ import MyCoupon from './components/myPage/MyCoupon';
 import Expired from './components/system/Expired';
 import { useEffect } from 'react';
 import AdminQuick from './admin/components/common/AdminQuick';
+import ManagerQna from './admin/components/manager/ManagerQna';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -79,6 +80,7 @@ function AppRoutes() {
         {/* 관리자 */}
         <Route path="manager-consultation" element={<ManagerConsultation />} />
         <Route path="manager-coupon" element={<ManagerCoupon />} />
+        <Route path="manager-qna" element={<ManagerQna />} />
 
         {/* 페이지 */}
         <Route path="page-eventpage" element={<EventPage />} />
