@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../../api/axiosInstance";
-import AdminWidget from "../layouts/AdminWidget";
 import { useNavigate } from "react-router-dom";
 import IconTrash from "../../../icons/IconTrash";
 import IconCirclePlus from "../../../icons/IconCirclePlus";
@@ -12,7 +11,11 @@ interface getDataProps {
     name: string;
 }
 
-function AdminConsultation() {
+type AdminConsultationProps = {
+    onChangePage: any;
+};
+
+function AdminConsultation({ onChangePage }) {
     const [save, setSave] = useState(false);
     const navigate = useNavigate();
     const [current, setCurrent] = useState<getDataProps[]>([]);

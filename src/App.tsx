@@ -17,7 +17,6 @@ import AdminCategory from './admin/components/common/AdminCategory';
 import AdminLogo from './admin/components/common/AdminLogo';
 import AdminPreview from './admin/components/common/AdminPreview';
 import DefaultPages from './components/pages/DefaultPages';
-import AdminConsulation from './admin/components/common/AdminConsultation';
 import ManagerConsultation from './admin/components/manager/ManagerConsultation';
 import AdminSlider from './admin/components/common/AdminSlider';
 import QnA from './components/pages/QnA';
@@ -35,6 +34,7 @@ import { useEffect } from 'react';
 import AdminQuick from './admin/components/common/AdminQuick';
 import ManagerQna from './admin/components/manager/ManagerQna';
 import MyAccount from './components/myPage/MyAccount';
+import ConsultationPage from './admin/components/pages/CounsultationPage';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -73,7 +73,7 @@ function AppRoutes() {
         <Route path="admin-category" element={<AdminCategory />} />
         <Route path="admin-logo" element={<AdminLogo />} />
         <Route path="admin-preview" element={<AdminPreview />} />
-        <Route path="admin-consultation" element={<AdminConsulation />} />
+        <Route path="admin-consultation" element={<ConsultationPage />} />
         <Route path="admin-slide" element={<AdminSlider />} />
         <Route path="admin-sns" element={<AdminSns />} />
         <Route path="admin-quick" element={<AdminQuick />} />

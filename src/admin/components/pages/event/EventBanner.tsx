@@ -50,7 +50,7 @@ function EventBanner () {
                 }
             }
         })
-        .catch((err)=>{ alert('오류가 발생했습니다'); console.log(err) })
+        .catch((err)=>{ if ( err.status === 401 ) navigate('/expired'); else { alert('오류가 발생했습니다'); console.log(err); } })
     }
 
     useEffect(()=>{
@@ -108,7 +108,7 @@ function EventBanner () {
             imageUrl : banner.imageUrl,
         })
         .then((res)=>{ if ( res.data.success === true ) { alert('저장되었습니다.'); getData(); setDisabled(true); }})
-        .catch((err)=>{ alert('오류가 발생했습니다'); console.log(err); })
+        .catch((err)=>{ if ( err.status === 401 ) navigate('/expired'); else { alert('오류가 발생했습니다'); console.log(err); } })
     }
     function handleDelete () {
         if ( !window.confirm('삭제하시곘습니까?') ) return;
@@ -116,7 +116,7 @@ function EventBanner () {
         axiosInstance
         .delete(`/banner/${banner.id}`)
         .then((res) => { if ( res.data.success === true ) { alert('삭제되었습니다.'); getData(); setBanner({...banner, imageUrl : '', id : 0}); setDisabled(true); }})
-        .catch((err) => { alert('오류가 발생했습니다'); console.log(err); });
+        .catch((err) => { if ( err.status === 401 ) navigate('/expired'); else { alert('오류가 발생했습니다'); console.log(err); } });
     }
     
     return (

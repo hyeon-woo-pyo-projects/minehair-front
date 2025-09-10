@@ -158,6 +158,8 @@
     width: 100%;
     border-radius: 5px;
     min-height: 42px;
+    padding: 0 20px;
+    word-break: keep-all;
 }
 .admin-page.navigator .nav-area .side-nav button:hover { background-color: var(--default-background); }
 .admin-page.navigator .nav-area .side-nav .side-footer { border-top: 1px solid var(--color-gray); padding: 12px; }
@@ -394,6 +396,70 @@
 /* EVENT-BANNER 이벤트 배너 */
 #admin-event-banner .banner-item { height: 70px; }
 #admin-event-banner .banner-item img { height: 100%; object-fit: cover; }
+
+
+
+/* 카테고리 배경 */
+.admin-page#consult-back { width: 100%; height: 100%; }
+.admin-page#consult-back .admin-body { padding: 0; }
+.admin-page#consult-back .consultation-section .inner-form::after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+}
+.admin-page#consult-back ul { justify-content: center; }
+
+.consultation-section { 
+    min-height: 500px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    background-size: cover;
+    background-position: center center;
+}
+.consultation-section .inner-form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-gray);
+    padding: 30px;
+    box-shadow: 0px 0px 6px 6px rgb(0 0 0 / 10%);
+    border-radius: 5px;
+}
+.consultation-section .title-area .effect-title {
+    display: block;
+    background: linear-gradient(to right, #fb44cb, #824ef8);
+    color: var(--color-white );
+    font-size: 14px;
+    padding: 6px 20px;
+    border-radius: 100px;
+    max-width: 120px;
+    margin: auto;
+    margin-bottom: 30px;
+}
+.consultation-section .title-area .form-title { font-size: 16px; margin-bottom: 60px; }
+.consultation-section .inner-form form ul { display: flex; flex-direction: column; gap: 12px; }
+.consultation-section .inner-form form ul li { display: flex; gap: 12px; align-items: center; }
+.consultation-section .inner-form form ul li label { flex: none; min-width: 50px; text-align: start; font-size: 14px; font-weight: 600; }
+.consultation-section .consultation-btn {
+    background: linear-gradient(to right, #fb44cb, #824ef8);
+    color: var(--color-white);
+    display: block;
+    width: 100%;
+    height: 42px;
+    border-radius: 5px;
+    margin-top: 30px;
+    font-weight: 600;
+}
+
 
 
 
