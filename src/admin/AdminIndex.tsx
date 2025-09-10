@@ -15,6 +15,7 @@ function AdminIndex () {
                     <li><Link to={'/admin/admin-slide'}>홈 슬라이드</Link></li>
                     <li><Link to={'/admin/admin-sns'}>SNS</Link></li>
                     <li><Link to={'/admin/admin-quick'}>퀵 메뉴</Link></li>
+                    <li><Link to={'/admin/admin-map'}>지도 설정</Link></li>
                 </ul>
             </section>
 
@@ -33,6 +34,7 @@ function AdminIndex () {
 
                 <ul className="admin-contents">
                     <li><Link to={'/admin/page-eventpage'}>이벤트</Link></li>
+                    <li><Link to={'/admin/page-setting'}>페이지 세팅</Link></li>
                 </ul>
             </section>
         </div>

@@ -35,6 +35,8 @@ import AdminQuick from './admin/components/common/AdminQuick';
 import ManagerQna from './admin/components/manager/ManagerQna';
 import MyAccount from './components/myPage/MyAccount';
 import ConsultationPage from './admin/components/pages/CounsultationPage';
+import SettingPage from './admin/components/pages/SettingPage';
+import AdminMap from './admin/components/common/AdminMap';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -77,6 +79,7 @@ function AppRoutes() {
         <Route path="admin-slide" element={<AdminSlider />} />
         <Route path="admin-sns" element={<AdminSns />} />
         <Route path="admin-quick" element={<AdminQuick />} />
+        <Route path="admin-map" element={<AdminMap />} />
 
         {/* 관리자 */}
         <Route path="manager-consultation" element={<ManagerConsultation />} />
@@ -86,6 +89,7 @@ function AppRoutes() {
         {/* 페이지 */}
         <Route path="page-eventpage" element={<EventPage />} />
         <Route path="page-eventgrid" element={<EventGrid />} />
+        <Route path="page-setting" element={<SettingPage />} />
       </Route>
 
       {/* 일반 사용자 레이아웃 */}
