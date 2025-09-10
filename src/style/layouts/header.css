@@ -26,6 +26,7 @@ header  #menuBtn {
     display: flex;
     justify-content: center;
     margin-right: 24px;
+    margin-bottom: 6px;
 }
 
 header #menuBtn.show i { width: 0; }
@@ -44,6 +45,13 @@ header #menuBtn i {
 
 header #menuBtn i:first-child { top: 0; }
 header #menuBtn i:last-child { top: unset; bottom: 0; }
+header #menuBtn i:last-child::after {
+    content: 'MENU';
+    font-style: normal;
+    font-size: 11px;
+    margin-top: 4px;
+    display: block;
+}
 
 header #headerLine #member {
     display: flex;
