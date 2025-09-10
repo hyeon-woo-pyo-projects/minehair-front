@@ -126,7 +126,7 @@ function ManagerQna () {
                     <div className="center-menu">
                         <button className="add-btn" type="button" onClick={handleNew}>
                             <IconCirclePlus color="var(--color-black)" />
-                            쿠폰 생성
+                            Q&A 생성
                         </button>
                     </div>
 

@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import axiosInstance from '../../api/axiosInstance';
-import IconPencil from '../../icons/IconPencil';
 import '../../style/pages/pages.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 interface DataProps {
     id : number,
@@ -38,60 +37,33 @@ function QnA () {
 
     useEffect(()=>{
         getData();
-    },[])
-
-    function handleClick (id: number) {
-        navigate('/pages/qna-details', { state: { id } });
-    }
+    },[]);
 
 
     return (
-        <div className="pages">
+        <div className="pages" id='pages-qna'>
             <h1 className="page-title">Q&A</h1>
 
             <div className="pages-body inner">
-                <section className="qna-section">
-                    <div className="small-btns">
-                        <button type='button' className='green-btn small-btn' onClick={() => { navigate('/pages/qna-writer') }}>
-                            <IconPencil color='var(--color-white)' width={15} height={15}/>
-                            글쓰기
-                        </button>
-                    </div>
-
-                    <table>
-                        <colgroup>
-                            <col width={'60%'}/>
-                            <col width={'20%'}/>
-                            <col width={'20%'}/>
-                        </colgroup>
-                        
-                        <thead>
-                            <tr>
-                                <th>문의사항</th>
-                                <th>작성자</th>
-                                <th>조회수</th>
-                            </tr>
-                        </thead>
-                        
-                        <tbody>
-                            { data.length > 0 ? 
-                                    data.map((el)=>{
-                                        return (
-                                            <tr key={el.id} onClick={() => handleClick(el.id)}>
-                                                <td>{el.title}</td>
-                                                <td>{el.author}</td>
-                                                <td>{el.viewCount}</td>
-                                            </tr>
-                                        )
-                                    })
-                                :
-                                    <tr>
-                                        <td colSpan={2}>데이터가 없습니다.</td>
-                                    </tr>
-                                }
-                        </tbody>
-                    </table>
-                </section>
+                <div className="contents-view">
+                    { data.length > 0 ?
+                        data.map((el) => {
+                            return (
+                                <div className="qna" key={el.id}>
+                                    <div className="question">
+                                        <p><span>Q.</span> {el.title}</p>
+                                    </div>
+                                    
+                                    <div className="answer">
+                                        <p><span>A.</span> {el.content}</p>
+                                    </div>
+                                </div>
+                            )
+                        })
+                    :
+                        <p className="empty-notice">데이터가 없습니다.</p>
+                    }
+                </div>
             </div>
         </div>
     )
