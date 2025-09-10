@@ -38,8 +38,8 @@ function MyPageLanding () {
             <div className="pages-body body-500">
                 <ul className="mypage-category">
                     <li>
-                        <Link to={''}>
-                            회원정보수정
+                        <Link to={'/mypage/account'}>
+                            회원정보 수정
                             <IconArrowRight color="var(--color-black)" width={15} height={15}/>
                         </Link>
                     </li>

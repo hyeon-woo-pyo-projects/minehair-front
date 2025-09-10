@@ -34,6 +34,7 @@ import Expired from './components/system/Expired';
 import { useEffect } from 'react';
 import AdminQuick from './admin/components/common/AdminQuick';
 import ManagerQna from './admin/components/manager/ManagerQna';
+import MyAccount from './components/myPage/MyAccount';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -109,6 +110,7 @@ function AppRoutes() {
               {/* 마이페이지 */}
               <Route path="/mypage/*" element={<MyPageLanding />} />
               <Route path="/mypage/coupon" element={<MyCoupon />} />
+              <Route path="/mypage/account" element={<MyAccount />} />
 
               {/* 페이지 */}
               <Route path="/pages/*" element={<DefaultPages />} />
