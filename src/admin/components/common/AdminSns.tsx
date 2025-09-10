@@ -316,19 +316,21 @@ function AdminSns () {
                             </li>
                         :
                             <>
-                                <li>
-                                    { balloon === 2 && <Balloon text={'링크를 입력해주세요'} status="notice" /> }
-                                    <span className="admin-form-title">링크</span>
+                                { isLogoMode === false ? 
+                                    <li>
+                                        { balloon === 2 && <Balloon text={'링크를 입력해주세요'} status="notice" /> }
+                                        <span className="admin-form-title">링크</span>
 
-                                    <div className="input-area">
-                                        <input
-                                            type="text"
-                                            value={clickedData.linkUrl}
-                                            onChange={(e) => { setClickedData({...clickedData, linkUrl : e.target.value}); setSave(true); }}
-                                            disabled={disabled}
-                                        />
-                                    </div>
-                                </li>
+                                        <div className="input-area">
+                                            <input
+                                                type="text"
+                                                value={clickedData.linkUrl}
+                                                onChange={(e) => { setClickedData({...clickedData, linkUrl : e.target.value}); setSave(true); }}
+                                                disabled={disabled}
+                                            />
+                                        </div>
+                                    </li>
+                                : null }
 
                                 <li>
                                     { balloon === 3 && <Balloon text={'이미지를 등록해주세요'} status="notice" /> }
