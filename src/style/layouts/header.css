@@ -52,6 +52,7 @@ header #menuBtn i:last-child::after {
     margin-top: 4px;
     display: block;
 }
+header #menuBtn.show i:last-child::after { display: none; }
 
 header #headerLine #member {
     display: flex;
