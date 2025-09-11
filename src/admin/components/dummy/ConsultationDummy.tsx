@@ -1,36 +1,58 @@
 import { useEffect, useState } from "react";
-import IconUpload from "../../../icons/IconUpload";
-import axiosInstance from "../../../api/axiosInstance";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../../api/axiosInstance";
+import IconUpload from "../../../icons/IconUpload";
 
 interface CategoryProps {
-    id : number,
-    code : string,
-    name : string,
+    id: number;
+    code: string;
+    name: string;
 }
 
-interface ConsultationDummyProps {
-    background?: string;
-}
-
-function ConsultationDummy ({ background }: ConsultationDummyProps) {
-    console.log(background)
+function ConsultationDummy() {
     const navigate = useNavigate();
-    const [ category, setCategory ] = useState<CategoryProps[]>([]);
 
-    function getCategory (){
+    // 상담 카테고리
+    const [category, setCategory] = useState<CategoryProps[]>([]);
+
+    // 배경 이미지 URL
+    const [background, setBackground] = useState('');
+
+    // 카테고리 가져오기
+    function getCategory() {
         axiosInstance
-        .get('/consultation/categories')
-        .then((res) => { if ( res.data.success === true ) { const data = res.data.data; setCategory(data); }})
-        .catch((err) => { if ( err.status === 401 ) navigate('/expired'); else { alert('오류가 발생했습니다'); console.log(err); } })
+            .get('/consultation/categories')
+            .then((res) => {
+                if (res.data.success) setCategory(res.data.data);
+            })
+            .catch((err) => {
+                if (err.status === 401) navigate('/expired');
+                else console.log(err);
+            });
     }
 
-    useEffect(()=>{
+    // 배경 이미지 가져오기
+    function getBackground() {
+        axiosInstance
+            .get('/page/contents/type/CONSULTING_BACKGROUND')
+            .then((res) => {
+                if (res.data.success && res.data.data.length > 0) {
+                    setBackground(res.data.data[0].contentsUrl);
+                }
+            })
+            .catch((err) => console.log(err));
+    }
+
+    useEffect(() => {
         getCategory();
-    },[])
+        getBackground();
+    }, []);
 
     return (
-        <section className="consultation-section" style={background && background !== "" ? { backgroundImage: `url(${background})` } : {}}>
+        <section
+            className="consultation-section"
+            style={background ? { backgroundImage: `url(${background})` } : {}}
+        >
             <div className="inner-form">
                 <div className="title-area">
                     <span className="effect-title">상담문의</span>
@@ -52,11 +74,9 @@ function ConsultationDummy ({ background }: ConsultationDummyProps) {
                         <li>
                             <label htmlFor="consultation-purpose">상담 목적</label>
                             <select name="consultation-purpose" id="consultation-purpose">
-                                { category.map((el)=>{
-                                    return(
-                                        <option value={el.code} key={el.id}>{el.name}</option>
-                                    )
-                                }) }
+                                {category.map((el) => (
+                                    <option value={el.code} key={el.id}>{el.name}</option>
+                                ))}
                             </select>
                         </li>
                     </ul>
@@ -65,7 +85,7 @@ function ConsultationDummy ({ background }: ConsultationDummyProps) {
                 </form>
             </div>
         </section>
-    )
+    );
 }
 
 export default ConsultationDummy;
