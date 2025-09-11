@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 function AdminMap () {
     const navigate = useNavigate();
     const [coords, setCoords] = useState({ lat: 33.450701, lng: 126.570667 });
-    const [address, setAddress] = useState("서울 영등포구 국회대로 746");
+    const [address, setAddress] = useState("");
     const [kakaoLoaded, setKakaoLoaded] = useState(false);
     const [ disabled, setDisabled ] = useState(true);
 
@@ -27,15 +27,21 @@ function AdminMap () {
         const geocoder = new window.kakao.maps.services.Geocoder();
         geocoder.addressSearch(address, function (result, status) {
             if (status === window.kakao.maps.services.Status.OK) {
+                const resultData = result[0];
                 const { y, x } = result[0];
                 setCoords({ lat: parseFloat(y), lng: parseFloat(x) });
                 setDisabled(false);
+                setAddress(resultData.address_name);
             } else {
                 alert("주소를 찾을 수 없습니다.");
                 setDisabled(true);
             }
         });
     };
+
+    function handleSave(){
+        
+    }
 
     return (
         <div className="admin-page" id="admin-map">

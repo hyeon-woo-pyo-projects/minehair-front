@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../../api/axiosInstance";
 import { id } from "date-fns/locale";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import MapDummy from "./MapDummy";
 
 interface MenuProps {
@@ -20,73 +20,55 @@ interface MenuProps {
 
 interface PageDummyProps {
     selectedMenu: MenuProps | null;
+    onClickItem: (data: ContentsProps) => void;
 }
 
 interface ContentsProps {
-    id: number,
     menuId : number,
-    orderNo : number,
     pageUrl : string,
     contentsType : string,
     contentsUrl : string,
-    videoBackGroundUrl : string,
-    consultingBackGroundUrl : string,
 }
 
-function PageDummy({ selectedMenu }: PageDummyProps) {
+function PageDummy({ selectedMenu, onClickItem }: PageDummyProps) {
     const navigate = useNavigate();
     const dataId = selectedMenu?.menuId || 1;
-    const [ data, setData ] = useState({
-        id: 0,
-        menuId : 0,
-        orderNo : 0,
-        pageUrl : '',
-        contentsType : '',
-        contentsUrl : '',
-        videoBackGroundUrl : '',
-        consultingBackGroundUrl : '',
-    })
+    const [data, setData] = useState<ContentsProps[]>([]);
 
-    function getId(){
+    const getId = () => {
         axiosInstance
-        .get(`/page/contents/${dataId}`)
-        .then((res) => {
-            if ( res.data.success === true ) {
-                const data = res.data.data;
-                setData({
-                    id: data.id,
-                    menuId : data.menuId,
-                    orderNo : data.orderNo,
-                    pageUrl : data.pageUrl,
-                    contentsType : data.contentsType,
-                    contentsUrl : data.contentsUrl,
-                    videoBackGroundUrl : data.videoBackGroundUrl,
-                    consultingBackGroundUrl : data.consultingBackGroundUrl,
-                })
-            }
-        })
-        .catch((err) => { if ( err.status === 401 ) navigate('/expired'); else { alert('오류가 발생했습니다'); console.log(err);} })
-    }
+            .get(`/page/contents/${dataId}`)
+            .then((res) => {
+                if (res.data.success === true) setData(res.data.data);
+            })
+            .catch((err) => {
+                if (err.status === 401) navigate("/expired");
+                else { alert("오류가 발생했습니다"); console.log(err); }
+            });
+    };
 
-    useEffect(() => {
-        getId();
-    },[dataId])
+    useEffect(() => { getId(); }, [dataId]);
+
     return (
         <div className="page">
-            {selectedMenu ? (
-                <div>
-                    <h3>{selectedMenu.menuName}</h3>
-                    <p>Path: {selectedMenu.menuPath}</p>
-                    <p>Type: {selectedMenu.menuType}</p>
-                    {/* 필요하면 더 많은 필드 출력하거나 폼으로 표시 */}
-                </div>
+            {data.length > 0 ? (
+                data.map((el, index) => (
+                    <section
+                        key={index}
+                        className="page-section"
+                        onClick={() => onClickItem(el)} // 상위로 전달
+                    >
+                        {el.contentsType === "IMAGE" &&
+                            <div className="img-section"><img src={el.contentsUrl} alt="이미지"/></div>
+                        }
+                    </section>
+                ))
             ) : (
-                <div>좌측 네비게이션에서 페이지를 선택하세요.</div>
+                <div className="empty-notice">데이터가 없습니다.</div>
             )}
-
-            <MapDummy/>
         </div>
     );
 }
+
 
 export default PageDummy;

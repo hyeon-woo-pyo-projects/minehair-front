@@ -51,7 +51,7 @@ function AdminSns () {
             })
             .catch((err) => {
                 if ( err.status === 401 ) navigate('/expired');
-                else { if ( err.status === 401 ) navigate('/expired'); else { alert('SNS 불러오기 오류'); console.log(err);} }
+                else { if ( err.status === 401 ) navigate('/expired'); else { alert('오류가 발생했습니다'); console.log(err);} }
             });
 
         axiosInstance.get('/sns/platform')
@@ -60,7 +60,7 @@ function AdminSns () {
             })
             .catch((err) => {
                 if ( err.status === 401 ) navigate('/expired');
-                else { alert('SNS 불러오기 오류'); console.log(err); }
+                else { if ( err.status === 401 ) navigate('/expired'); else { alert('오류가 발생했습니다'); console.log(err);} }
             });
     }
 
@@ -330,6 +330,7 @@ function AdminSns () {
                                             />
                                         </div>
                                     </li>
+                            
                                 : null }
 
                                 <li>

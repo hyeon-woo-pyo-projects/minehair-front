@@ -12,7 +12,7 @@ interface MenuProps {
     menuVisible: boolean;
     menuType: string;
     menuOrderNo: number;
-    roleIdList: number[]; // 필요시 타입 변경
+    roleIdList: number[];
     isContents: boolean;
 }
 
@@ -50,13 +50,7 @@ function SettingNav({ onChangePage }: SettingNavProps) {
                     setSub(sub);
                 }
             })
-            .catch((err) => {
-                if (err.status === 401) navigate("/expired");
-                else {
-                    alert("SNS 불러오기 오류");
-                    console.log(err);
-                }
-            });
+            .catch((err) => { if (err.status === 401) navigate("/expired"); else { alert("오류가 발생했습니다."); console.log(err); }});
     }
 
     useEffect(() => {
@@ -98,6 +92,10 @@ function SettingNav({ onChangePage }: SettingNavProps) {
                     </li>
                 ))}
             </ul>
+
+            <div className="side-footer">
+                <button type="button" className="blackBtn" onClick={() => { navigate(-1); }}>뒤로가기</button>
+            </div>
         </nav>
     );
 }

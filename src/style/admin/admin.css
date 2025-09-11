@@ -47,6 +47,7 @@
 .admin-page .admin-form ul li { position: relative; display: flex; flex-direction: column; gap: 12px; width: calc((100% / 4) - 25px); }
 .admin-page .admin-form ul.child-3 li { width: calc((100% / 3) - 25px); }
 .admin-page .admin-form ul li .admin-form-title { display: block; font-size: 14px; font-weight: 500; }
+.admin-page .admin-form ul li .admin-form-title .appendix { font-size: 12px; color: var(--color-placeholder); }
 .admin-page .admin-form ul li .input-area { position: relative; display: flex; align-items: center; gap: 6px; min-height: 40px; }
 .admin-page .admin-form ul li .input-area button { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; border-radius: 5px; gap: 6px; min-height: 40px; }
 .admin-page .admin-form ul li .input-area button.blackBtn a { color: var(--color-white); }
@@ -141,8 +142,8 @@
 
 
 .admin-page.navigator { display: flex;}
-.admin-page.navigator .nav-area { min-width: 200px; max-width: 30%; }
-.admin-page.navigator .nav-area .side-nav { height: 100%; border-right: 1px solid var(--color-gray); }
+.admin-page.navigator .nav-area { width: 230px; flex: none; }
+.admin-page.navigator .nav-area .side-nav { position: relative; height: 100%; border-right: 1px solid var(--color-gray); background-color: var(--color-white); z-index: 10; }
 .admin-page.navigator .nav-area .side-nav ul {
     display: flex;
     flex-direction: column;
@@ -165,8 +166,9 @@
 .admin-page.navigator .nav-area .side-nav ul button.sub { opacity: 0.5; margin-top: 12px; }
 .admin-page.navigator .nav-area .side-nav ul li { display: flex; flex-direction: column; gap: }
 .admin-page.navigator .nav-area .side-nav button:hover { background-color: var(--default-background); }
-.admin-page.navigator .nav-area .side-nav .side-footer { border-top: 1px solid var(--color-gray); padding: 12px; }
+.admin-page.navigator .nav-area .side-nav .side-footer { border-top: 1px solid var(--color-gray); padding: 12px; position: sticky; bottom: 0; width: 230px }
 .admin-page.navigator .nav-area .side-nav .side-footer a { display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 14px; }
+.admin-page.navigator .nav-area .side-nav .side-footer button { width: 100%; height: 42px; border-radius: 5px; }
 .admin-page.navigator .contents-area { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; }
 
 
@@ -466,10 +468,25 @@
 
 
 /* 컨텐츠 페이지 */
-#page-setting { width: 100%; }
+#page-setting { width: 100%; position: relative; }
 #page-setting .admin-body { width: 100%; height: 100%; padding: 0; }
-#page-setting .admin-body .admin-form { margin-top: 0; padding: 20px; border-bottom: 1px solid var(--color-gray); }
-
+#page-setting .admin-body .admin-form { 
+    margin-top: 0; 
+    padding: 20px; 
+    border-top: 1px solid var(--color-gray); 
+    position: fixed; 
+    width: calc(100% - 230px); 
+    bottom: 0; right: 0; 
+    background-color: var(--color-white); 
+}
+#page-setting .admin-body .admin-form.yes { position: sticky; width: 100%; }
+#page-setting .admin-body .admin-form ul { margin-bottom: 30px; }
+#page-setting .admin-btns { margin-top: 0; }
+#page-setting .contents-view { justify-content: center; padding: 30px 0; border: 1px dashed var(--color-gray); border-width: 1px 0; }
+#page-setting .contents-view .btns { display: flex; align-items: center; gap: 60px; }
+#page-setting .admin-body .page-section { position: relative; }
+#page-setting .admin-body .page-section:hover { cursor: pointer; }
+#page-setting .admin-body .page-section:hover::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.3); }
 
 
 /* 지도 */
@@ -502,8 +519,8 @@
     .admin-page .admin-btns button { width: 100%; min-width: unset; }
 
     .admin-page.navigator { flex-direction: column; }
-    .admin-page.navigator .nav-area { min-width: auto; max-width: unset; }
-    .admin-page.navigator .nav-area .side-nav ul { flex-direction: unset; overflow: auto; border-bottom: 1px solid var(--color-gray); }
+    .admin-page.navigator .nav-area { width: auto; }
+    .admin-page.navigator .nav-area .side-nav ul { flex-direction: unset; overflow: auto; border-bottom: 1px solid var(--color-gray); position: relative; height: 100%; }
     .admin-page.navigator .nav-area .side-nav ul li { min-width: 120px; }
     .admin-page.navigator .nav-area .side-nav .side-footer { display: none; }
 

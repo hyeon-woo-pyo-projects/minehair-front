@@ -9,7 +9,7 @@
     min-height: 60px;
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 100;
     border-bottom: 1px solid var(--color-white);
 }
 #admin-header svg { cursor: pointer; }

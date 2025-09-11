@@ -209,6 +209,7 @@ header .perMenu .category ul li a:hover { color: var(--brand-color); }
         background-color: var(--color-gray);
     }
     .mobile-menu .menu-footer .sns-platform section .main-logo img { background-color: var(--color-white); width: 70%; margin: auto; height: 100%; object-fit: cover; z-index: 1; padding: 0 6px; }
-    .mobile-menu .menu-footer .sns-platform section .sns-child { margin-top: 12px; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; }
-    .mobile-menu .menu-footer .sns-platform section .sns-child a { width: 30px; height: 30px;}
+    .mobile-menu .menu-footer .sns-platform section .sns-child { margin-top: 12px; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; }
+    .mobile-menu .menu-footer .sns-platform section .sns-child a { width: 40px; height: 40px;}
+    .mobile-menu .menu-footer .sns-platform section .sns-child a img { height: 100%; object-fit: contain; }
 }
