@@ -29,6 +29,7 @@ function SettingNav({ onChangePage }: SettingNavProps) {
     const [selectedMenu, setSelectedMenu] = useState<MenuProps | null>(null);
 
     const handleClick = (menuItem: MenuProps) => {
+        console.log(menuItem)
         setSelectedMenu(menuItem);
         onChangePage(menuItem); // 선택한 메뉴 객체를 부모로 전달
     };
@@ -60,6 +61,21 @@ function SettingNav({ onChangePage }: SettingNavProps) {
     return (
         <nav className="side-nav">
             <ul>
+                <li>
+                    <button type="button" onClick={() => {handleClick({
+                        id : 0,
+                        imageUrl: '',
+                        isContents:true,
+                        menuId:0,
+                        menuName:'홈',
+                        menuOrderNo:0,
+                        menuPath:'/',
+                        menuType:'MAJOR',
+                        menuVisible:true,
+                        parentId:0,
+                        roleIdList:[1,2,3]
+                    })}}>홈</button>
+                </li>
                 {major.map((el) => (
                     <li key={el.menuId}>
                         <button onClick={() => handleClick(el)}>{el.menuName}</button>
