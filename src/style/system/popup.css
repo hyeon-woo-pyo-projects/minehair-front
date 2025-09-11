@@ -63,6 +63,10 @@
 .popup .btns { margin-top: 30px; display: flex; gap: 12px; }
 .popup .btns button { font-size: 14px; width: 100%; min-height: 35px; border-radius: 5px; }
 
+.popup .popup-contents .popup-body .popup-contents .seperate-item { width: 100%; display: flex; gap: 12px; }
+.popup .popup-contents .popup-body .popup-contents .seperate-item .item { width: 100%; }
+.popup .popup-contents .popup-body .popup-contents .seperate-item .item button { width: 100%; height: 40px; border-radius: 5px; }
+
 
 
 /* 비밀번호 변경 */

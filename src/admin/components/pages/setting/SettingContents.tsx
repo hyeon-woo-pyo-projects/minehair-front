@@ -38,14 +38,9 @@ interface SettingContentsProps {
 function SettingContents({ selectedMenu }: SettingContentsProps) {
     const dataId = selectedMenu?.menuId || 0;
     const navigate = useNavigate();
-
-    const [balloon, setBalloon] = useState(0);
-    const [disabled, setDisabled] = useState(true);
-    const [addImg, setAddImg] = useState(false);
-    const [uploadImg, setUploadImg] = useState(false);
-    const [addVideo, setAddVideo] = useState(false);
+    
     const [data, setData] = useState<ContentsProps[]>([]);
-    const [contents, setContents] = useState(false);
+    const [ imgUpload, setImgUpload ] = useState(false);
 
     const [saveForm, setSaveForm] = useState({
         id: 0,
@@ -63,7 +58,6 @@ function SettingContents({ selectedMenu }: SettingContentsProps) {
                 if (res.data.success === true) {
                     const data = res.data.data;
                     setData(data);
-                    setContents(data.length > 0);
                 }
             })
             .catch((err) => {
@@ -96,8 +90,8 @@ function SettingContents({ selectedMenu }: SettingContentsProps) {
 
             const data = await response.json();
             setSaveForm(prev => ({ ...prev, contentsUrl: data.data.imageUrl }));
-            setDisabled(false);
-            setUploadImg(true);
+            setPopupData({...popupData, contentsUrl: data.data.imageUrl});
+            setImgUpload(true);
         } catch (error) {
             console.error("에러 발생:", error);
             alert("업로드 중 에러가 발생했습니다.");
@@ -108,31 +102,28 @@ function SettingContents({ selectedMenu }: SettingContentsProps) {
     const handleDeleteImageFromForm = () => {
         if (!window.confirm("이미지를 삭제하시겠습니까?")) return;
         setSaveForm(prev => ({ ...prev, contentsUrl: "" }));
-        setDisabled(false);
-        setUploadImg(false);
+        setImgUpload(false);
     };
 
     // 저장
     const handleSave = () => {
         if (!window.confirm("저장하시겠습니까?")) return;
-
-        if (addImg) {
-            if (!saveForm.contentsUrl) { setBalloon(1); return; }
-
+        
+        if ( popupData.isNew === true ) {
             axiosInstance
                 .post("/page/contents", {
                     menuId: saveForm.menuId,
                     pageUrl: saveForm.pageUrl,
-                    contentsType: "IMAGE",
-                    contentsUrl: saveForm.contentsUrl,
+                    contentsType: popupData.contentsType,
+                    contentsUrl: popupData.contentsUrl,
                 })
                 .then((res) => {
                     if (res.data.success) { 
                         alert("저장했습니다");
-
+        
                         // 저장 후 다시 불러오기
                         getId();
-
+        
                         // 상태 초기화
                         setSaveForm({
                             id: 0,
@@ -141,15 +132,47 @@ function SettingContents({ selectedMenu }: SettingContentsProps) {
                             contentsType: "",
                             contentsUrl: "",
                         });
-                        setAddImg(false);
-                        setUploadImg(false);
+                        
+                        setPopup(false);
                     }
                 })
                 .catch((err) => { 
                     if (err.status === 401) navigate("/expired"); 
                     else { alert("오류가 발생했습니다"); console.log(err); } 
                 });
+        } else {
+            console.log(popupData);
+            return
+            axiosInstance
+            .patch(`/page/contents/${popupData.id}`, {
+                menuId : popupData.menuId,
+                pageUrl : popupData.pageUrl,
+                contentsType : popupData.contentsType,
+                contentsUrl : popupData.contentsUrl,
+            })
+            .then((res) => {
+                if (res.data.success) { 
+                    alert("수정했습니다");
+    
+                    // 저장 후 다시 불러오기
+                    getId();
+    
+                    // 상태 초기화
+                    setSaveForm({
+                        id: 0,
+                        menuId: selectedMenu?.menuId || 0,
+                        pageUrl: "",
+                        contentsType: "",
+                        contentsUrl: "",
+                    });
+                }
+            })
+            .catch((err) => { 
+                if (err.status === 401) navigate("/expired"); 
+                else { alert("오류가 발생했습니다"); console.log(err); } 
+            });
         }
+        
     };
 
     function handleDelete (){
@@ -170,8 +193,6 @@ function SettingContents({ selectedMenu }: SettingContentsProps) {
                         contentsType: "",
                         contentsUrl: "",
                     });
-                    setAddImg(false);
-                    setUploadImg(false);
                     setPopup(false);
                 }
             })
@@ -183,8 +204,6 @@ function SettingContents({ selectedMenu }: SettingContentsProps) {
 
     // selectedMenu 변경 시
     useEffect(() => {
-        setAddImg(false);
-        setAddVideo(false);
         setSaveForm({
             id: 0,
             menuId: selectedMenu?.menuId || 0,
@@ -206,23 +225,52 @@ function SettingContents({ selectedMenu }: SettingContentsProps) {
         consultingBackGroundUrl : '',
         videoBackGroundUrl : '',
         pageUrl : '',
+        isNew : false,
     })
 
     function popupOpen(data) {
-        setPopupData({
-            id : data.id,
-            menuId : data.menuID,
-            orderNo : data.orderNo,
-            contentsType : data.contentsType,
-            contentsUrl : data.contentsUrl,
-            consultingBackGroundUrl : data.consultingBackGroundUrl,
-            videoBackGroundUrl : data.videoBackGroundUrl,
-            pageUrl : data.pageUrl,
-        })
+        if ( data.contentsUrl !== '' ) { setImgUpload(true); }
+        if ( data !== 'new-image' || data !== 'new-video' ) {
+            setPopupData({
+                id : data.id,
+                menuId : data.menuID,
+                orderNo : data.orderNo,
+                contentsType : data.contentsType,
+                contentsUrl : data.contentsUrl,
+                consultingBackGroundUrl : data.consultingBackGroundUrl,
+                videoBackGroundUrl : data.videoBackGroundUrl,
+                pageUrl : data.pageUrl,
+                isNew : false,
+            })
+        }
 
         setPopup(true);
-
+        if ( data === 'new-image' ) { setPopupData({...popupData, isNew : true , contentsType : 'IMAGE'}); setPopupVal(1); }
         if ( data.contentsType === 'IMAGE' ) { setPopupVal(1) }
+    }
+
+    function popupClose () {
+        setPopup(false);
+        setPopupVal(0);
+        setImgUpload(false);
+        setSaveForm({
+            id: 0,
+            menuId: selectedMenu?.menuId || 0,
+            pageUrl: "",
+            contentsType: "",
+            contentsUrl: "",
+        });
+        setPopupData({
+            id : 0,
+            menuId : 0,
+            orderNo : 0,
+            contentsType : '',
+            contentsUrl : '',
+            consultingBackGroundUrl : '',
+            videoBackGroundUrl : '',
+            pageUrl : '',
+            isNew : false,
+        })
     }
 
     return (
@@ -260,10 +308,10 @@ function SettingContents({ selectedMenu }: SettingContentsProps) {
 
                 <div className="contents-view">
                     <div className="btns">
-                        <button type="button" onClick={() => { setAddImg(true); setAddVideo(false); setDisabled(false); }}>
+                        <button type="button" onClick={() => { popupOpen('new-image'); }}>
                             <IconPicture color="var(--color-placeholder)" width={30} height={30} /><p>이미지 추가</p>
                         </button>
-                        <button type="button" onClick={() => { setAddImg(false); setAddVideo(true); setDisabled(false); }}>
+                        <button type="button" onClick={() => { popupOpen('new-video'); }}>
                             <IconVideo color="var(--color-placeholder)" width={30} height={30} /><p>동영상 추가</p>
                         </button>
                     </div>
@@ -272,7 +320,7 @@ function SettingContents({ selectedMenu }: SettingContentsProps) {
 
             { popup === true &&
                 <div className="popup">
-                    <div className="popup-background" onClick={()=>{setPopup(false)}}></div>
+                    <div className="popup-background" onClick={popupClose}></div>
 
                     <div className="popup-contents">
                         <div className="popup-header">
@@ -280,44 +328,63 @@ function SettingContents({ selectedMenu }: SettingContentsProps) {
                                 { popupVal === 1 ? '이미지 수정' : '비디오 수정' }
                             </h3>
 
-                            <div className="close-btn" onClick={()=>{setPopup(false)}}>
+                            <div className="close-btn" onClick={popupClose}>
                                 <IconCross color='var(--color-white)'/>
                             </div>
                         </div>
                 
                         <div className="popup-body">
-                            {/* 이미지 */}
-                            { popupVal === 1 &&
                                 <div className="popup-contents">
-                                    <ul>
-                                        <li>
-                                            <span className="popup-title">이미지</span>
-                                
-                                            <div className="input-area">
-                                                { popupData.contentsUrl !== '' &&
-                                                    <>
-                                                        <input
-                                                            type="file"
-                                                            id="sns-logo"
-                                                            onChange={handleFileChange}
-                                                            disabled={disabled}
-                                                        />
-                                                        <label htmlFor="sns-logo">
-                                                            <IconUpload color="var(--color-white)" width={17} height={17} />
-                                                            이미지 업로드
-                                                        </label>
-                                                    </>
-                                                }
-                                            </div>
-                                        </li>
-                                    </ul>
+                                    { popupVal === 1 &&
+                                        <ul>
+                                            <li className="w-100">
+                                                <div className="input-area w-100 flex">
+                                                    { imgUpload === true ?
+                                                            <div className="seperate-item">
+                                                                <div className="item">
+                                                                    <input
+                                                                        type="file"
+                                                                        id="sns-logo"
+                                                                        onChange={handleFileChange}
+                                                                    />
+                                                                    <label htmlFor="sns-logo">
+                                                                        <IconUpload color="var(--color-white)" width={17} height={17} />
+                                                                        이미지 업로드
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        :
+                                                            <div className="seperate-item">
+                                                                <div className="item">
+                                                                    <a 
+                                                                        className="image-preview"
+                                                                        rel="noreferrer"
+                                                                        target="_blank"
+                                                                        href={saveForm.contentsUrl}
+                                                                    >
+                                                                        <IconPicture color="var(--color-white)"/>
+                                                                        <span>사진 보기</span>
+                                                                    </a>
+                                                                </div>
+
+                                                                <div className="item">
+                                                                    <button type="button" className="red-btn" onClick={handleDeleteImageFromForm}>
+                                                                        <IconTrash color="var(--color-white)" width={17} height={17} />
+                                                                        이미지 삭제
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    }
 
                                     <div className="btns">
-                                        <button type="button" className="red-btn" onClick={handleDelete}>삭제하기</button>
-                                        <button type="button" className="blackBtn">저장하기</button>
+                                        { popupData.isNew === false && <button type="button" className="red-btn" onClick={handleDelete}>삭제하기</button> }
+                                        <button type="button" className="primaryBtn" onClick={handleSave}>저장하기</button>
                                     </div>
                                 </div>
-                            }
                         </div>
                     </div>
                 </div>
