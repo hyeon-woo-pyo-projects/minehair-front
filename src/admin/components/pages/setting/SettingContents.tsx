@@ -97,7 +97,7 @@ function SettingContents({ selectedMenu }: SettingContentsProps) {
             if (popupData.contentsType === 'IMAGE') {
                 setSaveForm(prev => ({ ...prev, contentsUrl: data.data.imageUrl }));
                 setPopupData(prev => ({ ...prev, contentsUrl: data.data.imageUrl }));
-                setImgUpload(false);
+                setImgUpload(true);
             } else if (popupData.contentsType === 'VIDEO') {
                 // 1) popupData에 저장
                 setPopupData(prev => ({
@@ -358,7 +358,7 @@ function SettingContents({ selectedMenu }: SettingContentsProps) {
                                             <span className="admin-form-title">이미지</span>
 
                                             <div className="input-area w-100 flex">
-                                                {imgUpload ?
+                                                {!imgUpload ?
                                                     <div className="seperate-item">
                                                         <div className="item">
                                                             <input
@@ -379,7 +379,7 @@ function SettingContents({ selectedMenu }: SettingContentsProps) {
                                                                 className="image-preview"
                                                                 rel="noreferrer"
                                                                 target="_blank"
-                                                                href={saveForm.contentsUrl}
+                                                                href={popupData.contentsUrl}
                                                             >
                                                                 <IconPicture color="var(--color-white)" />
                                                                 <span>사진 보기</span>

@@ -37,6 +37,7 @@ import MyAccount from './components/myPage/MyAccount';
 import ConsultationPage from './admin/components/pages/CounsultationPage';
 import SettingPage from './admin/components/pages/SettingPage';
 import AdminMap from './admin/components/common/AdminMap';
+import PageDummy from './admin/components/dummy/PageDummy';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -117,7 +118,7 @@ function AppRoutes() {
               <Route path="/mypage/account" element={<MyAccount />} />
 
               {/* 페이지 */}
-              <Route path="/pages/*" element={<DefaultPages />} />
+              <Route path="/pages/*" element={<PageDummy />} />
               <Route path="/pages/qna" element={<QnA />} />
               <Route path="/pages/qna-writer" element={<QnaWriter />} />
               <Route path="/pages/qna-details" element={<QnaDetails />} />

@@ -243,12 +243,12 @@ function Header () {
                             return (
                                 <li
                                     key={el.menuId}
-                                    data-tab={`menu${el.menuId}`}
+                                    data-tab={el.menuId}
                                     className={`navMenu ${el.menuVisible ? 'show' : ''}`}
                                     onMouseEnter={() => setIsHovered(el.menuId)}
                                     onMouseLeave={() => setIsHovered(null)}
                                 >
-                                    <Link to={`/pages${el.menuPath}`}>{el.menuName}</Link>
+                                    <Link to={`/pages${el.menuPath}?menuId=${el.menuId}`}>{el.menuName}</Link>
 
                                     { connection.length > 0 &&
                                         <div className={`perMenu${isHovered === el.menuId ? ' show' : ''}${el.imageUrl ? ' have-img' : ''}`}>
@@ -257,13 +257,13 @@ function Header () {
                                                     const grandchildren = subSubMenu.filter(child => child.parentId === data.menuId);
                                                     return (
                                                         <div className="category" key={data.menuId}>
-                                                            <Link to={`/pages${data.menuPath}`}>{data.menuName}</Link>
+                                                            <Link data-tab={data.menuId} to={`/pages${data.menuPath}?menuId=${data.menuId}`}>{data.menuName}</Link>
 
                                                             {grandchildren.length > 0 &&
                                                                 <ul>
                                                                     {grandchildren.map((ele, index) => (
                                                                         <li key={index}>
-                                                                            <Link to={`/pages${ele.menuPath}`}>{ele.menuName}</Link>
+                                                                            <Link data-tab={ele.menuId} to={`/pages${ele.menuPath}?menuId=${ele.menuId}`}>{ele.menuName}</Link>
                                                                         </li>
                                                                     ))}
                                                                 </ul>
