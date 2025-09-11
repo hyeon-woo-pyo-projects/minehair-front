@@ -303,4 +303,7 @@ code {
     table tr td { font-size: 12px; }
 
     .contents-view .contents { position: relative; overflow: hidden; cursor: pointer; width: calc((100% / 3) - 14px); }
+
+    iframe { width: 85%; height: 200px; }
+    
 }

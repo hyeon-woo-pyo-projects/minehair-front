@@ -142,7 +142,7 @@ function SettingContents({ selectedMenu }: SettingContentsProps) {
 
         const payload = {
             menuId: saveForm.menuId,
-            pageUrl: selectedMenu?.menuPath,
+            pageUrl: selectedMenu?.menuPath || '',
             contentsType: popupData.contentsType,
             contentsUrl: urlData,
             videoBackGroundUrl: popupData.videoBackGroundUrl || '',
@@ -242,7 +242,7 @@ function SettingContents({ selectedMenu }: SettingContentsProps) {
             if (data.contentsType === 'VIDEO') setPopupVal(2);
         }
 
-       if (data === 'new-image') {
+        if (data === 'new-image') {
             setPopupData(prev => ({ ...prev, isNew: true, contentsType: 'IMAGE' }));
             setPopupVal(1);
         }

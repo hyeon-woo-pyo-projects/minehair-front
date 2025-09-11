@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../api/axiosInstance";
+import ConsultationDummy from "../../admin/components/dummy/ConsultationDummy";
 
 
 function Home(){
@@ -50,6 +51,8 @@ function Home(){
             :
                 <></>
             }
+
+            <ConsultationDummy/>
         </div>
     )
 }

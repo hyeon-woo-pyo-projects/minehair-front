@@ -49,6 +49,27 @@
 
 
 
+/* REVIEW */
+#pages-review .nav-view ul { gap: 0; flex-wrap: wrap; display: flex; justify-content: center; }
+#pages-review .nav-view li {
+    position: relative;
+    transition: all .25s;
+    min-width: 100px; 
+    height: 60px; 
+    background-color: var(--color-lightGray);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    border: 1px solid var(--color-darkGray);
+    border-right: 0;
+    cursor: pointer;
+}
+#pages-review.nav-view li:hover { background-color: var(--color-black); color: var(--color-white); }
+#pages-review .nav-view li:last-child { border-right: 1px solid var(--color-darkGray); }
+
+
+
 /* EVENT */
 .pages#page-event .slider-area { position: relative; margin: 60px 0 30px; height: 300px; overflow: hidden; border-radius: 30px; }
 .pages#page-event .slider-area .swiper { width: 100%; height: 100%; }

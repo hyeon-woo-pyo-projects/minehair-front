@@ -487,7 +487,12 @@
 #page-setting .admin-body .page-section { position: relative; }
 #page-setting .admin-body .page-section:hover { cursor: pointer; }
 #page-setting .admin-body .page-section:hover::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.3); }
-#page-setting .admin-body .page-section .video-section { padding: 60px 0; }
+#page-setting .admin-body .page-section .video-section {
+    padding: 60px 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
 
 
 /* 지도 */
@@ -553,5 +558,9 @@
 
     /* 홈 슬라이드 */
     #admin-slider .sliderChild { min-height: 160px;}
+
+
+    /* 페이지 컨텐츠 */
+    #page-setting .admin-body .page-section { padding: 0 20px; }
 }
 
