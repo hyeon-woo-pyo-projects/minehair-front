@@ -12,7 +12,7 @@ interface MyProps {
     userId : string,
     email : string,
     name : string,
-    phoneNumber : string,
+    phone : string,
     birthDate : Date | null,
 }
 
@@ -24,7 +24,7 @@ function MyAccount () {
         userId : '',
         email : '',
         name : '',
-        phoneNumber : '',
+        phone : '',
         birthDate : null as Date | null,
     })
 
@@ -71,7 +71,7 @@ function MyAccount () {
     function handleSave(){
         if ( data.name === '' ) { setBalloon(1); return false; }
         if ( data.email === '' ) { setBalloon(2); return false; }
-        if ( data.phoneNumber === '' || data.phoneNumber.length !== 11 ) { setBalloon(3); return false; }
+        if ( data.phone === '' || data.phone.length !== 11 ) { setBalloon(3); return false; }
 
         setBalloon(0)
 
@@ -80,7 +80,7 @@ function MyAccount () {
         axiosInstance
         .patch('/user', {
             name : data.name,
-            phoneNumber : data.phoneNumber,
+            phone : data.phone,
             email : data.email,
             birthDate : data.birthDate,
         })
@@ -264,10 +264,10 @@ function MyAccount () {
                         <div className="input-area">
                             <input
                                 type="text"
-                                value={data.phoneNumber}
+                                value={data.phone}
                                 maxLength={11}
                                 placeholder="(-없이)"
-                                onChange={(e) => { setData({ ...data, phoneNumber : e.target.value }); setDisaabled(false); }}
+                                onChange={(e) => { setData({ ...data, phone : e.target.value }); setDisaabled(false); }}
                             />
                         </div>
                     </li>

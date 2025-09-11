@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ConsultationDummy from "../../dummy/ConsultationDummy";
 import IconUpload from "../../../../icons/IconUpload";
 import IconPicture from "../../../../icons/IconPicture";
@@ -6,26 +6,46 @@ import { useNavigate } from "react-router-dom";
 import IconTrash from "../../../../icons/IconTrash";
 import axiosInstance from "../../../../api/axiosInstance";
 
-interface DataProps {
-    menuId : number,
-    pageUrl : string,
-    contentsType : string,
-    contentsUrl : string,
-    videoBackGroundUrl : string,
-    consultingBackGroundUrl : string,
-}
-
 function ConsultBack({ onChangePage }){
     const navigate = useNavigate();
     const [ disabled, setDisabled ] = useState(true);
+    const [ edit, setEdit ] = useState(false);
     const [ data, setData ] = useState({
+        id : 0,
         menuId : 0,
-        pageUrl : '',
-        contentsType : '',
+        pageUrl : '/',
+        contentsType : 'CONSULTING_BACKGROUND',
         contentsUrl : '',
-        videoBackGroundUrl : '',
-        consultingBackGroundUrl : '',
     });
+
+    function getData () {
+        axiosInstance
+        .get('/page/contents/type/CONSULTING_BACKGROUND')
+        .then((res) => {
+            if ( res.data.success === true ) {
+                const data = res.data.data || [];
+                
+                if (data.length > 0) {
+                    setData({
+                        id: data[0].id || 0,
+                        menuId: data[0].menuId || '',
+                        pageUrl: data[0].pageUrl || '',
+                        contentsType: data[0].contentsType || '',
+                        contentsUrl: data[0].contentsUrl || '',
+                    });
+                } else {
+                    setData({
+                        id: 0,
+                        menuId: 0,
+                        pageUrl: '',
+                        contentsType: '',
+                        contentsUrl: '',
+                    });
+                }
+            }
+        })
+        .catch((err) => { if ( err.status === 401 ) navigate('/expired'); else { alert('오류가 발생했습니다.'); console.log(err);} })
+    }
 
     // 파일 입력 핸들러
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,7 +82,8 @@ function ConsultBack({ onChangePage }){
             }
 
             const data = await response.json();
-            setData({ ...data, consultingBackGroundUrl : data.data.imageUrl });
+            setData({ ...data, contentsUrl : data.data.imageUrl });
+            setEdit(false);
             setDisabled(false);
         } catch (error) {
             console.error("에러 발생:", error);
@@ -73,23 +94,34 @@ function ConsultBack({ onChangePage }){
     function handleSave(){
         if ( !window.confirm('저장하시겠습니까?') ) return;
 
-        axiosInstance
-        .post('/page/contents', {
-            menuId : 0,
-            pageUrl : '',
-            contentsType : '',
-            contentsUrl : '',
-            videoBackGroundUrl : '',
-            consultingBackGroundUrl : data.consultingBackGroundUrl,
-        })
-        .then((res) => { if ( res.data.success === true ) { alert('저장되었습니다.'); }})
-        .catch((err) => { if ( err.status === 401 ) navigate('/expired'); else { alert('오류가 발생했습니다.'); console.log(err); }})
+        if ( edit === false ) {
+            axiosInstance
+            .post('/page/contents', {
+                id : 0,
+                menuId : 0,
+                pageUrl : '/',
+                contentsType : 'CONSULTING_BACKGROUND',
+                contentsUrl : data.contentsUrl,
+            })
+            .then((res) => { if ( res.data.success === true ) { alert('저장되었습니다.'); }})
+            .catch((err) => { if ( err.status === 401 ) navigate('/expired'); else { alert('오류가 발생했습니다.'); console.log(err); }})
+        } else {
+            axiosInstance
+            .delete(`/page/contents/${data.id}`)
+            .then((res) => { if ( res.data.success === true ) { alert('저장되었습니다.'); getData(); } })
+            .catch((err) => { if ( err.status === 401 ) navigate('/expired'); else { alert('오류가 발생했습니다.'); console.log(err); }})
+        }
+
     }
+
+    useEffect(()=>{
+        getData();
+    }, [])
 
     return (
         <div className="admin-page" id="consult-back">
             <div className="admin-body">
-                <ConsultationDummy background={data.consultingBackGroundUrl}/>
+                <ConsultationDummy background={data.contentsUrl}/>
 
                 <form className="admin-form">
                     <ul>
@@ -97,7 +129,7 @@ function ConsultBack({ onChangePage }){
                             <span className="admin-form-title">이미지 업로드</span>
                             <div className="input-area">
                                 <div className="seperate-item">
-                                    { data.consultingBackGroundUrl === '' ?
+                                    { data.contentsUrl === '' ?
                                     <>
                                         <input
                                             type="file"
@@ -114,7 +146,7 @@ function ConsultBack({ onChangePage }){
                                             className="image-preview"
                                             rel="noreferrer"
                                             target="_blank"
-                                            href={data.consultingBackGroundUrl}
+                                            href={data.contentsUrl}
                                         >
                                             <IconPicture color="var(--color-white)"/>
                                             <span>사진 보기</span>
@@ -122,15 +154,16 @@ function ConsultBack({ onChangePage }){
                                     }
                                 </div>
 
-                                {data.consultingBackGroundUrl !== "" ? (
+                                {data.contentsUrl !== "" ? (
                                     <div className="seperate-item">
                                         <button
                                         type="button"
                                         className="red-btn"
                                         onClick={() => {
                                             if (!window.confirm("이미지를 삭제하시겠습니까?")) return;
-                                            setData({...data, consultingBackGroundUrl : ''});
+                                            setData({...data, contentsUrl : ''});
                                             setDisabled(false);
+                                            setEdit(true);
                                         }}
                                         >
                                         <IconTrash color="var(--color-white)" />

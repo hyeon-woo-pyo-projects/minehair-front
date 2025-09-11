@@ -14,6 +14,7 @@ interface ConsultationDummyProps {
 }
 
 function ConsultationDummy ({ background }: ConsultationDummyProps) {
+    console.log(background)
     const navigate = useNavigate();
     const [ category, setCategory ] = useState<CategoryProps[]>([]);
 
@@ -29,7 +30,7 @@ function ConsultationDummy ({ background }: ConsultationDummyProps) {
     },[])
 
     return (
-        <section className="consultation-section" style={ background ? { backgroundImage: `url(${background})` } : {} }>
+        <section className="consultation-section" style={background && background !== "" ? { backgroundImage: `url(${background})` } : {}}>
             <div className="inner-form">
                 <div className="title-area">
                     <span className="effect-title">상담문의</span>
