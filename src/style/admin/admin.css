@@ -495,6 +495,27 @@
 
 
 
+/* 리뷰 */
+#manager-review .nav-view { gap: 0; flex-wrap: wrap; }
+#manager-review .nav-view li {
+    position: relative;
+    transition: all .25s;
+    min-width: 100px; 
+    height: 60px; 
+    background-color: var(--color-lightGray);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    border: 1px solid var(--color-darkGray);
+    border-right: 0;
+    cursor: pointer;
+}
+#manager-review .nav-view li:hover { background-color: var(--color-black); color: var(--color-white); }
+#manager-review .nav-view li:last-child { border-right: 1px solid var(--color-darkGray); }
+
+
+
 
 @media screen and (max-width: 720px) {
     .add-btn { min-width: 100%; min-height: 50px; }

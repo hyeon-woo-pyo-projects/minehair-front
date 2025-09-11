@@ -38,6 +38,8 @@ import ConsultationPage from './admin/components/pages/CounsultationPage';
 import SettingPage from './admin/components/pages/SettingPage';
 import AdminMap from './admin/components/common/AdminMap';
 import PageDummy from './admin/components/dummy/PageDummy';
+import Review from './components/pages/Review';
+import ManagerReview from './admin/components/manager/ManagerReview';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -86,6 +88,7 @@ function AppRoutes() {
         <Route path="manager-consultation" element={<ManagerConsultation />} />
         <Route path="manager-coupon" element={<ManagerCoupon />} />
         <Route path="manager-qna" element={<ManagerQna />} />
+        <Route path="manager-review" element={<ManagerReview />} />
 
         {/* 페이지 */}
         <Route path="page-eventpage" element={<EventPage />} />
@@ -120,8 +123,7 @@ function AppRoutes() {
               {/* 페이지 */}
               <Route path="/pages/*" element={<PageDummy />} />
               <Route path="/pages/qna" element={<QnA />} />
-              <Route path="/pages/qna-writer" element={<QnaWriter />} />
-              <Route path="/pages/qna-details" element={<QnaDetails />} />
+              <Route path="/pages/review" element={<Review />} />
               <Route path="/pages/event" element={<Event />} />
             </Routes>
           </>

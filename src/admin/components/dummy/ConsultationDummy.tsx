@@ -73,7 +73,7 @@ function ConsultationDummy() {
 
                         <li>
                             <label htmlFor="consultation-purpose">상담 목적</label>
-                            <select name="consultation-purpose" id="consultation-purpose">
+                            <select name="consultation-purpose" id="consultation-purpose" className="w-100">
                                 {category.map((el) => (
                                     <option value={el.code} key={el.id}>{el.name}</option>
                                 ))}
