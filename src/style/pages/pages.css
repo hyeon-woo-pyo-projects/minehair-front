@@ -74,7 +74,7 @@
 
 
 /* REVIEW */
-#pages-review .nav-view ul { gap: 0; flex-wrap: wrap; display: flex; justify-content: center; }
+#pages-review .nav-view ul { gap: 0; flex-wrap: wrap; display: flex; justify-content: center; margin-bottom: 60px; }
 #pages-review .nav-view li {
     position: relative;
     transition: all .25s;
@@ -311,6 +311,7 @@
     background-color: #423d3d;
 }
 
+.main-page .mobile-nav { display: none; }
 
 
 
@@ -354,4 +355,12 @@
         height: 200px;
         object-fit: cover;
     }
+
+
+
+    .main-page .mobile-nav { display: flex; }
+
+
+    #pages-review .items { gap: 60px; }
+    #pages-review .items li { width: 100%; }
 }

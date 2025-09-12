@@ -18,9 +18,10 @@ interface ItemProps {
 
 function Review() {
     const navigate = useNavigate();
+    const [ role, setRole ] = useState<any>('');
     const [category, setCategory] = useState<CategoryProps[]>([]);
     const [items, setItems] = useState<ItemProps[]>([]);
-    const [activeCategory, setActiveCategory] = useState<number>(0); // 선택된 카테고리 id
+    const [activeCategory, setActiveCategory] = useState<number>(0);
 
     // 초기 카테고리, 아이템 데이터 가져오기
     const getData = () => {
@@ -77,6 +78,8 @@ function Review() {
     };
 
     useEffect(() => {
+        const role = localStorage.getItem('roleCode');
+        setRole(role);
         getData();
     }, []);
 
@@ -111,16 +114,18 @@ function Review() {
                 </div>
 
                 {/* 글쓰기 버튼 */}
-                <div className="header-menu">
-                    <button
-                        type="button"
-                        className="green-btn small-btn"
-                        onClick={() => navigate('/pages/review-write')}
-                    >
-                        <IconPencil color="var(--color-white)" width={15} height={15} />
-                        글쓰기
-                    </button>
-                </div>
+                { role === 'ROLE_ADMIN' &&
+                    <div className="header-menu">
+                        <button
+                            type="button"
+                            className="green-btn small-btn"
+                            onClick={() => navigate('/pages/review-write')}
+                        >
+                            <IconPencil color="var(--color-white)" width={15} height={15} />
+                            글쓰기
+                        </button>
+                    </div>
+                }
 
                 {/* 리뷰 리스트 */}
                 <ul className="items">
