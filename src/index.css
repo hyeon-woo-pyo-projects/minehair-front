@@ -10,6 +10,7 @@
 }
 
 :root {
+  --color-lightBlack : #898989;
   --color-black : #333;
   --color-white : #fff;
   --color-red : #ee5050;
