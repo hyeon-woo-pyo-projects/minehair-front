@@ -148,12 +148,15 @@ header .perMenu .category ul li a { color: var(--color-placeholder); font-size: 
 header .perMenu .category ul li a:hover { color: var(--brand-color); }
 
 .mobile-menu { display: none; }
+.mobile-quick { display: none; }
 
 @media screen and (max-width : 720px) {
     header { position: sticky ; top: 0; }
     header #headerLine .wrapper .empty { position: absolute; left: 30px; }
     header #headerLine .wrapper .empty button { display: flex; }
     header #headerLine #member { display: none; }
+    header #headerLine .mobile-quick { display: flex; position: absolute; right: 12px; bottom: 0; }
+    header #headerLine .mobile-quick button { width: 70px; }
     header #headerLine .wrapper { justify-content: center; }
     header #headerLine .wrapper #headerLogo { width: 40%; }
     header nav { display: none; }

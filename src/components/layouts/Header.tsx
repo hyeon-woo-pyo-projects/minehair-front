@@ -226,6 +226,12 @@ function Header () {
                             </>
                             }
                         </div>
+
+                        <div className="mobile-quick">
+                            <button type='button'>
+                                <img src={require('../../img/consult.png')} alt="상담하기" />
+                            </button>
+                        </div>
                     </div>
                 </div>
 
