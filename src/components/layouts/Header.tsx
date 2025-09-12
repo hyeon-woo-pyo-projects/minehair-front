@@ -7,6 +7,7 @@ import "../../style/layouts/header.css"
 import axiosInstance from '../../api/axiosInstance';
 import IconCross from '../../icons/IconCross';
 import IconArrowDown from '../../icons/IconArrowDown';
+import QuickButton from '../index/QuickButton';
 
 interface menuProps {
     menuId : number;
@@ -192,6 +193,8 @@ function Header () {
         getSns();
         getEventBanner();
     }, []);
+
+    const [ mobileQuick, setMobileQuick ] = useState(false);
     
     return (
         <>
@@ -227,13 +230,15 @@ function Header () {
                             }
                         </div>
 
-                        <div className="mobile-quick">
+                        <div className="mobile-quick" onClick={()=>{setMobileQuick(!mobileQuick)}}>
                             <button type='button'>
                                 <img src={require('../../img/consult.png')} alt="상담하기" />
                             </button>
                         </div>
                     </div>
                 </div>
+
+                <div className={`mobile-showing${mobileQuick === true ? ' active' : '' }`}><QuickButton/></div>
 
                 <nav>
                     <ul id='headerCategory' className="wrapper">
