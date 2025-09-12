@@ -89,7 +89,7 @@ function ReviewDetails () {
                         </div>
 
                         <div className='flex'>
-                            <button type='button' className='green-btn small-btn' onClick={() => { navigate('/pages/qna-writer', { state: { ...data, mode: 'edit' } }); }}>
+                            <button type='button' className='green-btn small-btn' onClick={() => { navigate('/pages/review-write', { state: { ...data, mode: 'edit' } }); }}>
                                 <IconPencil color='var(--color-white)' width={15} height={15}/>
                                 수정하기
                             </button>
