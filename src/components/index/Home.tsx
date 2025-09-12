@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../api/axiosInstance";
 import ConsultationDummy from "../../admin/components/dummy/ConsultationDummy";
+import EventSlideDummy from "../../admin/components/dummy/EventSlideDummy";
 
 
 function Home(){
@@ -52,6 +53,7 @@ function Home(){
                 <></>
             }
 
+            <EventSlideDummy/>
             <ConsultationDummy/>
         </div>
     )
