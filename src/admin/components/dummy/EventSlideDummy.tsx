@@ -46,7 +46,7 @@ function EventSlideDummy() {
 
     return (
         <div className="event-slide">
-            <h1 className="title">🎁&nbsp;&nbsp;&nbsp;민이 헤어가 준비한 특별한 이벤트&nbsp;&nbsp;&nbsp;🎁</h1>
+            <h1 className="title">🎁&nbsp;&nbsp;&nbsp;당신을 위해 준비한 특별한 이벤트&nbsp;&nbsp;&nbsp;🎁</h1>
             <h3 className="sub-title">나에게 딱 맞는 맞춤 이벤트 확인하고 신청해보세요!</h3>
 
             <div className="wrapper">

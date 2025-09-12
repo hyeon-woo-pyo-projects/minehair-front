@@ -56,7 +56,7 @@ function ConsultationDummy() {
             <div className="inner-form">
                 <div className="title-area">
                     <span className="effect-title">상담문의</span>
-                    <h1 className="form-title">· 민이헤어 상담문의 ·</h1>
+                    <h1 className="form-title">· 이벤트 상담문의 ·</h1>
                 </div>
 
                 <form>
