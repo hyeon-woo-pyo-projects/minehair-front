@@ -45,10 +45,7 @@ function EventGrid () {
                 setData(data);
             }
         })
-        .catch((err) => {
-            alert('오류가 발생했습니다');
-            console.log(err);
-        })
+        .catch((err) => { if (err.status === 401) navigate("/expired"); else { alert("오류가 발생했습니다."); console.log(err);} })
     };
 
     useEffect(() => {
@@ -134,55 +131,45 @@ function EventGrid () {
     // 저장하기
     const [ ballon, setBalloon ] = useState(0);
 
-    function handleSave () {
-        if ( clickedData.linkUrl === '' ) { setBalloon(1); return false; }
-        if ( clickedData.textContent === '' ) { setBalloon(2); return false; }
-        if ( clickedData.imageUrl === '' ) { setBalloon(3); return false; }
-        
-        if ( !edit ) {
-            axiosInstance
-            .post('/event/page/contents', {
-                contentsType : 'NORMAL',
-                orderNo : clickedData.orderNo,
-                slideOrderNo : clickedData.slideOrderNo,
-                imageUrl : clickedData.imageUrl,
-                linkUrl : clickedData.linkUrl,
-                textContent : clickedData.textContent,
-                isAddPost : clickedData.isAddPost,
-            })
+    function handleSave() {
+        if (clickedData.linkUrl === '') { setBalloon(1); return false; }
+        if (clickedData.textContent === '') { setBalloon(2); return false; }
+        if (clickedData.imageUrl === '') { setBalloon(3); return false; }
+
+        const saveOrUpdate = edit
+            ? axiosInstance.patch(`/event/page/contents/${clickedData.id}`, clickedData)
+            : axiosInstance.post('/event/page/contents', clickedData);
+
+        saveOrUpdate
             .then((res) => {
-                if ( res.data.success === true ) {
-                    alert('저장되었습니다');
+                if (res.data.success === true) {
+                    alert(edit ? '수정되었습니다' : '저장되었습니다');
                     getData();
+
+                    // 저장 후 상태 초기화
+                    setClickedData({
+                        id: 0,
+                        contentsType: 'NORMAL',
+                        orderNo: 0,
+                        slideOrderNo: 0,
+                        imageUrl: '',
+                        linkUrl: '',
+                        textContent: '',
+                        isAddPost: false,
+                    });
+                    setSave(false);
+                    setEdit(false);
+                    setDisabled(true);
+                    setDeleteBtn(false);
+                    setBalloon(0);
                 }
             })
             .catch((err) => {
-                alert('오류가 발생했습니다');
-                console.log(err);
-            })
-        } else {
-            axiosInstance
-            .patch(`/event/page/contents/${clickedData.id}`, {
-                contentsType : 'NORMAL',
-                orderNo : clickedData.orderNo,
-                slideOrderNo : clickedData.slideOrderNo,
-                imageUrl : clickedData.imageUrl,
-                linkUrl : clickedData.linkUrl,
-                textContent : clickedData.textContent,
-                isAddPost : clickedData.isAddPost,
-            })
-            .then((res) => {
-                if ( res.data.success === true ) {
-                    alert('수정되었습니다');
-                    getData();
-                }
-            })
-            .catch((err) => {
-                alert('오류가 발생했습니다');
-                console.log(err);
-            })
-        }
+                if (err.status === 401) navigate("/expired");
+                else { alert("오류가 발생했습니다."); console.log(err); }
+            });
     }
+
 
     // 삭제하기
     function handleDelete () {
@@ -190,7 +177,7 @@ function EventGrid () {
         axiosInstance
         .delete(`/event/page/contents/${clickedData.id}`)
         .then((res) => { if ( res.data.success === true ) { alert('삭제되었습니다'); getData(); } })
-        .catch((err) => { alert('오류가 발생했습니다'); console.log(err); })
+        .catch((err) => { if (err.status === 401) navigate("/expired"); else { alert("오류가 발생했습니다."); console.log(err);} })
     }
 
     return (
@@ -250,6 +237,38 @@ function EventGrid () {
                                     onChange={(e) => { setClickedData({ ...clickedData, textContent : e.target.value }); setSave(true); }}
                                     disabled={disabled}
                                 />
+                            </div>
+                        </li>
+
+                        <li>
+                            <span className="admin-form-title">페이지 슬라이드 노출</span>
+
+                            <div className="input-area">
+                                <div className="radios">
+                                    <div className="radio-child">
+                                        <input 
+                                            type="radio" 
+                                            id="post-false"
+                                            name="add-post"
+                                            checked={clickedData.isAddPost === false}
+                                            onChange={() => {setClickedData({ ...clickedData, isAddPost: false }); setSave(true); }}
+                                            disabled={disabled}
+                                        />
+                                        <label htmlFor="post-false">제외</label>
+                                    </div>
+
+                                    <div className="radio-child">
+                                        <input 
+                                            type="radio" 
+                                            id="post-true"
+                                            name="add-post"
+                                            checked={clickedData.isAddPost === true}
+                                            onChange={() => {setClickedData({ ...clickedData, isAddPost: true }); setSave(true);}}
+                                            disabled={disabled}
+                                        />
+                                        <label htmlFor="post-true">노출</label>
+                                    </div>
+                                </div>
                             </div>
                         </li>
                         

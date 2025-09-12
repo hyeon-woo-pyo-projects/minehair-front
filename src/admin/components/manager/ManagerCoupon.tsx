@@ -184,7 +184,7 @@ function ManagerCoupon () {
             axiosInstance
             .delete(`/coupon/${idVal}`)
             .then((res) => { alert('삭제가 완료되었습니다'); window.location.reload();})
-            .catch((err) => { alert('오류가 발생했습니다'); console.log(err)});
+            .catch((err) => { if (err.status === 401) navigate("/expired"); else { alert("오류가 발생했습니다."); console.log(err); } });
         }
     }
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../api/axiosInstance";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Swiper, SwiperClass, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, Autoplay } from 'swiper/modules';
 import 'swiper/css';
@@ -20,6 +20,7 @@ interface EventProps {
 }
 
 function Event () {
+    const navigate = useNavigate();
     const [ eventData, setEventData ] = useState<EventProps[]>([]);
     const [ slideData, setSlideData ] = useState<EventProps[]>([]);
 
@@ -35,10 +36,7 @@ function Event () {
                 setSlideData(slideData);
             }
         })
-        .catch((err) => {
-            alert('알 수 없는 오류가 발생했습니다');
-            console.log(err);
-        })
+        .catch((err) => { if (err.status === 401) navigate("/expired"); else { alert("오류가 발생했습니다."); console.log(err);} })
     }
 
     useEffect(() => {

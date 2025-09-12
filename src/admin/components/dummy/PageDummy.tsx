@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import axiosInstance from '../../../api/axiosInstance';
 import ConsultationDummy from './ConsultationDummy';
+import EventSlideDummy from './EventSlideDummy';
 
 interface DataProps {
     id : number,
@@ -67,6 +68,7 @@ function PageDummy() {
                 <></>
             }
 
+            <EventSlideDummy/>
             <ConsultationDummy/>
         </div>
     );

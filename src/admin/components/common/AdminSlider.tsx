@@ -77,9 +77,7 @@ function AdminSlider () {
                 window.location.reload();
             }
         })
-        .catch((err)=>{
-            alert('오류가 발생했습니다');
-        })
+        .catch((err)=>{ if (err.status === 401) navigate("/expired"); else { alert("오류가 발생했습니다."); console.log(err); } })
 
         
     }

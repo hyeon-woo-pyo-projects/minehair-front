@@ -74,10 +74,7 @@ function ReviewWriter () {
                     navigate(-1);
                 }
             })
-            .catch((err) => {
-                alert('오류가 발생했습니다');
-                console.log(err);
-            })
+            .catch((err) => { if (err.status === 401) navigate("/expired"); else { alert("오류가 발생했습니다."); console.log(err); } })
         } else {
             axiosInstance
             .post('/board/review', {
@@ -93,10 +90,7 @@ function ReviewWriter () {
                     navigate(-1);
                 }
             })
-            .catch((err) => {
-                alert('오류가 발생했습니다');
-                console.log(err);
-            });
+            .catch((err) => { if (err.status === 401) navigate("/expired"); else { alert("오류가 발생했습니다."); console.log(err); } });
         }
     }
 
