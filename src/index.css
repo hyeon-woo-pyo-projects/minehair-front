@@ -292,7 +292,7 @@ code {
 .contents-view .contents { position: relative; overflow: hidden; cursor: pointer; width: calc((100% / 5) - 16px); }
 .contents-view .contents .img, .contents-view .contents img { width: 100%; height: 100%; }
 
-.main-page .video-line { padding: 60px 0;}
+.main-page .video-line { padding: 60px 0; background-size: cover; background-repeat: no-repeat; background-position: center center; }
 
 @media screen and ( max-width: 720px ) {
     .wrapper { width: 100%; padding: 0 20px; }

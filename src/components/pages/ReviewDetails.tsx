@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import IconPencil from '../../icons/IconPencil';
 import IconTrash from '../../icons/IconTrash';
 
-function QnaDetails () {
+function ReviewDetails () {
     const location = useLocation();
     const { id } = location.state || {};
     const navigate = useNavigate();
@@ -14,24 +14,24 @@ function QnaDetails () {
 
     const [ data, setData ] = useState({
         id : 0,
-        title : '',
         content : '',
-        author : '',
-        viewCount : 0,
+        categoryId : 0,
+        imageUrl : '',
+        title : '',
     });
 
     function getData () {
         axiosInstance
-        .get(`/board/qna/details/${id}`)
+        .get(`/board/review/details/${id}`)
         .then((res) => {
             if ( res.data.success === true ) {
                 const data = res.data.data;
                 setData({
                     id : data.id,
-                    title : data.title,
+                    categoryId : data.categoryId,
                     content : data.content,
-                    author : data.author,
-                    viewCount : data.viewCount,
+                    imageUrl : data.imageUrl,
+                    title : data.title,
                 });
             }
         })
@@ -49,11 +49,11 @@ function QnaDetails () {
         if ( !window.confirm('문의사항을 삭제하시겠습니까?') ) return;
         
         axiosInstance
-        .delete(`/board/qna/${data.id}`)
+        .delete(`/board/review/${data.id}`)
         .then((res)=>{
             if ( res.data.success === true ) {
                 alert('삭제되었습니다');
-                navigate('/pages/qna');
+                navigate(-1);
             }
         })
         .catch((err)=>{
@@ -63,25 +63,23 @@ function QnaDetails () {
     }
 
     return (
-        <div className="pages" id='qna-details'>
-            <h1 className="page-title">문의 보기</h1>
+        <div className="pages" id='review-details'>
+            <h1 className="page-title">리뷰 보기</h1>
 
             <div className="pages-body inner">
-                <div className="body-header text-contents">
-                    <p>작성자 : <span>{data.author}</span></p>
-                    <p>조회수 : <span>{data.viewCount}</span></p>
-                </div>
-
                 <form className="pages-form">
+                    <input type="text" value={data.id} hidden />
+                    <input type="text" value={data.categoryId} hidden />
+
                     <ul>
-                        <li className='flex-contents'>
-                            <p>제목 : </p>
+                        <li className='flex-contents title'>
                             <span>{data.title}</span>
                         </li>
 
-                        <li className='flex-contents'>
-                            <p>문의내용 :</p>
-                            <span>{data.content}</span>
+                        <li className='flex-contents contents'>
+                            <a href={data.imageUrl} target='_blank'>
+                                <img src={data.imageUrl} alt="리뷰 이미지" />
+                            </a>
                         </li>
                     </ul>
 
@@ -107,4 +105,4 @@ function QnaDetails () {
     )
 }
 
-export default QnaDetails;
+export default ReviewDetails;

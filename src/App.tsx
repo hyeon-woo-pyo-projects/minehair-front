@@ -16,14 +16,11 @@ import AdminBanner from './admin/components/common/AdminBanner';
 import AdminCategory from './admin/components/common/AdminCategory';
 import AdminLogo from './admin/components/common/AdminLogo';
 import AdminPreview from './admin/components/common/AdminPreview';
-import DefaultPages from './components/pages/DefaultPages';
 import ManagerConsultation from './admin/components/manager/ManagerConsultation';
 import AdminSlider from './admin/components/common/AdminSlider';
 import QnA from './components/pages/QnA';
 import ManagerCoupon from './admin/components/manager/ManagerCoupon';
 import EventGrid from './admin/components/pages/event/EventGrid';
-import QnaDetails from './components/pages/QnaDetails';
-import QnaWriter from './components/pages/QnaWriter';
 import AdminSns from './admin/components/common/AdminSns';
 import Event from './components/pages/Event';
 import EventPage from './admin/components/pages/EventPage';
@@ -39,7 +36,9 @@ import SettingPage from './admin/components/pages/SettingPage';
 import AdminMap from './admin/components/common/AdminMap';
 import PageDummy from './admin/components/dummy/PageDummy';
 import Review from './components/pages/Review';
+import ReviewWriter from './components/pages/ReviewWriter';
 import ManagerReview from './admin/components/manager/ManagerReview';
+import ReviewDetails from './components/pages/ReviewDetails';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -124,6 +123,8 @@ function AppRoutes() {
               <Route path="/pages/*" element={<PageDummy />} />
               <Route path="/pages/qna" element={<QnA />} />
               <Route path="/pages/review" element={<Review />} />
+              <Route path="/pages/review-write" element={<ReviewWriter />} />
+              <Route path="/pages/review-details" element={<ReviewDetails />} />
               <Route path="/pages/event" element={<Event />} />
             </Routes>
           </>
