@@ -54,8 +54,9 @@ function ReviewWriter () {
     // 유효성 검사
     const [ balloon, setBalloon ] = useState(0);
     function handleSave () {
-        if ( formData.title === '' ) { setBalloon(1); return false; }
-        if ( formData.imageUrl === '' ) { setBalloon(2); return false; }
+        if ( formData.categoryId === 0 ) { setBalloon(1); return false; }
+        if ( formData.title === '' ) { setBalloon(2); return false; }
+        if ( formData.imageUrl === '' ) { setBalloon(3); return false; }
 
         setBalloon(0);
 
@@ -160,6 +161,7 @@ function ReviewWriter () {
                     
                     <ul>
                         <li>
+                            { balloon === 1 && <Balloon text={'카테고리를 선택해주세요'} status={'notice'} /> }
                             <label htmlFor="qna-title">카테고리</label>
 
                             <div className="input-area w-100">
@@ -173,7 +175,7 @@ function ReviewWriter () {
                                         }))
                                     }
                                 >
-                                    
+                                    <option value="0" hidden>선택</option>
                                     {cate.map((el) => (
                                         <option key={el.id} value={el.id}>
                                             {el.name}
@@ -184,13 +186,13 @@ function ReviewWriter () {
                         </li>
 
                         <li>
-                            { balloon === 1 && <Balloon text={'제목을 입력해주세요'} status={'notice'} /> }
+                            { balloon === 2 && <Balloon text={'제목을 입력해주세요'} status={'notice'} /> }
                             <label htmlFor="qna-title">제목</label>
                             <input type="text" id='qna-title' value={formData.title} onChange={(e) => { setFormData({...formData, title : e.target.value}); }} />
                         </li>
 
                         <li>
-                            { balloon === 2 && <Balloon text={'이미지를 등록해주세요'} status={'notice'} /> }
+                            { balloon === 3 && <Balloon text={'이미지를 등록해주세요'} status={'notice'} /> }
                             <label htmlFor="qna-title">이미지</label>
                             
                             <div className="input-area">
