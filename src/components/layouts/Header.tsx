@@ -293,7 +293,7 @@ function Header () {
 
                                     return (
                                         <li key={el.menuId}>
-                                            <Link className='wholeMenu-main' to={el.menuPath} onClick={() => setOpenMenu(false)}>{el.menuName}</Link>
+                                            <Link className='wholeMenu-main' to={`${el.menuPath}?menuId=${el.menuId}`} onClick={() => setOpenMenu(false)}>{el.menuName}</Link>
 
                                             { connection.length > 0 &&
                                                 <div className="categories">
@@ -301,13 +301,13 @@ function Header () {
                                                         const grandchildren = subSubMenu.filter(child => child.parentId === data.menuId);
                                                         return (
                                                             <div className="category" key={data.menuId}>
-                                                                <Link to={`/pages${data.menuPath}`} onClick={() => setOpenMenu(false)}>{data.menuName}</Link>
+                                                                <Link to={`/pages${data.menuPath}?menuId=${data.menuId}`} onClick={() => setOpenMenu(false)}>{data.menuName}</Link>
 
                                                                 {grandchildren.length > 0 &&
                                                                     <div>
                                                                         {grandchildren.map((ele, index) => (
                                                                             <div key={index}>
-                                                                                <Link className='small-menu' to={`/pages${ele.menuPath}`} onClick={() => setOpenMenu(false)}>{ele.menuName}</Link>
+                                                                                <Link className='small-menu' to={`/pages${ele.menuPath}?menuId=${ele.menuId}`} onClick={() => setOpenMenu(false)}>{ele.menuName}</Link>
                                                                             </div>
                                                                         ))}
                                                                     </div>
@@ -361,7 +361,7 @@ function Header () {
                                             if (connection.length > 0) {
                                                 toggleMobileMenu(el.menuId);
                                             } else {
-                                                navigate(`/pages${el.menuPath}`);
+                                                navigate(`/pages${el.menuPath}?menuId=${el.menuId}`);
                                                 setMobileShow(false);
                                             }
                                         }}
@@ -384,13 +384,13 @@ function Header () {
                                                 const grandchildren = subSubMenu.filter(child => child.parentId === data.menuId);
                                                 return (
                                                     <div className="category" key={data.menuId}>
-                                                        <Link to={`/pages${data.menuPath}`} onClick={() => setMobileShow(false)}>{data.menuName}</Link>
+                                                        <Link to={`/pages${data.menuPath}?menuId=${data.menuId}`} onClick={() => setMobileShow(false)}>{data.menuName}</Link>
 
                                                         {grandchildren.length > 0 &&
                                                             <div>
                                                                 {grandchildren.map((ele, index) => (
                                                                     <div key={index}>
-                                                                        <Link className='small-menu' to={`/pages${ele.menuPath}`} onClick={() => setMobileShow(false)}>{ele.menuName}</Link>
+                                                                        <Link className='small-menu' to={`/pages${ele.menuPath}?menuId=${ele.menuId}`} onClick={() => setMobileShow(false)}>{ele.menuName}</Link>
                                                                     </div>
                                                                 ))}
                                                             </div>
