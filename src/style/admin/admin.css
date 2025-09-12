@@ -488,7 +488,7 @@
 #page-setting .admin-body .page-section:hover { cursor: pointer; }
 #page-setting .admin-body .page-section:hover::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.3); }
 #page-setting .admin-body .page-section .video-section {
-    padding: 60px 0;
+    padding: 100px 0;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
@@ -561,6 +561,7 @@
 
 
     /* 페이지 컨텐츠 */
-    #page-setting .admin-body .page-section { padding: 0 20px; }
+    #page-setting .admin-body .page-section .img-section { padding: 0 20px; }
+    #page-setting .admin-body .page-section .video-section { padding: 50px 0; }
 }
 

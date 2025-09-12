@@ -307,7 +307,7 @@ function SettingContents({ selectedMenu }: SettingContentsProps) {
                                 }
                                 { el.contentsType === 'VIDEO' &&
                                     <div className="video-section" style={{backgroundImage: `url('${el.videoBackGroundUrl}')`}}>
-                                        <iframe width="560" height="315"
+                                        <iframe width="810" height="450"
                                             src={el.contentsUrl}
                                             title="YouTube video player"
                                             frameBorder="0"
