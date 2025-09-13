@@ -136,8 +136,7 @@ function ManagerQna () {
                             <span className="admin-form-title">질문</span>
 
                             <div className="input-area">
-                                <input 
-                                    type="text" 
+                                <textarea
                                     placeholder="질문 등록"
                                     disabled={disabled}
                                     value={form.title}
