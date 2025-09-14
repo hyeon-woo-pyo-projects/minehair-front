@@ -75,7 +75,6 @@ function Header () {
             .then((response) => {
                 if (response.data.success === true) {
                     const rawMenu: any[] = response.data.data;
-
                     
                     // 1. 메인 메뉴 추출
                     const mainMenus = rawMenu.filter((el) => el.menuType === 'MAJOR');
