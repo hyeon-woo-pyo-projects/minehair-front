@@ -98,6 +98,9 @@
 #pages-review .items li .img-line {  height: 250px; background-color: var(--color-white); border: 1px solid var(--color-gray); }
 #pages-review .items li .img-line img { height: 100%; object-fit: contain; }
 #pages-review .items li .review-title { margin-top: 20px; font-weight: 500; font-size: 18px; }
+#pages-review .pagination { position: relative; display: flex; align-items: center; margin-top: 60px; justify-content: center; gap: 12px; }
+#pages-review .pagination button { width: 38px; height: 38px; border: 1px solid var(--color-darkGray); }
+#pages-review .pagination button.active { background-color: var(--default-background); color: var(--color-white); font-weight: 600; }
 
 
 /* 리뷰보기 */
