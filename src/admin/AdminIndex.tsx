@@ -16,6 +16,7 @@ function AdminIndex () {
                     <li><Link to={'/admin/admin-sns'}>SNS</Link></li>
                     <li><Link to={'/admin/admin-quick'}>퀵 메뉴</Link></li>
                     <li><Link to={'/admin/admin-map'}>지도 설정</Link></li>
+                    <li><Link to={'/admin/admin-consultation-menu'}>상담문의 설정</Link></li>
                 </ul>
             </section>
 

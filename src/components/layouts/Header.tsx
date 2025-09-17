@@ -8,6 +8,7 @@ import axiosInstance from '../../api/axiosInstance';
 import IconCross from '../../icons/IconCross';
 import IconArrowDown from '../../icons/IconArrowDown';
 import QuickButton from '../index/QuickButton';
+import CounsultationIconDummy from '../../admin/components/dummy/ConsultationIconDummy';
 
 interface menuProps {
     menuId : number;
@@ -237,7 +238,7 @@ function Header () {
                     </div>
                 </div>
 
-                <div className={`mobile-showing${mobileQuick === true ? ' active' : '' }`}><QuickButton/></div>
+                <div className={`mobile-showing${mobileQuick === true ? ' active' : '' }`}><CounsultationIconDummy/></div>
 
                 <nav>
                     <ul id='headerCategory' className="wrapper">

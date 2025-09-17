@@ -295,6 +295,8 @@ code {
 
 .main-page .video-line { padding: 60px 0; background-size: cover; background-repeat: no-repeat; background-position: center center; }
 
+.mobile-showing { display: none; }
+
 @media screen and ( max-width: 720px ) {
     .wrapper { width: 100%; padding: 0 20px; }
     .inner { width: 100%; }
@@ -306,5 +308,6 @@ code {
     .contents-view .contents { position: relative; overflow: hidden; cursor: pointer; width: calc((100% / 3) - 14px); }
 
     iframe { width: 85%; height: 200px; }
+    .mobile-showing { display: flex; }
     
 }

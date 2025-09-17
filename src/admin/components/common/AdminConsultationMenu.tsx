@@ -9,31 +9,33 @@ import Balloon from "../../../components/system/Balloon";
 
 interface DataProps {
     id : number,
-    logoType: string,
-    description: string,
+    componentType : string,
+    linkUrl: string,
+    content: string,
     imageUrl: string,
 }
 
-function AdminQuick () {
+function AdminConsultationMenu () {
     const navigate = useNavigate();
     const [ data, setData ] = useState<DataProps[]>([]);
     const [ disabled, setDisabled ] = useState(true);
-    const [ newAdd, setNewAdd ] = useState(false);
+    const [ newAdd, setNewAddOne ] = useState(false);
     const [ form, setForm ] = useState({
         id : 0,
-        logoType : 'QUICK',
-        description : '',
+        componentType : 'HEADER_CONSULTING_INNER_BUTTON',
+        linkUrl : '',
+        content : '',
         imageUrl : '',
     })
 
     // 데이터 불러오기
     function getData(){
         axiosInstance
-        .get('/logo')
+        .get('/homepage/component/HEADER_CONSULTING_INNER_BUTTON')
         .then((res) => {
             if ( res.data.success === true ) {
                 const data = res.data.data;
-                const logoData = data.filter((el) => el.logoType === 'QUICK' );
+                const logoData = data.filter((el) => el.componentType === 'HEADER_CONSULTING_INNER_BUTTON' );
                 setData(logoData);
             }
         })
@@ -46,11 +48,12 @@ function AdminQuick () {
 
     function newOne () {
         setDisabled(false);
-        setNewAdd(true);
+        setNewAddOne(true);
         setForm({
             id : 0,
-            logoType : 'QUICK',
-            description : '',
+            componentType : 'HEADER_CONSULTING_INNER_BUTTON',
+            linkUrl : '',
+            content : '',
             imageUrl : '',
         });
     }
@@ -110,25 +113,27 @@ function AdminQuick () {
     // 저장하기
     const [ balloon, setBalloon ] = useState(0);
     function handleSave(){
-        if ( form.description === '' ) { setBalloon(1); return false; }
-        if ( form.imageUrl === '' ) { setBalloon(2); return false; }
+        if ( form.linkUrl === '' ) { setBalloon(1); return false; }
+        if ( form.content === '' ) { setBalloon(2); return false; }
+        if ( form.imageUrl === '' ) { setBalloon(3); return false; }
 
         setBalloon(0);
-
         if ( newAdd === true ) {
             axiosInstance
-                .post('/logo', {
-                    logoType : form.logoType,
-                    description : form.description,
+                .post('/homepage/component', {
+                    componentType : form.componentType,
+                    linkUrl : form.linkUrl,
+                    content : form.content,
                     imageUrl : form.imageUrl,
                 })
                 .then((res) => { if ( res.data.success === true ) { alert('저장되었습니다'); getData(); }})
                 .catch((err) => {if ( err.status === 401 ) navigate('/expired'); else { alert('오류가 발생했습니다'); console.log(err); }})
         } else {
             axiosInstance
-                .patch(`/logo/${form.id}`, {
-                    logoType : form.logoType,
-                    description : form.description,
+                .patch(`/homepage/component/${form.id}`, {
+                    componentType : form.componentType,
+                    linkUrl : form.linkUrl,
+                    content : form.content,
                     imageUrl : form.imageUrl,
                 })
                 .then((res) => { if ( res.data.success === true ) { alert('수정되었습니다'); getData(); }})
@@ -139,12 +144,13 @@ function AdminQuick () {
     // 수정하기
     function handleEdit (data : DataProps) {
         setDisabled(false);
-        setNewAdd(false);
+        setNewAddOne(false);
         setForm({
             id : data.id,
-            description : data.description,
+            linkUrl : data.linkUrl,
             imageUrl : data.imageUrl,
-            logoType : 'QUICK',
+            content : data.content,
+            componentType : 'HEADER_CONSULTING_INNER_BUTTON',
         });
     }
 
@@ -153,7 +159,7 @@ function AdminQuick () {
         if ( !window.confirm('삭제하시겠습니까?') ) return;
 
         axiosInstance
-        .delete(`/logo/${form.id}`)
+        .delete(`/homepage/component/${form.id}`)
         .then((res) => { if (res.data.success === true) { alert('삭제되었습니다'); window.location.reload(); } })
         .catch((err) => { if ( err.status === 401 ) navigate('/expired'); else { alert('오류가 발생했습니다'); console.log(err); }})
     }
@@ -164,22 +170,23 @@ function AdminQuick () {
 
 
     return(
-        <div className="admin-page" id="admin-quick">
-            <div className="admin-body inner">
-                <h1 className="admin-title">퀵 메뉴</h1>
+        <div className="admin-page" id="admin-consultation-menu">
+            <div className="admin-body wrapper">
+                <h1 className="admin-title">상담문의 설정</h1>
 
                 <div className="contents-view">
                     { data.length > 0 ?
-                        <div className="quick-menu">
-                            <h6>QUICK</h6>
-
-                            <div className="quick-body">
+                        <div className="consultation-menu">
+                            <ul className="consultation-body">
                                 {data.map((el)=>{
                                     return (
-                                        <li key={el.id} onClick={() => { handleEdit(el) }}><img src={el.imageUrl} alt="퀵 이미지" /></li>
+                                        <li key={el.id} onClick={() => { handleEdit(el) }}>
+                                            <img src={el.imageUrl} alt="퀵 이미지" />
+                                            <p>{el.content}</p>
+                                        </li>
                                     )
                                 })}
-                            </div>
+                            </ul>
                         </div>
                     :
                         <p className="empty-notice">데이터가 없습니다.</p>
@@ -196,7 +203,7 @@ function AdminQuick () {
                         </button>
                     </div>
 
-                    <ul className="child-3">
+                    <ul>
                         <li>
                             { balloon === 1 && <Balloon text={'링크를 등록해주세요'} status="notice" /> }
                             <span className="admin-form-title">링크</span>
@@ -204,15 +211,29 @@ function AdminQuick () {
                             <div className="input-area">
                                 <input 
                                     type="text"
-                                    value={form.description}
-                                    onChange={(e) => { setForm({...form, description : e.target.value}); } }
+                                    value={form.linkUrl}
+                                    onChange={(e) => { setForm({...form, linkUrl : e.target.value}); } }
                                     disabled={disabled}
                                 />
                             </div>
                         </li>
 
                         <li>
-                            { balloon === 2 && <Balloon text={'이미지를 등록해주세요'} status="notice" /> }
+                            { balloon === 2 && <Balloon text={'텍스트를 등록해주세요'} status="notice" /> }
+                            <span className="admin-form-title">텍스트</span>
+
+                            <div className="input-area">
+                                <input 
+                                    type="text"
+                                    value={form.content}
+                                    onChange={(e) => { setForm({...form, content : e.target.value}); } }
+                                    disabled={disabled}
+                                />
+                            </div>
+                        </li>
+
+                        <li>
+                            { balloon === 3 && <Balloon text={'이미지를 등록해주세요'} status="notice" /> }
                             <span className="admin-form-title">이미지</span>
 
                             <div className="input-area">
@@ -276,4 +297,4 @@ function AdminQuick () {
     )
 }
 
-export default AdminQuick;
+export default AdminConsultationMenu;

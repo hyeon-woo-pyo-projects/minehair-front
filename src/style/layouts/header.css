@@ -131,7 +131,7 @@ header .perMenu.show { opacity: 1; visibility: visible; }
 header .perMenu.have-img { min-width: 300px; height: auto; }
 header nav .wrapper li .perMenu a { position: relative; transition: all 0.25s; font-size: 16px; font-weight: 500; }
 header nav .wrapper li .perMenu a:hover { color: var(--brand-color); }
-header .perMenu .categories { display: flex; flex-wrap: wrap; padding: 30px 35px; gap: 30px; min-width: 250px; flex: none; }
+header .perMenu .categories { display: flex; flex-wrap: wrap; padding: 30px 35px; gap: 30px; min-width: 250px; flex: none; width: 100%; }
 header .perMenu .image-line { width: 100%; min-width: 200px; height: auto; display: flex; }
 header .perMenu .category { width: calc(50% - 15px); position: relative; transition: all 0.25s; text-align: left; flex: none; }
 header .perMenu .thumbnail { width: 250px; }

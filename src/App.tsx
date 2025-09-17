@@ -39,6 +39,7 @@ import Review from './components/pages/Review';
 import ReviewWriter from './components/pages/ReviewWriter';
 import ManagerReview from './admin/components/manager/ManagerReview';
 import ReviewDetails from './components/pages/ReviewDetails';
+import AdminConsultationMenu from './admin/components/common/AdminConsultationMenu';
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -82,6 +83,7 @@ function AppRoutes() {
         <Route path="admin-sns" element={<AdminSns />} />
         <Route path="admin-quick" element={<AdminQuick />} />
         <Route path="admin-map" element={<AdminMap />} />
+        <Route path="admin-consultation-menu" element={<AdminConsultationMenu />} />
 
         {/* 관리자 */}
         <Route path="manager-consultation" element={<ManagerConsultation />} />
