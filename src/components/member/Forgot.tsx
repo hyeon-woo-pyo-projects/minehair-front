@@ -42,7 +42,7 @@ function Forgot () {
             }
         })
         .then((res) => { if ( res.data.success === true ) { console.log(res) } })
-        .catch((err) => { alert('오류가 발생했습니다'); console.log(err); })
+        .catch((err) => { if ( err.status === 404 ) { alert('회원정보와 일치하는 회원이 조회되지 않습니다.'); return; } else { alert('오류가 발생했습니다'); console.log(err); }  })
 
 
         setBalloonChk1(0);
