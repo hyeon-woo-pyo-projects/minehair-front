@@ -692,7 +692,7 @@ function AdminCategory() {
                                             id="visit"
                                             disabled={disabled}
                                             checked={checkers.selector1}
-                                            onChange={(e) => handleCheckerChange("selector1", 1, e.target.checked)}
+                                            onChange={(e) => handleCheckerChange("selector1", 3, e.target.checked)}
                                         />
                                         <label htmlFor="visit">비회원</label>
                                     </div>
@@ -714,7 +714,7 @@ function AdminCategory() {
                                             id="admin"
                                             disabled={disabled}
                                             checked={checkers.selector3}
-                                            onChange={(e) => handleCheckerChange("selector3", 3, e.target.checked)}
+                                            onChange={(e) => handleCheckerChange("selector3", 1, e.target.checked)}
                                         />
                                         <label htmlFor="admin">관리자</label>
                                     </div>
